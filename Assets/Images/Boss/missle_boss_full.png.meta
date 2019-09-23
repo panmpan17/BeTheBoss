@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: a3de3f9209d0e403fb22cf958bd8073d
+guid: 7ee3d0d32687c4234babcce677c5023f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4169910768631635831
-    second: laser-connect-2_0
+      213: -2811545846176495032
+    second: missle_boss_full_0
+  - first:
+      213: 3626992694827645597
+    second: missle_boss_full_1
+  - first:
+      213: 3031100450004536529
+    second: missle_boss_full_2
+  - first:
+      213: -1072230700427084102
+    second: missle_boss_full_3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -89,22 +98,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: laser-connect-2_0
+      name: missle_boss_full_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 72
-        height: 20
+        width: 8
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 7, y: 0, z: 0, w: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b4d87980323c64784be19e22b0ed527e
-      internalID: 4169910768631635831
+      spriteID: 588b3071ee44542e1ae99346ce12e23a
+      internalID: -2811545846176495032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: missle_boss_full_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 0
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad5fcf63bd29d4b8b92d362531ee58a2
+      internalID: 3626992694827645597
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: missle_boss_full_2
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f784e1b6f3c24e0b9f2d7d98faf663e
+      internalID: 3031100450004536529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: missle_boss_full_3
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 0
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3e5544ad2708400aa1da89b526ca66f
+      internalID: -1072230700427084102
       vertices: []
       indices: 
       edges: []

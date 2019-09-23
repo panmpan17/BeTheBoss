@@ -6,6 +6,9 @@ public class Boss : Damageable
 {
     public static Boss ins;
 
+    [SerializeField]
+    private SpriteRenderer healthBar;
+
     private LaserCanon laser;
     private MachineGun[] machineGuns;
     private BombCabinCtrl bombCabinCtrl;
@@ -21,17 +24,18 @@ public class Boss : Damageable
     void Awake() {
         SetupHealth();
 
-        Debug.Log("1");
         ins = this;
         usedAttackType = new List<AttackType>();
 
         laser = GetComponentInChildren<LaserCanon>();
         minionCabinCtrl = GetComponentInChildren<MinionCabinCtrl>();
         machineGuns = GetComponentsInChildren<MachineGun>();
+        bombCabinCtrl = GetComponentInChildren<BombCabinCtrl>();
     }
 
     public void WeaponeFinished() {
         if (attackType != AttackType.None) attackType = AttackType.None;
+        if (usedAttackType.Count >= 3) usedAttackType.RemoveAt(0);
     }
 
     void NewAttack(AttackType type) {
@@ -54,8 +58,6 @@ public class Boss : Damageable
                 for (int i = 0; i < machineGuns.Length; i++) machineGuns[i].Activate();
                 break;
         }
-
-        if (usedAttackType.Count == 4) usedAttackType.Clear();
     }
 
     void Update() {
@@ -64,6 +66,7 @@ public class Boss : Damageable
                 if (Input.GetKeyDown(KeyCode.S)) NewAttack(AttackType.Laser);
                 else if (Input.GetKeyDown(KeyCode.M)) NewAttack(AttackType.Minion);
                 else if (Input.GetKeyDown(KeyCode.N)) NewAttack(AttackType.MachineGun);
+                else if (Input.GetKeyDown(KeyCode.B)) NewAttack(AttackType.Bomb);
                 break;
             case AttackType.Laser:
                 if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) laser.UpdateDirection(Input.GetKeyDown(KeyCode.A)? -1: 1);
@@ -71,7 +74,18 @@ public class Boss : Damageable
         }
     }
 
+    void HandleDeath() {
+        Debug.Log("Boss is dead");
+    }
+
     public override void TakeDamage(int amount) {
         health -= amount;
+        if (health < 0) health = 0;
+
+        Vector2 size = healthBar.size;
+        size.x = (float) health / startingHealth;
+        healthBar.size = size;
+
+        if (health == 0) HandleDeath();
     }
 }

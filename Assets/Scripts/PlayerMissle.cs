@@ -47,6 +47,7 @@ public class PlayerMissle : Damageable
 
     void ExplodeEnd() {
         exploding = false;
+        PlayerContoller.ins.MissleEnd();
         Put(this);
     }
 

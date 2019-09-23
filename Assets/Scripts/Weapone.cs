@@ -62,7 +62,6 @@ public class Weapone : Damageable
     // Update is called once per frame
     private void OnCollisionEnter2D(Collision2D other) {
         Damageable damageable = other.gameObject.GetComponent<Damageable>();
-        Debug.Log(IsWallProof);
         if (IsWallProof && damageable == null) return;
 
         if (damageable != null) damageable.TakeDamage(damage);
@@ -98,9 +97,7 @@ public class Weapone : Damageable
             Weapone weapone;
             if (poolObjs.Count > 0) {
                 weapone = poolObjs[0];
-                Debug.Log(poolObjs.Count);
                 poolObjs.RemoveAt(0);
-                Debug.Log(poolObjs.Count);
             } else { weapone = Instantiate(prefab).GetComponent<Weapone>(); }
 
             weapone.gameObject.SetActive(true);

@@ -9,8 +9,10 @@ public class LaserCanon : MonoBehaviour {
     private float timeCount;
     private int direction;
     private bool activated;
+    private Animator animator;
 
     void Awake() {
+        animator = GetComponent<Animator>();
         activated = false;
         lightBeam.SetActive(false);
     }
@@ -21,6 +23,7 @@ public class LaserCanon : MonoBehaviour {
             if (timeCount >= time) {
                 activated = false;
                 lightBeam.SetActive(false);
+                animator.SetTrigger("End");
                 StartCoroutine(BackToCenter());
             }
 
@@ -30,6 +33,12 @@ public class LaserCanon : MonoBehaviour {
                 transform.parent.position = pos;
             }
         }
+    }
+
+    void Fire() {
+        animator.ResetTrigger("Prepare");
+        activated = true;
+        lightBeam.SetActive(true);
     }
 
     IEnumerator BackToCenter() {
@@ -47,8 +56,7 @@ public class LaserCanon : MonoBehaviour {
     public void Activate() {
         timeCount = 0;
         direction = 0;
-        activated = true;
-        lightBeam.SetActive(true);
+        animator.SetTrigger("Prepare");
     }
 
     public void UpdateDirection(int _direction) {

@@ -18,12 +18,15 @@ public abstract class Damageable : MonoBehaviour {
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerContoller : Damageable
 {
+    static public PlayerContoller ins;
+
     private bool Left { get { return Input.GetKey(KeyCode.LeftArrow); } }
     private bool Right { get { return Input.GetKey(KeyCode.RightArrow); } }
     private bool Down { get { return Input.GetKey(KeyCode.DownArrow); } }
     private bool Up { get { return Input.GetKey(KeyCode.UpArrow); } }
+
     [SerializeField]
-    private float speed, fireRate, bulletSpeed;
+    private float speed, fireRate, bulletSpeed, missleSpeed;
     private float fireRateCount;
     [SerializeField]
     private Sprite[] leftSprite, rightSprite;
@@ -31,14 +34,20 @@ public class PlayerContoller : Damageable
     private Sprite idleSprite;
     [SerializeField]
     private Transform[] burstPosition;
+    [SerializeField]
+    private Color fullHealthColor, emptyHealthColor;
+    [SerializeField]
+    private SpriteRenderer healthBar;
 
     private State state;
     private enum State { Left, Idle, Right }
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigid2d;
+    private bool usingMissle;
 
     void Awake() {
+        ins = this;
         SetupHealth();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -55,10 +64,15 @@ public class PlayerContoller : Damageable
         #endif
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (Input.GetKeyDown(KeyCode.Space) && !usingMissle) {
             PlayerMissle missle = PlayerMissle.Get();
-            missle.Setup(transform.position, Vector2.up);
+            missle.Setup(transform.position, Vector2.up * missleSpeed);
+            usingMissle = true;
         }
+    }
+
+    public void MissleEnd() {
+        usingMissle = false;
     }
 
     void FixedUpdate() {
@@ -66,20 +80,27 @@ public class PlayerContoller : Damageable
         if (state != newState) {
             StopAllCoroutines();
             state = newState;
-            switch (state) {
+            switch (newState) {
                 case State.Left:
                     StartCoroutine(FlipLeft());
-                    rigid2d.velocity = new Vector2(-speed, 0);
                     break;
                 case State.Right:
                     StartCoroutine(FlipRight());
-                    rigid2d.velocity = new Vector2(speed, 0);
                     break;
                 case State.Idle:
                     rigid2d.velocity = Vector2.zero;
                     spriteRenderer.sprite = idleSprite;
                     break;
             }
+        }
+
+        switch (state) {
+            case State.Left:
+                rigid2d.velocity = new Vector2(-speed, 0);
+                break;
+            case State.Right:
+                rigid2d.velocity = new Vector2(speed, 0);
+                break;
         }
 
         if (Up) rigid2d.velocity = new Vector2(rigid2d.velocity.x, speed);
@@ -103,7 +124,19 @@ public class PlayerContoller : Damageable
         yield return null;
     }
 
+    void HandleDeath() {
+        Debug.Log("Player is dead");
+    }
+
     public override void TakeDamage(int damage) {
         health -= damage;
+        if (health < 0) health = 0;
+
+        healthBar.color = Color.Lerp(fullHealthColor, emptyHealthColor, (float) health / startingHealth);
+        Vector2 size = healthBar.size;
+        size.x = (float) health / startingHealth;
+        healthBar.size = size;
+
+        if (health == 0) HandleDeath();
     }
 }

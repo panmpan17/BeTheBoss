@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// TODO: shoot bomb
 public class MinionCabinCtrl : MonoBehaviour {
     [SerializeField]
     private float spawnInterval, spawnTime, weaponeUseTime;
@@ -35,7 +36,6 @@ public class MinionCabinCtrl : MonoBehaviour {
             CabinDoor cabinDoor = cabinDoors[i];
             Weapone weapone = Weapone.Spawn(WeaponeType.Minion);
             weapone.Set(cabinDoor.door.position, cabinDoor.defaultVelocity);
-            Debug.Log(weapone, weapone);
         }
     }
 
