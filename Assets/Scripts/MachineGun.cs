@@ -9,7 +9,8 @@ public class MachineGun : MonoBehaviour {
     private float rotateRangeMax, rotateRangeMin, rotateSpeed, fireRate, bulletSpeed, shootTime, weaponeTime;
     [SerializeField]
     private bool targetPlayerMode;
-    private float fireRateCount, timer;
+    private Timer fireRateTimer;
+    private float timer;
     private bool activated, shooting;
     private int direction = 1;
     private bool weaponeFinishedCalled;
@@ -22,6 +23,10 @@ public class MachineGun : MonoBehaviour {
     public static Vector2 DegreeToVector2(float degree)
     {
         return RadianToVector2(degree * Mathf.Deg2Rad);
+    }
+
+    void Awake() {
+        fireRateTimer = new Timer(fireRate);
     }
 
     void Update() {
@@ -44,9 +49,8 @@ public class MachineGun : MonoBehaviour {
                 angle += 90;
             }
 
-            fireRateCount += Time.deltaTime;
-            if (fireRateCount >= fireRate) {
-                fireRateCount = 0;
+            if (fireRateTimer.UpdateEnd) {
+                fireRateTimer.Reset();
                 Weapone weapone = Weapone.Spawn(WeaponeType.BossBullet);
                 weapone.Set(burstTransform.position, DegreeToVector2(angle) * bulletSpeed);
                 weapone.transform.rotation = transform.rotation;

@@ -6,7 +6,7 @@ public class LaserCanon : MonoBehaviour {
     private GameObject lightBeam;
     [SerializeField]
     private float time, speed, xMin, xMax;
-    private float timeCount;
+    private Timer timer;
     private int direction;
     private bool activated;
     private Animator animator;
@@ -15,12 +15,13 @@ public class LaserCanon : MonoBehaviour {
         animator = GetComponent<Animator>();
         activated = false;
         lightBeam.SetActive(false);
+
+        timer = new Timer(time);
     }
 
     void Update() {
         if (activated) {
-            timeCount += Time.deltaTime;
-            if (timeCount >= time) {
+            if (timer.UpdateEnd) {
                 activated = false;
                 lightBeam.SetActive(false);
                 animator.SetTrigger("End");
@@ -54,7 +55,7 @@ public class LaserCanon : MonoBehaviour {
     }
 
     public void Activate() {
-        timeCount = 0;
+        timer.Reset();
         direction = 0;
         animator.SetTrigger("Prepare");
     }

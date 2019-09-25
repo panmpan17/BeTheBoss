@@ -1,22 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Boss : Damageable
 {
     public static Boss ins;
 
+    public bool HasAI { get { return ai != null; } }
+    public bool Idling { get { return attackType == AttackType.None; } }
+    public List<AttackType> UsedAttack { get { return usedAttackType; } }
+
     [SerializeField]
-    private SpriteRenderer healthBar;
+    private RectTransform healthBar;
+    private float healthBarFullSize;
 
     private LaserCanon laser;
     private MachineGun[] machineGuns;
     private BombCabinCtrl bombCabinCtrl;
     private MinionCabinCtrl minionCabinCtrl;
+    private BossAI ai;
 
     private AttackType attackType = AttackType.None;
     private List<AttackType> usedAttackType;
-    private enum AttackType { None, Laser, MachineGun, Minion, Bomb }
+    public enum AttackType { None, Laser, MachineGun, Minion, Bomb }
 
     private float laserTimeCount;
     private int laserDirection;
@@ -31,6 +36,8 @@ public class Boss : Damageable
         minionCabinCtrl = GetComponentInChildren<MinionCabinCtrl>();
         machineGuns = GetComponentsInChildren<MachineGun>();
         bombCabinCtrl = GetComponentInChildren<BombCabinCtrl>();
+
+        healthBarFullSize = healthBar.sizeDelta.x;
     }
 
     public void WeaponeFinished() {
@@ -38,7 +45,7 @@ public class Boss : Damageable
         if (usedAttackType.Count >= 3) usedAttackType.RemoveAt(0);
     }
 
-    void NewAttack(AttackType type) {
+    public void NewAttack(AttackType type) {
         if (usedAttackType.Contains(type)) return;
 
         attackType = type;
@@ -61,6 +68,8 @@ public class Boss : Damageable
     }
 
     void Update() {
+        if (HasAI) return;
+
         switch (attackType) {
             case AttackType.None:
                 if (Input.GetKeyDown(KeyCode.S)) NewAttack(AttackType.Laser);
@@ -82,9 +91,10 @@ public class Boss : Damageable
         health -= amount;
         if (health < 0) health = 0;
 
-        Vector2 size = healthBar.size;
-        size.x = (float) health / startingHealth;
-        healthBar.size = size;
+        Vector2 size = healthBar.sizeDelta;
+        size.x = ((float) health / startingHealth) * healthBarFullSize;
+        // healthBar.size = size;
+        healthBar.sizeDelta = size;
 
         if (health == 0) HandleDeath();
     }
