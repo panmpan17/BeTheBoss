@@ -21,17 +21,13 @@ public class PlayerContoller : Damageable
 {
     static public PlayerContoller ins;
 
-    // private bool Left { get { return Input.GetKey(KeyCode.LeftArrow); } }
-    // private bool Right { get { return Input.GetKey(KeyCode.RightArrow); } }
-    // private bool Down { get { return Input.GetKey(KeyCode.DownArrow); } }
-    // private bool Up { get { return Input.GetKey(KeyCode.UpArrow); } }
     private bool Left { get { return Input.GetAxis("Horizontal_Joystick") < -0.5; } }
     private bool Right { get { return Input.GetAxis("Horizontal_Joystick") > 0.5; } }
     private bool Down { get { return Input.GetAxis("Vertical_Joystick") > 0.5; } }
     private bool Up { get { return Input.GetAxis("Vertical_Joystick") < -0.5; } }
 
     [SerializeField]
-    private float speed, fireRate, bulletSpeed, missleSpeed, rebirthProtectionTime;
+    private float flyingSpeed, fireRate, bulletSpeed, missleSpeed, rebirthProtectionTime;
     private Timer fireRateTimer;
     [SerializeField]
     private Sprite[] leftSprite, rightSprite;
@@ -49,8 +45,7 @@ public class PlayerContoller : Damageable
     [SerializeField]
     private TextMeshProUGUI lifeText;
 
-    private State state;
-    private enum State { Left, Idle, Right }
+    private Movement movement, nextMovement;
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigid2d;
@@ -70,11 +65,17 @@ public class PlayerContoller : Damageable
 
         rebirthProtectionTimer = new Timer(rebirthProtectionTime);
         fireRateTimer = new Timer(fireRate);
+
+        movement = nextMovement = new Movement();
+    }
+
+    public void SetNextMovement(Movement movement) {
+        nextMovement = movement;
     }
 
     void Update()
     {
-#if SHOOTING
+#if SHOOTING  
         if (fireRateTimer.UpdateEnd) {
             fireRateTimer.Reset();
             for (int i = 0; i < burstPosition.Length; i++) Weapone.Spawn(WeaponeType.PlayerBullet).Set(burstPosition[i].position, Vector2.up * bulletSpeed);
@@ -86,6 +87,8 @@ public class PlayerContoller : Damageable
             missle.Setup(transform.position, Vector2.up * missleSpeed);
             usingMissle = true;
         }
+
+
     }
 
     public void MissleEnd() {
@@ -100,38 +103,28 @@ public class PlayerContoller : Damageable
             spriteRenderer.color = color;
         }
 
-        // State newState = Left ? State.Left: (Right? State.Right: State.Idle);
-        State newState = State.Idle;
-
-        if (state != newState) {
-            StopAllCoroutines();
-            state = newState;
-            switch (newState) {
-                case State.Left:
-                    StartCoroutine(FlipLeft());
-                    break;
-                case State.Right:
-                    StartCoroutine(FlipRight());
-                    break;
-                case State.Idle:
-                    rigid2d.velocity = Vector2.zero;
-                    spriteRenderer.sprite = idleSprite;
-                    break;
+        bool horiChange, VertiChange;
+        if (movement.Different(nextMovement, out horiChange, out VertiChange)) {
+            if (horiChange) {
+                StopAllCoroutines();
+                switch (nextMovement.Horizontal) {
+                    case 0:
+                        rigid2d.velocity = Vector2.zero;
+                        spriteRenderer.sprite = idleSprite;
+                        break;
+                    case 1:
+                        StartCoroutine(FlipRight());
+                        break;
+                    case -1:
+                        StartCoroutine(FlipLeft());
+                        break;
+                }
             }
+
+            movement = nextMovement;
         }
 
-        switch (state) {
-            case State.Left:
-                rigid2d.velocity = new Vector2(-speed, 0);
-                break;
-            case State.Right:
-                rigid2d.velocity = new Vector2(speed, 0);
-                break;
-        }
-
-        if (Up) rigid2d.velocity = new Vector2(rigid2d.velocity.x, speed);
-        else if (Down) rigid2d.velocity = new Vector2(rigid2d.velocity.x, -speed);
-        else rigid2d.velocity = new Vector2(rigid2d.velocity.x, 0);
+        rigid2d.velocity = movement.GetVelocity(flyingSpeed);
     }
 
 
@@ -150,37 +143,72 @@ public class PlayerContoller : Damageable
         yield return null;
     }
 
+    void UpdateHealthBar() {
+        healthBar.color = Color.Lerp(emptyHealthColor, fullHealthColor, (float)health / startingHealth);
+        Vector2 size = healthBar.size;
+        size.x = (float)health / startingHealth;
+        healthBar.size = size;
+    }
+
     void HandleDeath() {
         life -= 1;
         lifeText.text = life.ToString();
 
-        // Rebirth
+        HandleRebirth();
+    }
+
+    void HandleRebirth() {
         transform.position = rebirthPos;
         Color color = spriteRenderer.color;
         color.a = 0.5f;
         spriteRenderer.color = color;
 
-        health = startingHealth;
-        healthBar.color = fullHealthColor;
-        Vector2 size = healthBar.size;
-        size.x = 1;
-        healthBar.size = size;
-
         haveRebirthProtection = true;
         rebirthProtectionTimer.Reset();
+
+        health = startingHealth;
+        UpdateHealthBar();
     }
 
     public override void TakeDamage(int damage) {
         if (haveRebirthProtection) return;
 
         health -= damage;
-        if (health < 0) health = 0;
+        if (health < 0) HandleDeath();
+        else UpdateHealthBar();
+    }
 
-        healthBar.color = Color.Lerp(fullHealthColor, emptyHealthColor, (float) health / startingHealth);
-        Vector2 size = healthBar.size;
-        size.x = (float) health / startingHealth;
-        healthBar.size = size;
+    public class Movement
+    {
+        private int horizontal;
+        private int vertical;
+        public int Horizontal { get { return horizontal; } set { horizontal = value; } }
+        public int Vertical { get { return vertical; } set { vertical = value; } }
 
-        if (health == 0) HandleDeath();
+        public Movement()
+        {
+            horizontal = 0;
+            vertical = 0;
+        }
+        public Movement(int _horizontal, int _vertical)
+        {
+            horizontal = _horizontal;
+            vertical = _vertical;
+        }
+
+        public bool Different(Movement other, out bool horizontalChange, out bool verticalChange)
+        {
+            if (horizontal != other.horizontal) horizontalChange = true;
+            else horizontalChange = false;
+            if (vertical != other.vertical) verticalChange = true;
+            else verticalChange = false;
+
+            return horizontalChange || verticalChange;
+        }
+
+        public Vector2 GetVelocity(float speed)
+        {
+            return new Vector2(horizontal * speed, vertical * speed);
+        }
     }
 }
