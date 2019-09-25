@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Boss))]
 public class BossAI : MonoBehaviour
 {
     private Boss boss;
@@ -25,6 +25,8 @@ public class BossAI : MonoBehaviour
             }
 
             boss.NewAttack(weaponeTypes[Random.Range(0, weaponeTypes.Count)]);
+        } else if (boss.UsingLaser) {
+            boss.ChangeLaserDirection(boss.PlayerSide);
         }
     }
 }

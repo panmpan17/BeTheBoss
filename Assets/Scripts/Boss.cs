@@ -7,6 +7,8 @@ public class Boss : Damageable
 
     public bool HasAI { get { return ai != null; } }
     public bool Idling { get { return attackType == AttackType.None; } }
+    public bool UsingLaser { get { return attackType == AttackType.Laser; } }
+    public int PlayerSide { get { return (PlayerContoller.ins.transform.position.x > transform.position.x? 1: -1); } }
     public List<AttackType> UsedAttack { get { return usedAttackType; } }
 
     [SerializeField]
@@ -67,20 +69,8 @@ public class Boss : Damageable
         }
     }
 
-    void Update() {
-        if (HasAI) return;
-
-        switch (attackType) {
-            case AttackType.None:
-                if (Input.GetKeyDown(KeyCode.S)) NewAttack(AttackType.Laser);
-                else if (Input.GetKeyDown(KeyCode.M)) NewAttack(AttackType.Minion);
-                else if (Input.GetKeyDown(KeyCode.N)) NewAttack(AttackType.MachineGun);
-                else if (Input.GetKeyDown(KeyCode.B)) NewAttack(AttackType.Bomb);
-                break;
-            case AttackType.Laser:
-                if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)) laser.UpdateDirection(Input.GetKeyDown(KeyCode.A)? -1: 1);
-                break;
-        }
+    public void ChangeLaserDirection(int direction) {
+        laser.UpdateDirection(direction);
     }
 
     void HandleDeath() {
