@@ -42,6 +42,8 @@ public class Boss : Damageable
         bombCabinCtrl = GetComponentInChildren<BombCabinCtrl>();
 
         healthBarFullSize = healthBar.sizeDelta.x;
+
+        BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
     }
 
     public void WeaponeFinished() {

@@ -4,31 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D)), RequireComponent(typeof(Rigidbody2D))]
 public class BossBomb : Damageable
 {
-    static public List<BossBomb> pools = new List<BossBomb>();
-    static private GameObject prefab = null;
-
-    static public BossBomb Get()
-    {
-        if (prefab == null) prefab = Resources.Load<GameObject>("Prefab/BossBomb");
-
-        BossBomb missle;
-        if (pools.Count > 0)
-        {
-            missle = pools[0];
-            pools.RemoveAt(0);
-        }
-        else missle = Instantiate(prefab).GetComponent<BossBomb>();
-
-        missle.gameObject.SetActive(true);
-
-        return missle;
-    }
-
-    static public void Put(BossBomb missle)
-    {
-        pools.Add(missle);
-        missle.gameObject.SetActive(false);
-    }
+    static public PrefabPoolCtrl<BossBomb> Pools = new PrefabPoolCtrl<BossBomb>();
 
     bool exploding = false;
     [SerializeField]
@@ -75,13 +51,12 @@ public class BossBomb : Damageable
     void ExplodeEnd()
     {
         exploding = false;
-        Put(this);
+        Pools.PutAliveObject(this);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         Damageable damageable = other.GetComponent<Damageable>();
-        Debug.Log(damageable);
         if (damageable) {
             damageable.TakeDamage(damage);
         }
