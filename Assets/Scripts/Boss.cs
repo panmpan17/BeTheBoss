@@ -8,6 +8,8 @@ public class Boss : Damageable
     public bool HasAI { get { return ai != null; } }
     public bool Idling { get { return attackType == AttackType.None; } }
     public bool UsingLaser { get { return attackType == AttackType.Laser; } }
+    public bool UsingBomb { get { return attackType == AttackType.Bomb; } }
+    public bool UsingMachinGun { get { return attackType == AttackType.MachineGun; } }
     public int PlayerSide { get { return (PlayerContoller.ins.transform.position.x > transform.position.x? 1: -1); } }
     public List<AttackType> UsedAttack { get { return usedAttackType; } }
 

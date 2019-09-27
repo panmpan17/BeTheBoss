@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -85,10 +84,12 @@ public class Weapone : Damageable
         public WeaponeType Type { get { return type; } }
         GameObject prefab;
         List<Weapone> poolObjs;
+        public List<Weapone> AliveObjects;
 
         public WeaponePrefabPool(WeaponeType _type) {
             type = _type;
             poolObjs = new List<Weapone>();
+            AliveObjects = new List<Weapone>();
 
             prefab = Resources.Load<GameObject>("Prefab/" + _type.ToString());
         }
@@ -101,11 +102,13 @@ public class Weapone : Damageable
             } else { weapone = Instantiate(prefab).GetComponent<Weapone>(); }
 
             weapone.gameObject.SetActive(true);
+            AliveObjects.Add(weapone);
             return weapone;
         }
 
         public void Put(Weapone weapone) {
             weapone.gameObject.SetActive(false);
+            AliveObjects.Remove(weapone);
 
             if (!poolObjs.Contains(weapone)) poolObjs.Add(weapone);
         }

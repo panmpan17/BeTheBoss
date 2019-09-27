@@ -1,20 +1,8 @@
-﻿// #define SHOOTING
+﻿#define SHOOTING
 
 using System.Collections;
 using UnityEngine;
 using TMPro;
-
-public abstract class Damageable : MonoBehaviour {
-    [SerializeField]
-    protected int startingHealth;
-    protected int health;
-
-    protected void SetupHealth () {
-        health = startingHealth;
-    }
-
-    public abstract void TakeDamage(int damage);
-}
 
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerContoller : Damageable
@@ -87,8 +75,6 @@ public class PlayerContoller : Damageable
             missle.Setup(transform.position, Vector2.up * missleSpeed);
             usingMissle = true;
         }
-
-
     }
 
     public void MissleEnd() {
@@ -190,10 +176,19 @@ public class PlayerContoller : Damageable
             horizontal = 0;
             vertical = 0;
         }
+        public Movement(Vector2 vec)
+        {
+            horizontal = Mathf.Abs(vec.x) < 0.1f ? 0 : (vec.x > 0 ? 1: -1);
+            vertical = Mathf.Abs(vec.y) < 0.1f ? 0 : (vec.y > 0 ? 1 : -1);
+        }
         public Movement(int _horizontal, int _vertical)
         {
             horizontal = _horizontal;
             vertical = _vertical;
+        }
+
+        public override string ToString() {
+            return string.Format("Movement({0}, {1})", horizontal, vertical);
         }
 
         public bool Different(Movement other, out bool horizontalChange, out bool verticalChange)
