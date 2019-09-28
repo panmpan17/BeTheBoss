@@ -4,27 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMissle : Damageable
 {
-    static public List<PlayerMissle> pools = new List<PlayerMissle>();
-    static private GameObject prefab = null;
-
-    static public PlayerMissle Get() {
-        if (prefab == null) prefab = Resources.Load<GameObject>("Prefab/PlayerMissle");
-
-        PlayerMissle missle;
-        if (pools.Count > 0) {
-            missle = pools[0];
-            pools.RemoveAt(0);
-        } else missle = Instantiate(prefab).GetComponent<PlayerMissle>();
-
-        missle.gameObject.SetActive(true);
-
-        return missle;
-    } 
-
-    static public void Put(PlayerMissle missle) {
-        pools.Add(missle);
-        missle.gameObject.SetActive(false);
-    }
+    static public PrefabPoolCtrl<PlayerMissle> Pools = new PrefabPoolCtrl<PlayerMissle>();
 
     bool exploding = false;
     [SerializeField]
@@ -48,7 +28,7 @@ public class PlayerMissle : Damageable
     void ExplodeEnd() {
         exploding = false;
         PlayerContoller.ins.MissleEnd();
-        Put(this);
+        Pools.PutAliveObject(this);
     }
 
     private void OnTriggerEnter2D(Collider2D other) {

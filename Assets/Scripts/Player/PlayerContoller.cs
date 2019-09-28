@@ -71,7 +71,7 @@ public class PlayerContoller : Damageable
 #endif
 
         if (Input.GetKeyDown(KeyCode.Space) && !usingMissle) {
-            PlayerMissle missle = PlayerMissle.Get();
+            PlayerMissle missle = PlayerMissle.Pools.GetFromPool();
             missle.Setup(transform.position, Vector2.up * missleSpeed);
             usingMissle = true;
         }

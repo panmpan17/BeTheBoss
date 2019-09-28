@@ -65,7 +65,10 @@ public class Weapone : Damageable
 
         if (damageable != null) damageable.TakeDamage(damage);
 
-        if (HasPool) WeaponePrefabPool.GetPool(type).Put(this);
+        if (other.gameObject.layer != GameManager.BossWeaponeLayer ||
+                other.gameObject.layer != GameManager.PlayerWeaponeLayer) {
+            if (HasPool) WeaponePrefabPool.GetPool(type).Put(this);
+        }
     }
 
     public class WeaponePrefabPool {

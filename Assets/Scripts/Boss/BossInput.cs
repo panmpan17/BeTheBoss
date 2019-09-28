@@ -15,8 +15,8 @@ public class BossInput : MonoBehaviour {
             else if (Input.GetKeyDown(KeyCode.N)) boss.NewAttack(Boss.AttackType.MachineGun);
             else if (Input.GetKeyDown(KeyCode.B)) boss.NewAttack(Boss.AttackType.Bomb);
         } else if (boss.UsingLaser) {
-            if (Input.GetKeyDown(KeyCode.A)) boss.ChangeLaserDirection(-1);
-            else if (Input.GetKeyDown(KeyCode.D)) boss.ChangeLaserDirection(1);
+            if (Input.GetKeyDown(KeyCode.D)) boss.ChangeLaserDirection(-1);
+            else if (Input.GetKeyDown(KeyCode.A)) boss.ChangeLaserDirection(1);
         }
     }
 }
