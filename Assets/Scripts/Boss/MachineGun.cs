@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
+// using UnityEngine.SocialPlatforms;
+using ReleaseVersion;
 
 public class MachineGun : MonoBehaviour {
 
@@ -51,9 +52,7 @@ public class MachineGun : MonoBehaviour {
 
             if (fireRateTimer.UpdateEnd) {
                 fireRateTimer.Reset();
-                Weapone weapone = Weapone.Spawn(WeaponeType.BossBullet);
-                weapone.Set(burstTransform.position, DegreeToVector2(angle) * bulletSpeed);
-                weapone.transform.rotation = transform.rotation;
+                WeaponePrefabPool.GetPool(WeaponeType.BossBullet).GetFromPool().Setup(burstTransform.position, DegreeToVector2(angle) * bulletSpeed, transform.rotation);
             }
         }
 

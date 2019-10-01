@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3497597948855594807}
   - component: {fileID: 3497597948855594795}
   - component: {fileID: 3497597948855594794}
-  - component: {fileID: 3497597948855594805}
+  - component: {fileID: 1384544821417211716}
   m_Layer: 9
   m_Name: Minion
   m_TagString: Untagged
@@ -131,7 +131,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &3497597948855594805
+--- !u!114 &1384544821417211716
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,9 +140,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3497597948855594806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64c4eb427e3e9407db97fbcd9eda3ebf, type: 3}
+  m_Script: {fileID: 11500000, guid: 9071954474f29480f87dc1fb4a539273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 0
-  type: 3
+  startingHealth: 30
+  type: 4
   damage: 20
+  putWhenTouchWall: 0
+  putWhenDestory: 1
+  putWhenTouchOpponent: 1
+  initAnimation:
+    trigger: 
+  triggerAnimation:
+    trigger: 
+  destroyAnimation:
+    trigger: 

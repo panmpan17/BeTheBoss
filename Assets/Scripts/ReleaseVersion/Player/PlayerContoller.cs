@@ -3,6 +3,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using ReleaseVersion;
 
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerContoller : Damageable
@@ -38,7 +39,6 @@ public class PlayerContoller : Damageable
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigid2d;
     private Vector3 rebirthPos;
-    private bool usingMissle;
 
     private bool haveRebirthProtection;
     private Timer rebirthProtectionTimer;
@@ -66,19 +66,10 @@ public class PlayerContoller : Damageable
 #if SHOOTING  
         if (fireRateTimer.UpdateEnd) {
             fireRateTimer.Reset();
-            for (int i = 0; i < burstPosition.Length; i++) Weapone.Spawn(WeaponeType.PlayerBullet).Set(burstPosition[i].position, Vector2.up * bulletSpeed);
+            for (int i = 0; i < burstPosition.Length; i++) WeaponePrefabPool.GetPool(WeaponeType.PlayerBullet).GetFromPool().Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
         }
 #endif
-
-        if (Input.GetKeyDown(KeyCode.Space) && !usingMissle) {
-            PlayerMissle missle = PlayerMissle.Pools.GetFromPool();
-            missle.Setup(transform.position, Vector2.up * missleSpeed);
-            usingMissle = true;
-        }
-    }
-
-    public void MissleEnd() {
-        usingMissle = false;
+        // WeaponePrefabPool.GetPool(WeaponeType.PlayerMissle).GetFromPool().Setup(transform.position, Vector2.up * missleSpeed);
     }
 
     void FixedUpdate() {

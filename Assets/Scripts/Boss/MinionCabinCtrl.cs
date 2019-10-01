@@ -1,4 +1,5 @@
 using UnityEngine;
+using ReleaseVersion;
 
 // TODO: shoot bomb
 public class MinionCabinCtrl : MonoBehaviour {
@@ -19,7 +20,11 @@ public class MinionCabinCtrl : MonoBehaviour {
                 if (intervalCount >= spawnInterval) {
                     intervalCount = 0;
 
-                    Spawn();
+                    for (int i = 0; i < cabinDoors.Length; i++)
+                    {
+                        // CabinDoor cabinDoor = cabinDoors[i];
+                        WeaponePrefabPool.GetPool(WeaponeType.Minion).GetFromPool().Setup(cabinDoors[i].door.position, cabinDoors[i].defaultVelocity);
+                    }
                 }
             }
 
@@ -31,21 +36,10 @@ public class MinionCabinCtrl : MonoBehaviour {
         }
     }
 
-    public void Spawn() {
-        for (int i = 0; i < cabinDoors.Length; i++) {
-            CabinDoor cabinDoor = cabinDoors[i];
-            Weapone weapone = Weapone.Spawn(WeaponeType.Minion);
-            weapone.Set(cabinDoor.door.position, cabinDoor.defaultVelocity);
-        }
-    }
-
     public void Activate() {
-        Debug.Log("active minon");
         activated = true;
         spawing = true;
         timer = 0;
-        // spawnTime = 0;
-        // weaponeUseTime = 0;
     }
 
     [System.Serializable]
