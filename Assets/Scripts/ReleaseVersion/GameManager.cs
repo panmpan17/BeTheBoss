@@ -1,21 +1,23 @@
 ﻿using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace ReleaseVersion
 {
-    public static GameManager ins;
-
-    public const int BossLayer = 8,
-        BossWeaponeLayer = 9,
-        PlayerLayer = 10,
-        PlayerWeaponeLayer = 11,
-        WallLayer = 12;
-
-    private void Awake()
+    public class GameManager : MonoBehaviour
     {
-        ins = this;
+        public static GameManager ins;
 
-        // BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
-        // PlayerMissle.Pools.SetupPrefab("Prefab/PlayerMissle");
-        // PlayerBullet.Pools.SetupPrefab("Prefab/PlayerBullet");
+        public const int BossLayer = 8,
+            BossWeaponeLayer = 9,
+            PlayerLayer = 10,
+            PlayerWeaponeLayer = 11,
+            WallLayer = 12;
+
+        private void Awake()
+        {
+            ins = this;
+
+            MedPack.Pools.SetupPrefab("Prefab/MedPack");
+            BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
+        }
     }
 }

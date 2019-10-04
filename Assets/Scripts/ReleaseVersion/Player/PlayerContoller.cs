@@ -40,6 +40,8 @@ public class PlayerContoller : Damageable
     private Rigidbody2D rigid2d;
     private Vector3 rebirthPos;
 
+    [SerializeField]
+    private int missleCount;
     private bool haveRebirthProtection;
     private Timer rebirthProtectionTimer;
 
@@ -61,16 +63,24 @@ public class PlayerContoller : Damageable
         nextMovement = movement;
     }
 
+    public void ShootMissle() {
+        if (missleCount > 0) {
+            missleCount--;
+            WeaponePrefabPool misslePool = WeaponePrefabPool.GetPool(WeaponeType.PlayerMissle);
+
+            if (misslePool.AliveObjects.Count == 0) misslePool.GetFromPool().Setup(transform.position, Vector2.up * missleSpeed);
+        }
+    }
+
+#if SHOOTING
     void Update()
     {
-#if SHOOTING  
         if (fireRateTimer.UpdateEnd) {
             fireRateTimer.Reset();
             for (int i = 0; i < burstPosition.Length; i++) WeaponePrefabPool.GetPool(WeaponeType.PlayerBullet).GetFromPool().Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
         }
-#endif
-        // WeaponePrefabPool.GetPool(WeaponeType.PlayerMissle).GetFromPool().Setup(transform.position, Vector2.up * missleSpeed);
     }
+#endif
 
     void FixedUpdate() {
         if (haveRebirthProtection && rebirthProtectionTimer.UpdateEnd) {
@@ -153,6 +163,12 @@ public class PlayerContoller : Damageable
         health -= damage;
         if (health < 0) HandleDeath();
         else UpdateHealthBar();
+    }
+
+    public void AddHealth(int healthReward) {
+        health += healthReward;
+        if (health >= startingHealth) health = startingHealth;
+        UpdateHealthBar();
     }
 
     public class Movement

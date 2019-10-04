@@ -16,5 +16,7 @@ public class PlayerInput : MonoBehaviour {
         else if (Input.GetKey(KeyCode.DownArrow)) movement.Vertical = -1;
 
         contoller.SetNextMovement(movement);
+
+        if (Input.GetKey(KeyCode.Space)) contoller.ShootMissle();
     }
 }

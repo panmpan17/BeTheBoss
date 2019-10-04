@@ -19,6 +19,10 @@ namespace ReleaseVersion
         private bool triggerAnimationPlayed;
         [SerializeField]
         private AnimationEvent initAnimation, triggerAnimation, destroyAnimation;
+        [SerializeField]
+        private bool onlyOneDestroyReward;
+        [SerializeField]
+        private DestroyReward[] destroyRewards;
 
         // public delegate void TestDelegate(int value);
 
@@ -73,11 +77,27 @@ namespace ReleaseVersion
             }
         }
 
+        private void SpawnDestroyReward() {
+            for (int i = 0; i < destroyRewards.Length; i++) {
+                float chance = Random.Range(0f, 1f);
+                if (chance <= destroyRewards[i].chance) {
+                    switch (destroyRewards[i].type) {
+                        case DestroyRewardType.MedPack:
+                            Vector3 vec = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f));
+                            MedPack.Pools.GetFromPool().Setup(transform.position, vec.normalized * 2);
+                            break;
+                    }
+
+                    if (onlyOneDestroyReward) break;
+                }
+            }
+        }
+
         private void PrepareToPut() {
-            if (triggerAnimation.BeenSet)
-            {
-                GetComponent<Animator>().SetTrigger(triggerAnimation.trigger);
-            } else WeaponePrefabPool.GetPool(type).PutWeapone(this);
+            if (destroyRewards.Length > 0) SpawnDestroyReward();
+
+            if (triggerAnimation.BeenSet)GetComponent<Animator>().SetTrigger(triggerAnimation.trigger);
+            else WeaponePrefabPool.GetPool(type).PutWeapone(this);
         }
 
         void OnTriggerAnimationEnd() {
@@ -92,6 +112,12 @@ namespace ReleaseVersion
         private class AnimationEvent {
             public string trigger;
             public bool BeenSet { get { return trigger != ""; } }
+        }
+
+        [System.Serializable]
+        private class DestroyReward {
+            public DestroyRewardType type;
+            public float chance;
         }
     }
 
