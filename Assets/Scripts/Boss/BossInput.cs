@@ -17,6 +17,19 @@ public class BossInput : MonoBehaviour {
         } else if (boss.UsingLaser) {
             if (Input.GetKeyDown(KeyCode.D)) boss.ChangeLaserDirection(-1);
             else if (Input.GetKeyDown(KeyCode.A)) boss.ChangeLaserDirection(1);
+        } else if (boss.UsingMachinGun) {
+            float horizontal = Input.GetAxisRaw("Horizontal");
+            float vertical = Input.GetAxisRaw("Vertical");
+
+            // TODO: make sure aim not cross scene
+            if (Mathf.Abs(horizontal) > 0.5)
+            {
+                boss.MachineGunAim.x -= horizontal * Time.deltaTime * 3;
+            }
+            if (Mathf.Abs(vertical) > 0.5)
+            {
+                boss.MachineGunAim.y -= vertical * Time.deltaTime * 3;
+            }
         }
     }
 }

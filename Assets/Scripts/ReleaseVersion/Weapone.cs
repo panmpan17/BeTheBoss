@@ -133,11 +133,23 @@ namespace ReleaseVersion
             return prefabPools[prefabPools.Count - 1];
         }
 
+        public static void ClearAllPool() {
+            for (int i = 0; i < prefabPools.Count; i++)
+            {
+                prefabPools[i].Clear();
+            }
+        }
+
         private WeaponeType type;
         public WeaponeType Type { get { return type; } }
         private GameObject prefab;
         private List<Weapone> poolObjs;
         public List<Weapone> AliveObjects;
+
+        public void Clear() {
+            poolObjs.Clear();
+            AliveObjects.Clear();
+        }
 
         public WeaponePrefabPool(WeaponeType _type) {
             type = _type;

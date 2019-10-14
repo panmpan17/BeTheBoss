@@ -23,5 +23,5 @@ namespace ReleaseVersion
             other.gameObject.GetComponent<PlayerContoller>().AddHealth(healthReward);
             Pools.PutAliveObject(this);
         }
-    }   
+    }
 }

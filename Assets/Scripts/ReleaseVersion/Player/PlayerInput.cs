@@ -17,6 +17,6 @@ public class PlayerInput : MonoBehaviour {
 
         contoller.SetNextMovement(movement);
 
-        if (Input.GetKey(KeyCode.Space)) contoller.ShootMissle();
+        if (Input.GetKeyDown(KeyCode.Space)) contoller.ShootMissle();
     }
 }

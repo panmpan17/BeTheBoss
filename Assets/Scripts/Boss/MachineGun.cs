@@ -9,7 +9,7 @@ public class MachineGun : MonoBehaviour {
     [SerializeField]
     private float rotateRangeMax, rotateRangeMin, rotateSpeed, fireRate, bulletSpeed, shootTime, weaponeTime;
     [SerializeField]
-    private bool targetPlayerMode;
+    private bool isAimMode;
     private Timer fireRateTimer;
     private float timer;
     private bool activated, shooting;
@@ -34,8 +34,8 @@ public class MachineGun : MonoBehaviour {
         if (!activated) return;
         if (shooting) {
             float angle;
-            if (targetPlayerMode) {
-                Vector3 vectorToTarget = PlayerContoller.ins.transform.position - transform.position;
+            if (isAimMode) {
+                Vector3 vectorToTarget = Boss.ins.MachineGunAim - transform.position;
                 angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
                 Quaternion q = Quaternion.AngleAxis(angle - 90, Vector3.forward);
                 transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * rotateSpeed);

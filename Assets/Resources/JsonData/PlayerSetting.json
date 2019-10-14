@@ -1,0 +1,13 @@
+{
+    "StartingHealth": 100,
+    "FlySpeed": 4.0,
+    "RebirthPortection": 3.0,
+    "Life": 3,
+
+    "BulletFireRate": 0.08,
+    "BulletSpeed": 7.0,
+
+    "MissleStartCount": 3,
+    "MissleMaxCount": 5,
+    "MissleSpeed": 5.0
+}

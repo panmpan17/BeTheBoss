@@ -27,6 +27,9 @@ public class BossAI : MonoBehaviour
             boss.NewAttack(weaponeTypes[Random.Range(0, weaponeTypes.Count)]);
         } else if (boss.UsingLaser) {
             boss.ChangeLaserDirection(boss.PlayerSide);
+        } else if (boss.UsingMachinGun)
+        {
+            boss.MachineGunAim = PlayerContoller.ins.transform.position;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using ReleaseVersion;
 
 public class Boss : Damageable
 {
@@ -29,6 +30,10 @@ public class Boss : Damageable
 
     private float laserTimeCount;
     private int laserDirection;
+    [System.NonSerialized]
+    public Vector3 MachineGunAim = Vector3.zero;
+    [SerializeField]
+    private GameObject aimIndicator;
 
     void Awake() {
         SetupHealth();
@@ -44,7 +49,14 @@ public class Boss : Damageable
         healthBarFullSize = healthBar.sizeDelta.x;
     }
 
+    void Update() {
+        if (UsingMachinGun) {
+            aimIndicator.transform.position = MachineGunAim;
+        }
+    }
+
     public void WeaponeFinished() {
+        if (attackType == AttackType.MachineGun) aimIndicator.SetActive(false);
         if (attackType != AttackType.None) attackType = AttackType.None;
         if (usedAttackType.Count >= 3) usedAttackType.RemoveAt(0);
     }
@@ -66,6 +78,7 @@ public class Boss : Damageable
                 bombCabinCtrl.Activate();
                 break;
             case AttackType.MachineGun:
+                aimIndicator.SetActive(true);
                 for (int i = 0; i < machineGuns.Length; i++) machineGuns[i].Activate();
                 break;
         }
@@ -76,7 +89,9 @@ public class Boss : Damageable
     }
 
     void HandleDeath() {
-        Debug.Log("Boss is dead");
+        // TODO: explosion effect
+        gameObject.SetActive(false);
+        GameManager.ins.BossLose();
     }
 
     public override void TakeDamage(int amount) {

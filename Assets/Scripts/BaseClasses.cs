@@ -49,6 +49,11 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
         prefab = obj;
     }
 
+    public void Clear() {
+        aliveObjects.Clear();
+        poolObjects.Clear();
+    }
+
     public T GetFromPool() {
         T component = null;
 

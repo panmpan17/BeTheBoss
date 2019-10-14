@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using ReleaseVersion;
+using ReleaseVersion.Setting;
 
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerContoller : Damageable
@@ -15,7 +16,7 @@ public class PlayerContoller : Damageable
     private bool Down { get { return Input.GetAxis("Vertical_Joystick") > 0.5; } }
     private bool Up { get { return Input.GetAxis("Vertical_Joystick") < -0.5; } }
 
-    [SerializeField]
+    // [SerializeField]
     private float flyingSpeed, fireRate, bulletSpeed, missleSpeed, rebirthProtectionTime;
     private Timer fireRateTimer;
     [SerializeField]
@@ -29,34 +30,53 @@ public class PlayerContoller : Damageable
     [SerializeField]
     private SpriteRenderer healthBar;
 
-    [SerializeField]
+    // [SerializeField]
     private int life;
     [SerializeField]
     private TextMeshProUGUI lifeText;
 
+    // [SerializeField]
     private Movement movement, nextMovement;
 
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigid2d;
     private Vector3 rebirthPos;
 
-    [SerializeField]
-    private int missleCount;
+    private int missleCount, missleMaxCount;
     private bool haveRebirthProtection;
     private Timer rebirthProtectionTimer;
+
+    public void ApplySetting(PlayerSetting setting) {
+        startingHealth = setting.StartingHealth;
+        flyingSpeed = setting.FlySpeed;
+        rebirthProtectionTime = setting.RebirthPortection;
+        life = setting.Life;
+
+        bulletSpeed = setting.BulletSpeed;
+        fireRate = setting.BulletFireRate;
+
+        missleCount = setting.MissleStartCount;
+        missleMaxCount = setting.MissleMaxCount;
+        missleSpeed = setting.MissleSpeed;
+
+        SetupHealth();
+        rebirthProtectionTimer = new Timer(rebirthProtectionTime);
+        fireRateTimer = new Timer(fireRate);
+        UpdateHealthBar();
+    }
 
     void Awake() {
         ins = this;
         rebirthPos = transform.position;
-        SetupHealth();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigid2d = GetComponent<Rigidbody2D>();
+        movement = nextMovement = new Movement();
 
+        SetupHealth();
         rebirthProtectionTimer = new Timer(rebirthProtectionTime);
         fireRateTimer = new Timer(fireRate);
-
-        movement = nextMovement = new Movement();
+        UpdateHealthBar();
     }
 
     public void SetNextMovement(Movement movement) {
@@ -65,10 +85,11 @@ public class PlayerContoller : Damageable
 
     public void ShootMissle() {
         if (missleCount > 0) {
-            missleCount--;
             WeaponePrefabPool misslePool = WeaponePrefabPool.GetPool(WeaponeType.PlayerMissle);
-
-            if (misslePool.AliveObjects.Count == 0) misslePool.GetFromPool().Setup(transform.position, Vector2.up * missleSpeed);
+            if (misslePool.AliveObjects.Count == 0) {
+                missleCount--;
+                misslePool.GetFromPool().Setup(transform.position, Vector2.up * missleSpeed);
+            }
         }
     }
 
@@ -135,13 +156,20 @@ public class PlayerContoller : Damageable
         Vector2 size = healthBar.size;
         size.x = (float)health / startingHealth;
         healthBar.size = size;
+        lifeText.text = life.ToString();
     }
 
     void HandleDeath() {
-        life -= 1;
-        lifeText.text = life.ToString();
+        // TODO: destroy explosion effect
+        if (life == 0) {
+            gameObject.SetActive(false);
+            GameManager.ins.PlayerLose();
+        } else {
+            life -= 1;
+            lifeText.text = life.ToString();
 
-        HandleRebirth();
+            HandleRebirth();
+        }
     }
 
     void HandleRebirth() {
