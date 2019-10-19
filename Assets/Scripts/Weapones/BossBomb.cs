@@ -11,15 +11,22 @@ public class BossBomb : Damageable
     private int damage;
     [SerializeField]
     private float readyExplodeFlySpeedMultiplier;
-    private float flyTime;
+    private float flyTime, torque;
     private bool readyExplode;
+    private new Rigidbody2D rigidbody2D;
+    private List<Damageable> damagedSend;
 
-    // Start is called before the first frame update
-    public void Setup(Vector3 pos, Vector2 vec, float _flyTime)
+    private void Awake() {
+        rigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
+    public void Setup(Vector3 pos, Vector2 vec, float _flyTime, float _torque)
     {
+        damagedSend = new List<Damageable>();
         transform.position = pos;
-        GetComponent<Rigidbody2D>().velocity = vec;
+        rigidbody2D.velocity = vec;
         flyTime = _flyTime;
+        torque = _torque;
         readyExplode = false;
 
         Animator anim = GetComponent<Animator>();
@@ -31,9 +38,23 @@ public class BossBomb : Damageable
     private void FixedUpdate() {
         if (readyExplode) return;
 
-        if (flyTime > 0) flyTime -= Time.deltaTime;
-        else {
-            GetComponent<Rigidbody2D>().velocity *= readyExplodeFlySpeedMultiplier;
+        if (flyTime > 0) {
+            flyTime -= Time.fixedDeltaTime;
+
+            Vector3 vectorToTarget = Boss.ins.MachineGunAim - transform.position;
+            float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
+            rigidbody2D.AddForceAtPosition(vectorToTarget * torque, Boss.ins.MachineGunAim);
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                Quaternion.AngleAxis(
+                    Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90,
+                    Vector3.forward),
+                torque);
+            // rigidbody2D.velocity = rigidbody2D.velocity * vectorToTarget.normalized;
+
+            // transform.rotation = Quaternion.LookRotation((PlayerContoller.ins.transform.position - transform.position).normalized);
+        } else {
+            rigidbody2D.velocity *= readyExplodeFlySpeedMultiplier;
             readyExplode = true;
             GetComponent<Animator>().SetTrigger("ReadyExplode");
         }
@@ -58,7 +79,10 @@ public class BossBomb : Damageable
     {
         Damageable damageable = other.GetComponent<Damageable>();
         if (damageable) {
-            damageable.TakeDamage(damage);
+            if (!damagedSend.Contains(damageable)) {
+                damagedSend.Add(damageable);
+                damageable.TakeDamage(damage);
+            }
         }
 
         Explode();

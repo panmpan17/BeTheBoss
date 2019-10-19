@@ -19,6 +19,9 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
     private List<T> poolObjects;
     private List<T> aliveObjects;
     private GameObject prefab;
+    
+    public delegate void InstantiateEvent(T component);
+    private InstantiateEvent instantiateEvents = null;
 
     public List<T> PoolObjects { get { return poolObjects; } }
     public List<T> AliveObjects { get { return aliveObjects; } }
@@ -33,6 +36,11 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
     {
         prefab = _prefab;
     }
+    public void AddInstantiateEvent(InstantiateEvent action)
+    {
+        instantiateEvents += action;
+    }
+
     public void SetupPrefab(string prefabResourcePath)
     {
         GameObject obj = Resources.Load<GameObject>(prefabResourcePath);
@@ -62,7 +70,7 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
             poolObjects.RemoveAt(0);
         } else {
             component = GameObject.Instantiate(prefab).GetComponent<T>();
-            Debug.Log(component);
+            instantiateEvents(component);
         }
 
         aliveObjects.Add(component);
@@ -71,6 +79,7 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
     }
 
     public void PutAliveObject(T component) {
+        Debug.Log(component, component);
         component.gameObject.SetActive(false);
         aliveObjects.Remove(component);
         poolObjects.Add(component);

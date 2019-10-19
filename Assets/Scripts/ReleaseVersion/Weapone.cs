@@ -15,7 +15,9 @@ namespace ReleaseVersion
         [SerializeField]
         protected int damage;
         [SerializeField]
-        private bool putWhenTouchWall, putWhenDestory, putWhenTouchOpponent;
+        private bool putWhenTouchWall, putWhenDestory, putWhenTouchOpponent, useDamageRate;
+        [SerializeField]
+        private float damageRate;
         private bool triggerAnimationPlayed;
         [SerializeField]
         private AnimationEvent initAnimation, triggerAnimation, destroyAnimation;
@@ -23,16 +25,31 @@ namespace ReleaseVersion
         private bool onlyOneDestroyReward;
         [SerializeField]
         private DestroyReward[] destroyRewards;
+        private Timer damageRateTimer;
+        private List<Damageable> contactDamaegable;
 
-        // public delegate void TestDelegate(int value);
+        private void Awake() {
+            contactDamaegable = new List<Damageable>();
+            if (useDamageRate) damageRateTimer = new Timer(damageRate);
+        }
 
-        // private void Awake() {
-        //     TestDelegate deleg = null;
-        //     deleg += delegate (int value) {};
-        //     deleg.Invoke(2);
-        // }
+        private void Update()
+        {
+            if (useDamageRate)
+            {
+                if (damageRateTimer.UpdateEnd)
+                {
+                    damageRateTimer.Reset();
+                    for (int i = 0; i < contactDamaegable.Count; i++)
+                    {
+                        contactDamaegable[i].TakeDamage(damage);
+                    }
+                }
+            }
+        }
 
         public void Setup(Vector3 pos, Vector2 velocity) {
+            contactDamaegable.Clear();
             health = startingHealth;
             transform.position = pos;
             GetComponent<Rigidbody2D>().velocity = velocity;
@@ -73,7 +90,16 @@ namespace ReleaseVersion
 
             Damageable damageable = other.GetComponent<Damageable>();
             if (damageable != null) {
+                contactDamaegable.Add(damageable);
                 damageable.TakeDamage(damage);
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other) {
+            Damageable damageable = other.GetComponent<Damageable>();
+            if (damageable != null)
+            {
+                contactDamaegable.Remove(damageable);
             }
         }
 
@@ -104,9 +130,9 @@ namespace ReleaseVersion
             WeaponePrefabPool.GetPool(type).PutWeapone(this);
         }
 
-        private void OnCollisionEnter2D(Collision2D other) {
-            OnTriggerEnter2D(other.collider);
-        }
+        private void OnCollisionEnter2D(Collision2D other) {OnTriggerEnter2D(other.collider); }
+        private void OnCollisionStay2D(Collision2D other) { OnTriggerEnter2D(other.collider); }
+        private void OnCollisionExit2D(Collision2D other) { OnTriggerExit2D(other.collider); }
 
         [System.Serializable]
         private class AnimationEvent {
