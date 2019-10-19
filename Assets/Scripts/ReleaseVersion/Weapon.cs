@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace ReleaseVersion
 {
-    public enum WeaponeType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, BossBomb }
+    public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, BossBomb }
 
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Weapone : Damageable
+    public class Weapon : Damageable
     {
         [SerializeField]
-        private WeaponeType type;
+        private WeaponType type;
         [SerializeField]
         protected int damage;
         [SerializeField]
@@ -123,11 +123,11 @@ namespace ReleaseVersion
             if (destroyRewards.Length > 0) SpawnDestroyReward();
 
             if (triggerAnimation.BeenSet)GetComponent<Animator>().SetTrigger(triggerAnimation.trigger);
-            else WeaponePrefabPool.GetPool(type).PutWeapone(this);
+            else WeaponPrefabPool.GetPool(type).PutWeapon(this);
         }
 
         void OnTriggerAnimationEnd() {
-            WeaponePrefabPool.GetPool(type).PutWeapone(this);
+            WeaponPrefabPool.GetPool(type).PutWeapon(this);
         }
 
         private void OnCollisionEnter2D(Collision2D other) {OnTriggerEnter2D(other.collider); }
@@ -147,15 +147,15 @@ namespace ReleaseVersion
         }
     }
 
-    public class WeaponePrefabPool {
-        private static List<WeaponePrefabPool> prefabPools = new List<WeaponePrefabPool>();
+    public class WeaponPrefabPool {
+        private static List<WeaponPrefabPool> prefabPools = new List<WeaponPrefabPool>();
 
-        public static WeaponePrefabPool GetPool(WeaponeType _type) {
+        public static WeaponPrefabPool GetPool(WeaponType _type) {
             for (int i = 0; i < prefabPools.Count; i++) {
                 if (prefabPools[i].Type == _type) return prefabPools[i];
             }
 
-            prefabPools.Add(new WeaponePrefabPool(_type));
+            prefabPools.Add(new WeaponPrefabPool(_type));
             return prefabPools[prefabPools.Count - 1];
         }
 
@@ -166,42 +166,42 @@ namespace ReleaseVersion
             }
         }
 
-        private WeaponeType type;
-        public WeaponeType Type { get { return type; } }
+        private WeaponType type;
+        public WeaponType Type { get { return type; } }
         private GameObject prefab;
-        private List<Weapone> poolObjs;
-        public List<Weapone> AliveObjects;
+        private List<Weapon> poolObjs;
+        public List<Weapon> AliveObjects;
 
         public void Clear() {
             poolObjs.Clear();
             AliveObjects.Clear();
         }
 
-        public WeaponePrefabPool(WeaponeType _type) {
+        public WeaponPrefabPool(WeaponType _type) {
             type = _type;
-            poolObjs = new List<Weapone>();
-            AliveObjects = new List<Weapone>();
+            poolObjs = new List<Weapon>();
+            AliveObjects = new List<Weapon>();
 
             prefab = Resources.Load<GameObject>("Prefab/" + _type.ToString());
         }
 
-        public Weapone GetFromPool() {
-            Weapone weapone;
+        public Weapon GetFromPool() {
+            Weapon Weapon;
             if (poolObjs.Count > 0) {
-                weapone = poolObjs[0];
+                Weapon = poolObjs[0];
                 poolObjs.RemoveAt(0);
-            } else { weapone = GameObject.Instantiate(prefab).GetComponent<Weapone>(); }
+            } else { Weapon = GameObject.Instantiate(prefab).GetComponent<Weapon>(); }
 
-            weapone.gameObject.SetActive(true);
-            AliveObjects.Add(weapone);
-            return weapone;
+            Weapon.gameObject.SetActive(true);
+            AliveObjects.Add(Weapon);
+            return Weapon;
         }
 
-        public void PutWeapone(Weapone weapone) {
-            weapone.gameObject.SetActive(false);
-            AliveObjects.Remove(weapone);
+        public void PutWeapon(Weapon Weapon) {
+            Weapon.gameObject.SetActive(false);
+            AliveObjects.Remove(Weapon);
 
-            if (!poolObjs.Contains(weapone)) poolObjs.Add(weapone);
+            if (!poolObjs.Contains(Weapon)) poolObjs.Add(Weapon);
         }
     }
 }

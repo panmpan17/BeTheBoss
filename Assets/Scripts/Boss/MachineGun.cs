@@ -7,14 +7,14 @@ public class MachineGun : MonoBehaviour {
     [SerializeField]
     private Transform burstTransform;
     [SerializeField]
-    private float rotateRangeMax, rotateRangeMin, rotateSpeed, fireRate, bulletSpeed, shootTime, weaponeTime;
+    private float rotateRangeMax, rotateRangeMin, rotateSpeed, fireRate, bulletSpeed, shootTime, WeaponTime;
     [SerializeField]
     private bool isAimMode;
     private Timer fireRateTimer;
     private float timer;
     private bool activated, shooting;
     private int direction = 1;
-    private bool weaponeFinishedCalled;
+    private bool WeaponFinishedCalled;
 
     public static Vector2 RadianToVector2(float radian)
     {
@@ -52,7 +52,7 @@ public class MachineGun : MonoBehaviour {
 
             if (fireRateTimer.UpdateEnd) {
                 fireRateTimer.Reset();
-                WeaponePrefabPool.GetPool(WeaponeType.BossBullet).GetFromPool().Setup(burstTransform.position, DegreeToVector2(angle) * bulletSpeed, transform.rotation);
+                WeaponPrefabPool.GetPool(WeaponType.BossBullet).GetFromPool().Setup(burstTransform.position, DegreeToVector2(angle) * bulletSpeed, transform.rotation);
             }
         }
 
@@ -60,11 +60,11 @@ public class MachineGun : MonoBehaviour {
         if (timer >= shootTime ) {
             shooting = false;
 
-            if (weaponeFinishedCalled) activated = false;
+            if (WeaponFinishedCalled) activated = false;
         }
-        if (timer >= weaponeTime && !weaponeFinishedCalled) {
-            weaponeFinishedCalled = true;
-            Boss.ins.WeaponeFinished();
+        if (timer >= WeaponTime && !WeaponFinishedCalled) {
+            WeaponFinishedCalled = true;
+            Boss.ins.WeaponFinished();
 
             if (!shooting) activated = false;
         }
@@ -73,7 +73,7 @@ public class MachineGun : MonoBehaviour {
     public void Activate() {
         activated = true;
         shooting = true;
-        weaponeFinishedCalled = false;
+        WeaponFinishedCalled = false;
         timer = 0;
     }
 }

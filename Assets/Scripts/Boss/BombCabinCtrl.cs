@@ -3,7 +3,7 @@ using ReleaseVersion;
 
 public class BombCabinCtrl : MonoBehaviour {
     [SerializeField]
-    private float spawnInterval, spawnTime, weaponeUseTime, minVecSpeed, maxVecSpeed, minDistance, maxDistance, torqueForce;
+    private float spawnInterval, spawnTime, WeaponUseTime, minVecSpeed, maxVecSpeed, minDistance, maxDistance, torqueForce;
     [SerializeField]
     private Transform[] cabinDoors;
     private float intervalCount, timer;
@@ -23,9 +23,9 @@ public class BombCabinCtrl : MonoBehaviour {
             }
 
             if (timer >= spawnTime) spawing = false;
-            if (timer >= weaponeUseTime) {
+            if (timer >= WeaponUseTime) {
                 activated = false;
-                Boss.ins.WeaponeFinished();
+                Boss.ins.WeaponFinished();
             }
         }
     }

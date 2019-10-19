@@ -36,7 +36,7 @@ public class Boss : Damageable
     private GameObject aimIndicator;
 
     public delegate void AttackEvent(AttackType type);
-    private AttackEvent weaponeFinishedEvent = null, weaponeAvalibleEvent = null;
+    private AttackEvent WeaponFinishedEvent = null, WeaponAvalibleEvent = null;
 
     void Awake() {
         SetupHealth();
@@ -53,8 +53,8 @@ public class Boss : Damageable
     }
 
     public void RegisterEvent(AttackEvent finishedEvent, AttackEvent avalibleEvent) {
-        if (finishedEvent != null) weaponeFinishedEvent += finishedEvent;
-        if (avalibleEvent != null) weaponeAvalibleEvent += avalibleEvent;
+        if (finishedEvent != null) WeaponFinishedEvent += finishedEvent;
+        if (avalibleEvent != null) WeaponAvalibleEvent += avalibleEvent;
     }
 
     void Update() {
@@ -63,18 +63,18 @@ public class Boss : Damageable
         }
     }
 
-    public void WeaponeFinished() {
+    public void WeaponFinished() {
         switch(attackType) {
             case AttackType.Bomb:
             case AttackType.MachineGun:
                 aimIndicator.SetActive(false);
                 break;
         }
-        weaponeFinishedEvent(attackType);
+        WeaponFinishedEvent(attackType);
 
         if (attackType != AttackType.None) attackType = AttackType.None;
         if (usedAttackType.Count >= 3) {
-            weaponeAvalibleEvent(usedAttackType[0]);
+            WeaponAvalibleEvent(usedAttackType[0]);
             usedAttackType.RemoveAt(0);
         }
     }

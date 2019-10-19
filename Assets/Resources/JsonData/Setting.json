@@ -15,7 +15,7 @@
     "PlayerAI": {
         "ReactionTime": 0.2
     },
-    "Weapone": {
+    "Weapon": {
         "PlayerBullet": {
             "StartingHealth": 0,
             "Damage": 8

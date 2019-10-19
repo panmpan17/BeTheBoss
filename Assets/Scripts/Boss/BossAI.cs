@@ -14,17 +14,17 @@ public class BossAI : MonoBehaviour
     void Update()
     {
         if (boss.Idling) {
-            List<Boss.AttackType> weaponeTypes = new List<Boss.AttackType> {
+            List<Boss.AttackType> WeaponTypes = new List<Boss.AttackType> {
                 Boss.AttackType.Laser,
                 Boss.AttackType.MachineGun,
                 Boss.AttackType.Bomb,
                 Boss.AttackType.Minion,
             };
             foreach (Boss.AttackType item in boss.UsedAttack) {
-                weaponeTypes.Remove(item);
+                WeaponTypes.Remove(item);
             }
 
-            boss.NewAttack(weaponeTypes[Random.Range(0, weaponeTypes.Count)]);
+            boss.NewAttack(WeaponTypes[Random.Range(0, WeaponTypes.Count)]);
         } else if (boss.UsingLaser) {
             boss.ChangeLaserDirection(boss.PlayerSide);
         } else if (boss.UsingMachinGun)

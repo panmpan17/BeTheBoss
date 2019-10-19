@@ -9,48 +9,48 @@ namespace ReleaseVersion {
         private SelectableItem minionSelectable, machineGUnSelectable, laserSelectable, bombSelectable;
         [SerializeField]
         private float aimMoveSpeed;
-        private SelectableItem selectedWeapone;
+        private SelectableItem selectedWeapon;
 
         private void Awake() {
             boss = GetComponent<Boss>();
-            boss.RegisterEvent(WeaponeFinished, WeaponeAvalible);
+            boss.RegisterEvent(WeaponFinished, WeaponAvalible);
 
-            selectedWeapone = minionSelectable;
-            selectedWeapone.Selected = true;
+            selectedWeapon = minionSelectable;
+            selectedWeapon.Selected = true;
         }
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.UpArrow)) {
-                selectedWeapone.Selected = false;
-                selectedWeapone = selectedWeapone.NavTop;
-                selectedWeapone.Selected = true;
+                selectedWeapon.Selected = false;
+                selectedWeapon = selectedWeapon.NavTop;
+                selectedWeapon.Selected = true;
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                selectedWeapone.Selected = false;
-                selectedWeapone = selectedWeapone.NavBottom;
-                selectedWeapone.Selected = true;
+                selectedWeapon.Selected = false;
+                selectedWeapon = selectedWeapon.NavBottom;
+                selectedWeapon.Selected = true;
             }
             else if (Input.GetKeyDown(KeyCode.Space)) {
-                switch (selectedWeapone.Arg) {
+                switch (selectedWeapon.Arg) {
                     case "minion":
-                        ActiveWeapone(selectedWeapone, Boss.AttackType.Minion);
+                        ActiveWeapon(selectedWeapon, Boss.AttackType.Minion);
                         break;
                     case "machineGun":
-                        ActiveWeapone(selectedWeapone, Boss.AttackType.MachineGun);
+                        ActiveWeapon(selectedWeapon, Boss.AttackType.MachineGun);
                         break;
                     case "bomb":
-                        ActiveWeapone(selectedWeapone, Boss.AttackType.Bomb);
+                        ActiveWeapon(selectedWeapon, Boss.AttackType.Bomb);
                         break;
                     case "laser":
-                        ActiveWeapone(selectedWeapone, Boss.AttackType.Laser);
+                        ActiveWeapon(selectedWeapon, Boss.AttackType.Laser);
                         break;
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha1)) ActiveWeapone(minionSelectable, Boss.AttackType.Minion);
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) ActiveWeapone(bombSelectable, Boss.AttackType.Bomb);
-            else if (Input.GetKeyDown(KeyCode.Alpha3)) ActiveWeapone(machineGUnSelectable, Boss.AttackType.MachineGun);
-            else if (Input.GetKeyDown(KeyCode.Alpha4)) ActiveWeapone(laserSelectable, Boss.AttackType.Laser);
+            else if (Input.GetKeyDown(KeyCode.Alpha1)) ActiveWeapon(minionSelectable, Boss.AttackType.Minion);
+            else if (Input.GetKeyDown(KeyCode.Alpha2)) ActiveWeapon(bombSelectable, Boss.AttackType.Bomb);
+            else if (Input.GetKeyDown(KeyCode.Alpha3)) ActiveWeapon(machineGUnSelectable, Boss.AttackType.MachineGun);
+            else if (Input.GetKeyDown(KeyCode.Alpha4)) ActiveWeapon(laserSelectable, Boss.AttackType.Laser);
 
             float horizontal = Input.GetAxisRaw("Horizontal");
             float vertical = Input.GetAxisRaw("Vertical");
@@ -59,14 +59,14 @@ namespace ReleaseVersion {
             }
         }
 
-        private void ActiveWeapone(SelectableItem selectable, Boss.AttackType type) {
+        private void ActiveWeapon(SelectableItem selectable, Boss.AttackType type) {
             if (!selectable.Disabled && !selectable.Active && boss.Idling) {
                 selectable.Active = true;
                 boss.NewAttack(type);
             }
         }
 
-        private void WeaponeFinished(Boss.AttackType _type)
+        private void WeaponFinished(Boss.AttackType _type)
         {
             switch (_type)
             {
@@ -89,7 +89,7 @@ namespace ReleaseVersion {
             }
         }
 
-        private void WeaponeAvalible(Boss.AttackType _type)
+        private void WeaponAvalible(Boss.AttackType _type)
         {
             switch (_type)
             {

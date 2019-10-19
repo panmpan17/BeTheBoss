@@ -4,7 +4,7 @@ using ReleaseVersion;
 // TODO: shoot bomb
 public class MinionCabinCtrl : MonoBehaviour {
     [SerializeField]
-    private float spawnInterval, spawnTime, weaponeUseTime;
+    private float spawnInterval, spawnTime, WeaponUseTime;
     [SerializeField]
     private CabinDoor[] cabinDoors;
     private float intervalCount, timer;
@@ -23,15 +23,15 @@ public class MinionCabinCtrl : MonoBehaviour {
                     for (int i = 0; i < cabinDoors.Length; i++)
                     {
                         // CabinDoor cabinDoor = cabinDoors[i];
-                        WeaponePrefabPool.GetPool(WeaponeType.Minion).GetFromPool().Setup(cabinDoors[i].door.position, cabinDoors[i].defaultVelocity);
+                        WeaponPrefabPool.GetPool(WeaponType.Minion).GetFromPool().Setup(cabinDoors[i].door.position, cabinDoors[i].defaultVelocity);
                     }
                 }
             }
 
             if (timer >= spawnTime) spawing = false;
-            if (timer >= weaponeUseTime) {
+            if (timer >= WeaponUseTime) {
                 activated = false;
-                Boss.ins.WeaponeFinished();
+                Boss.ins.WeaponFinished();
             }
         }
     }

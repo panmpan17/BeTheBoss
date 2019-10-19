@@ -18,9 +18,9 @@ namespace ReleaseVersion
         private PlayerContoller player;
 
         public const int BossLayer = 8,
-            BossWeaponeLayer = 9,
+            BossWeaponLayer = 9,
             PlayerLayer = 10,
-            PlayerWeaponeLayer = 11,
+            PlayerWeaponLayer = 11,
             WallLayer = 12;
 
         private void Awake()
@@ -31,7 +31,7 @@ namespace ReleaseVersion
             BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
 
             scorePanel.SetActive(false);
-            WeaponePrefabPool.ClearAllPool();
+            WeaponPrefabPool.ClearAllPool();
             MedPack.Pools.Clear();
             BossBomb.Pools.Clear();
             BossBomb.Pools.AddInstantiateEvent(delegate (BossBomb bomb) {

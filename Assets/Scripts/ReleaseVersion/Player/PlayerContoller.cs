@@ -85,7 +85,7 @@ public class PlayerContoller : Damageable
 
     public void ShootMissle() {
         if (missleCount > 0) {
-            WeaponePrefabPool misslePool = WeaponePrefabPool.GetPool(WeaponeType.PlayerMissle);
+            WeaponPrefabPool misslePool = WeaponPrefabPool.GetPool(WeaponType.PlayerMissle);
             if (misslePool.AliveObjects.Count == 0) {
                 missleCount--;
                 misslePool.GetFromPool().Setup(transform.position, Vector2.up * missleSpeed);
@@ -98,7 +98,7 @@ public class PlayerContoller : Damageable
     {
         if (fireRateTimer.UpdateEnd) {
             fireRateTimer.Reset();
-            for (int i = 0; i < burstPosition.Length; i++) WeaponePrefabPool.GetPool(WeaponeType.PlayerBullet).GetFromPool().Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
+            for (int i = 0; i < burstPosition.Length; i++) WeaponPrefabPool.GetPool(WeaponType.PlayerBullet).GetFromPool().Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
         }
     }
 #endif

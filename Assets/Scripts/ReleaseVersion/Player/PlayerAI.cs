@@ -65,7 +65,7 @@ namespace ReleaseVersion
                 }
             }
 
-            List<Weapone> bullets = WeaponePrefabPool.GetPool(WeaponeType.BossBullet).AliveObjects;
+            List<Weapon> bullets = WeaponPrefabPool.GetPool(WeaponType.BossBullet).AliveObjects;
             for (int _i = 0; _i < bullets.Count; _i++)
             {
                 Vector3 bulletPos = bullets[_i].transform.position;
@@ -81,7 +81,7 @@ namespace ReleaseVersion
                 }
             }
 
-            List<Weapone> minions = WeaponePrefabPool.GetPool(WeaponeType.Minion).AliveObjects;
+            List<Weapon> minions = WeaponPrefabPool.GetPool(WeaponType.Minion).AliveObjects;
             for (int _i = 0; _i < minions.Count; _i++)
             {
                 Vector3 minionPos = minions[_i].transform.position;

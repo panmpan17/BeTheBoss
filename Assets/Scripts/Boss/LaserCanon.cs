@@ -51,7 +51,7 @@ public class LaserCanon : MonoBehaviour {
             yield return false;
         }
 
-        Boss.ins.WeaponeFinished();
+        Boss.ins.WeaponFinished();
     }
 
     public void Activate() {
