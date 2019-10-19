@@ -61,6 +61,6 @@ public class LaserCanon : MonoBehaviour {
     }
 
     public void UpdateDirection(int _direction) {
-        if (direction == 0) direction = _direction;
+        direction = _direction;
     }
 }

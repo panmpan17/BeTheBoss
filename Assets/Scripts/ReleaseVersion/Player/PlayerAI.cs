@@ -97,6 +97,15 @@ namespace ReleaseVersion
                 }
             }
 
+            for (int i = 0; i < MedPack.Pools.AliveObjects.Count; i++) {
+                Vector3 medPackPos = MedPack.Pools.AliveObjects[i].transform.position;
+
+                float distance = (medPackPos - transform.position).sqrMagnitude;
+                if (distance < 11) {
+                    getCloseTo.Add(medPackPos);
+                }
+            }
+
             result = Vector3.zero;
 
             if (runAwayFrom.Count > 0 || getCloseTo.Count > 0) {

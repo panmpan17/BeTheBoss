@@ -3,7 +3,7 @@ using ReleaseVersion;
 
 public class BombCabinCtrl : MonoBehaviour {
     [SerializeField]
-    private float spawnInterval, spawnTime, weaponeUseTime, minVecSpeed, maxVecSpeed, minDistance, maxDistance;
+    private float spawnInterval, spawnTime, weaponeUseTime, minVecSpeed, maxVecSpeed, minDistance, maxDistance, torqueForce;
     [SerializeField]
     private Transform[] cabinDoors;
     private float intervalCount, timer;
@@ -33,8 +33,7 @@ public class BombCabinCtrl : MonoBehaviour {
     public void Spawn() {
         Transform cabinDoor = cabinDoors[Random.Range(0, cabinDoors.Length)];
 
-        BossBomb.Pools.GetFromPool().Setup(cabinDoor.position, new Vector2(0, Random.Range(minVecSpeed, maxVecSpeed)), Random.Range(minDistance, maxDistance));
-        // WeaponePrefabPool.GetPool(WeaponeType.BossBomb).GetFromPool().Setup(cabinDoor.position, new Vector2(0, Random.Range(minVecSpeed, maxVecSpeed)), Random.Range(minDistance, maxDistance));
+        BossBomb.Pools.GetFromPool().Setup(cabinDoor.position, new Vector2(0, Random.Range(minVecSpeed, maxVecSpeed)), Random.Range(minDistance, maxDistance), torqueForce);
     }
 
     public void Activate() {

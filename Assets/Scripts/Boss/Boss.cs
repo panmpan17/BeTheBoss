@@ -35,6 +35,9 @@ public class Boss : Damageable
     [SerializeField]
     private GameObject aimIndicator;
 
+    public delegate void AttackEvent(AttackType type);
+    private AttackEvent weaponeFinishedEvent = null, weaponeAvalibleEvent = null;
+
     void Awake() {
         SetupHealth();
 
@@ -49,16 +52,31 @@ public class Boss : Damageable
         healthBarFullSize = healthBar.sizeDelta.x;
     }
 
+    public void RegisterEvent(AttackEvent finishedEvent, AttackEvent avalibleEvent) {
+        if (finishedEvent != null) weaponeFinishedEvent += finishedEvent;
+        if (avalibleEvent != null) weaponeAvalibleEvent += avalibleEvent;
+    }
+
     void Update() {
-        if (UsingMachinGun) {
+        if (UsingMachinGun || UsingBomb) {
             aimIndicator.transform.position = MachineGunAim;
         }
     }
 
     public void WeaponeFinished() {
-        if (attackType == AttackType.MachineGun) aimIndicator.SetActive(false);
+        switch(attackType) {
+            case AttackType.Bomb:
+            case AttackType.MachineGun:
+                aimIndicator.SetActive(false);
+                break;
+        }
+        weaponeFinishedEvent(attackType);
+
         if (attackType != AttackType.None) attackType = AttackType.None;
-        if (usedAttackType.Count >= 3) usedAttackType.RemoveAt(0);
+        if (usedAttackType.Count >= 3) {
+            weaponeAvalibleEvent(usedAttackType[0]);
+            usedAttackType.RemoveAt(0);
+        }
     }
 
     public void NewAttack(AttackType type) {
@@ -75,6 +93,7 @@ public class Boss : Damageable
                 minionCabinCtrl.Activate();
                 break;
             case AttackType.Bomb:
+                aimIndicator.SetActive(true);
                 bombCabinCtrl.Activate();
                 break;
             case AttackType.MachineGun:
@@ -100,7 +119,6 @@ public class Boss : Damageable
 
         Vector2 size = healthBar.sizeDelta;
         size.x = ((float) health / startingHealth) * healthBarFullSize;
-        // healthBar.size = size;
         healthBar.sizeDelta = size;
 
         if (health == 0) HandleDeath();

@@ -12,6 +12,8 @@ namespace ReleaseVersion
         private GameObject scorePanel;
         [SerializeField]
         private TextMeshProUGUI scoreText;
+        [SerializeField]
+        private Collider2D topCeilingCollider;
         // private string
         private PlayerContoller player;
 
@@ -32,6 +34,9 @@ namespace ReleaseVersion
             WeaponePrefabPool.ClearAllPool();
             MedPack.Pools.Clear();
             BossBomb.Pools.Clear();
+            BossBomb.Pools.AddInstantiateEvent(delegate (BossBomb bomb) {
+                Physics2D.IgnoreCollision(bomb.GetComponent<Collider2D>(), topCeilingCollider, true);
+            });
 
             player = FindObjectOfType<PlayerContoller>();
             player.ApplySetting(Setting.SettingReader.ReadPlayerSetting("JsonData/PlayerSetting"));
@@ -50,7 +55,7 @@ namespace ReleaseVersion
         }
 
         IEnumerator WaitInputToReturnManu() {
-            while (!Input.anyKeyDown) {
+            while (!Input.GetButton("Submit")) {
                 yield return null;
             }
 
