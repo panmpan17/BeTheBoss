@@ -23,4 +23,8 @@ public class MainMenuMgr : MonoBehaviour
         loadingScene = true;
         SceneManager.LoadSceneAsync(gameScene);
     }
+
+    public void Quit() {
+        Application.Quit();
+    }
 }

@@ -4,7 +4,7 @@
     "RebirthPortection": 3.0,
     "Life": 3,
 
-    "BulletFireRate": 0.08,
+    "BulletFireRate": 0.15,
     "BulletSpeed": 7.0,
 
     "MissleStartCount": 3,
