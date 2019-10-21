@@ -149,6 +149,8 @@ MonoBehaviour:
   putWhenTouchWall: 0
   putWhenDestory: 1
   putWhenTouchOpponent: 1
+  useDamageRate: 0
+  damageRate: 0
   initAnimation:
     trigger: 
   triggerAnimation:
@@ -158,4 +160,4 @@ MonoBehaviour:
   onlyOneDestroyReward: 0
   destroyRewards:
   - type: 0
-    chance: 0.01
+    chance: 0.05

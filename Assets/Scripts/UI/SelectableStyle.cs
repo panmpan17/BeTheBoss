@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ReleaseVersion.UI
 {
-    [CreateAssetMenu(menuName = "Button Style")]
+    [CreateAssetMenu(menuName = "Selectable Style")]
     public class SelectableStyle : ScriptableObject
     {
         public Color NormalColor;

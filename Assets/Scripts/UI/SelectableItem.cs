@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ReleaseVersion.UI {
 #if UNITY_EDITOR
     [ExecuteInEditMode]
 #endif
-    [RequireComponent(typeof(Image))]
     public class SelectableItem : MonoBehaviour
     {
         [SerializeField]
@@ -18,6 +18,22 @@ namespace ReleaseVersion.UI {
         [SerializeField]
         private SelectableStyle style;
         private Image image;
+        private TextMeshProUGUI text;
+        private SpriteRenderer spriteRenderer;
+
+        private Color color {
+            get {
+                if (image != null) return image.color;
+                else if (text != null) return text.color;
+                else return spriteRenderer.color;
+            }
+            set
+            {
+                if (image != null) image.color = value;
+                else if (text != null) text.color = value;
+                else spriteRenderer.color = value;
+            }
+        }
 
         [SerializeField]
         private SelectableItem leftNavigate, rightNavigate, topNavigate, bottomNavigate;
@@ -44,6 +60,15 @@ namespace ReleaseVersion.UI {
 
         private void Awake() {
             image = GetComponent<Image>();
+            text = GetComponent<TextMeshProUGUI>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
+            if (image == null && text == null && spriteRenderer == null) {
+                Debug.LogError("SelectableItem must have Image, TextMeshProUGUI or SpriteRenderer");
+                enabled = false;
+                return;
+            }
+
             ApplyStyle();
         }
 
@@ -53,18 +78,18 @@ namespace ReleaseVersion.UI {
 
             if (disabled)
             {
-                image.color = style.DisabledColor;
+                color = style.DisabledColor;
             }
             else if (actived)
             {
-                image.color = style.ActiveColor;
+                color = style.ActiveColor;
             }
             else if (selected)
             {
-                image.color = style.SelectedColor;
+                color = style.SelectedColor;
             }
             else {
-                image.color = style.NormalColor;
+                color = style.NormalColor;
             }
         }
 

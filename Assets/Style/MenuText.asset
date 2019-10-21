@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c940a7a9f34148c59f49151e987c93d, type: 3}
-  m_Name: WeaponIdicator
+  m_Name: MenuText
   m_EditorClassIdentifier: 
-  NormalColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 0.41960785}
-  SelectedColor: {r: 1, g: 0.7977075, b: 0.5801887, a: 0.6156863}
-  ActiveColor: {r: 0.9433962, g: 0.5649398, b: 0.16464934, a: 0.6784314}
-  DisabledColor: {r: 0, g: 0, b: 0, a: 0.46666667}
+  NormalColor: {r: 1, g: 1, b: 1, a: 1}
+  SelectedColor: {r: 0.9716981, g: 0.6407267, b: 0.27959237, a: 1}
+  ActiveColor: {r: 0, g: 0, b: 0, a: 0}
+  DisabledColor: {r: 0, g: 0, b: 0, a: 0}

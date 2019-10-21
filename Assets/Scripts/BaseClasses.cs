@@ -70,7 +70,7 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
             poolObjects.RemoveAt(0);
         } else {
             component = GameObject.Instantiate(prefab).GetComponent<T>();
-            instantiateEvents(component);
+            if (instantiateEvents != null) instantiateEvents(component);
         }
 
         aliveObjects.Add(component);
