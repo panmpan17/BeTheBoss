@@ -2,7 +2,7 @@
     "StartingHealth": 100,
     "FlySpeed": 4.0,
     "RebirthPortection": 3.0,
-    "Life": 3,
+    "Life": 5,
 
     "BulletFireRate": 0.12,
     "BulletSpeed": 7.0,

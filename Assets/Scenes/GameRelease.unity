@@ -1731,6 +1731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a11113149b24b4c3a931f635866ddcbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boss: {fileID: 0}
 --- !u!114 &570782731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3306,7 +3307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed96484d64a74aed9e92eaed8372b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reactionDelay: 0.2
+  reactionDelay: 1
 --- !u!1 &1270460554
 GameObject:
   m_ObjectHideFlags: 0

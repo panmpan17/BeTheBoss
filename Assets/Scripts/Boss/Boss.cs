@@ -8,7 +8,6 @@ public class Boss : Damageable
 {
     public static Boss ins;
 
-    public bool HasAI { get { return ai != null; } }
     public bool Idling { get { return attackType == AttackType.None; } }
     public bool UsingLaser { get { return attackType == AttackType.Laser; } }
     public bool UsingBomb { get { return attackType == AttackType.Bomb; } }
@@ -27,7 +26,6 @@ public class Boss : Damageable
     private MachineGun[] machineGuns;
     private BombCabinDoor[] bombCabinDoors;
     private MinionCabinCtrl minionCabinCtrl;
-    private BossAI ai;
 
     private AttackType attackType = AttackType.None;
     private List<AttackType> usedAttackType;
@@ -59,9 +57,7 @@ public class Boss : Damageable
     }
 
     void Update() {
-        if (!Idling) {
-            if (weaponTimer.UpdateEnd) WeaponFinished();
-        }
+        if (Idling) return;
 
         if (UsingMachinGun) {
             for (int i = 0; i < machineGuns.Length; i++) {
@@ -69,7 +65,11 @@ public class Boss : Damageable
             }
         } else if (UsingBomb) {
             for (int i = 0; i < bombCabinDoors.Length; i++) bombCabinDoors[i].Rotate(keyDirection);
+        } else if (UsingLaser) {
+            laser.UpdateDirection(keyDirection);
         }
+
+        if (!UsingLaser && weaponTimer.UpdateEnd) WeaponFinished();
     }
 
     public void WeaponFinished() {
@@ -106,17 +106,13 @@ public class Boss : Damageable
         }
     }
 
-    public void ChangeLaserDirection(int direction) {
-        laser.UpdateDirection(direction);
-    }
-
     void HandleDeath() {
         // TODO: explosion effect
         gameObject.SetActive(false);
         GameManager.ins.BossLose();
     }
 
-    public override void TakeDamage(int amount) {
+    public override bool TakeDamage(int amount) {
         health -= amount;
         if (health < 0) health = 0;
 
@@ -124,6 +120,10 @@ public class Boss : Damageable
         size.x = ((float) health / startingHealth) * healthBarFullSize;
         healthBar.sizeDelta = size;
 
-        if (health == 0) HandleDeath();
+        if (health == 0) {
+            HandleDeath();
+            return true;
+        }
+        return false;
     }
 }

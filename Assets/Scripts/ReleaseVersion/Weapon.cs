@@ -42,10 +42,16 @@ namespace ReleaseVersion
                 if (damageRateTimer.UpdateEnd)
                 {
                     damageRateTimer.Reset();
+                    List<int> removedIndex = new List<int>();
                     for (int i = 0; i < contactDamaegable.Count; i++)
                     {
-                        contactDamaegable[i].TakeDamage(damage);
+                        if (contactDamaegable[i].TakeDamage(damage)) {
+                            removedIndex.Add(i);
+                        }
                     }
+
+                    removedIndex.Reverse();
+                    for (int i = 0; i < removedIndex.Count; i++) contactDamaegable.RemoveAt(removedIndex[i]);
                 }
             }
         }
@@ -77,26 +83,29 @@ namespace ReleaseVersion
             }
         }
 
-        public override void TakeDamage(int amount) {
+        public override bool TakeDamage(int amount) {
             health -= amount;
             if (putWhenDestory && health <= 0) {
                 if (destroyAnimation.BeenSet) {
                     GetComponent<Animator>().SetTrigger(destroyAnimation.trigger);
                 } else {
+                    Debug.Log("destroy put");
                     PrepareToPut();
                 }
+                return true;
             }
+            return false;
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if (putWhenTouchWall && other.gameObject.layer == GameManager.WallLayer) PrepareToPut();
-            if (putWhenTouchOpponent && (other.gameObject.layer == GameManager.PlayerLayer || other.gameObject.layer == GameManager.BossLayer)) PrepareToPut();
-
             Damageable damageable = other.GetComponent<Damageable>();
             if (damageable != null) {
                 contactDamaegable.Add(damageable);
                 damageable.TakeDamage(damage);
             }
+
+            if (putWhenTouchWall && other.gameObject.layer == GameManager.WallLayer) PrepareToPut();
+            if (putWhenTouchOpponent && (other.gameObject.layer == GameManager.PlayerLayer || other.gameObject.layer == GameManager.BossLayer)) PrepareToPut();
         }
 
         private void OnTriggerExit2D(Collider2D other) {
@@ -149,6 +158,7 @@ namespace ReleaseVersion
         }
 
         void OnTriggerAnimationEnd() {
+            Debug.Log("animation done put");
             WeaponPrefabPool.GetPool(type).PutWeapon(this);
         }
 
@@ -181,6 +191,17 @@ namespace ReleaseVersion
 
             prefabPools.Add(new WeaponPrefabPool(_type));
             return prefabPools[prefabPools.Count - 1];
+        }
+
+        public static Weapon GetFromPool(WeaponType _type)
+        {
+            for (int i = 0; i < prefabPools.Count; i++)
+            {
+                if (prefabPools[i].Type == _type) return prefabPools[i].GetFromPool();
+            }
+
+            prefabPools.Add(new WeaponPrefabPool(_type));
+            return prefabPools[prefabPools.Count - 1].GetFromPool();
         }
 
         public static void ClearAllPool() {

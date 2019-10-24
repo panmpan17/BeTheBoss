@@ -54,13 +54,7 @@ namespace ReleaseVersion {
             else if (Input.GetKeyDown(KeyCode.Alpha3)) ActiveWeapon(machineGUnSelectable, Boss.AttackType.MachineGun);
             else if (Input.GetKeyDown(KeyCode.Alpha4)) ActiveWeapon(laserSelectable, Boss.AttackType.Laser);
 
-            if (boss.UsingLaser) {
-                float horizontal = Input.GetAxisRaw("Horizontal");
-                if (Mathf.Abs(horizontal) > 0.5f) {
-                    boss.ChangeLaserDirection(horizontal > 0? -1: 1);
-                }
-            }
-            else if (boss.UsingBomb || boss.UsingMachinGun)
+            if (boss.UsingBomb || boss.UsingMachinGun || boss.UsingLaser)
             {
                 float horizontal = Input.GetAxisRaw("Horizontal");
                 if (Mathf.Abs(horizontal) > 0.5f) boss.keyDirection = horizontal > 0? -1: 1;

@@ -20,12 +20,12 @@ namespace ReleaseVersion {
         public void Update() {
             if (loadingScene) return;
 
-            if (Input.GetKeyDown(KeyCode.W)) {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
                 selectedItem.Selected = false;
                 selectedItem = selectedItem.NavTop;
                 selectedItem.Selected = true;
             }
-            else if (Input.GetKeyDown(KeyCode.S)) {
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
                 selectedItem.Selected = false;
                 selectedItem = selectedItem.NavBottom;
                 selectedItem.Selected = true;

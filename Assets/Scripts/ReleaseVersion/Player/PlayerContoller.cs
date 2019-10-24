@@ -99,7 +99,11 @@ public class PlayerContoller : Damageable
     {
         if (fireRateTimer.UpdateEnd) {
             fireRateTimer.Reset();
-            for (int i = 0; i < burstPosition.Length; i++) WeaponPrefabPool.GetPool(WeaponType.PlayerBullet).GetFromPool().Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
+            for (int i = 0; i < burstPosition.Length; i++) {
+                Weapon weapon = WeaponPrefabPool.GetFromPool(WeaponType.PlayerBullet);
+                Debug.Log(weapon, weapon);
+                weapon.Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
+            }
         }
     }
 #endif
@@ -186,12 +190,16 @@ public class PlayerContoller : Damageable
         UpdateHealthBar();
     }
 
-    public override void TakeDamage(int damage) {
-        if (haveRebirthProtection) return;
+    public override bool TakeDamage(int damage) {
+        if (haveRebirthProtection) return false;
 
         health -= damage;
-        if (health < 0) HandleDeath();
-        else UpdateHealthBar();
+        if (health < 0) {
+            HandleDeath();
+            return true;
+        }
+        UpdateHealthBar();
+        return false;
     }
 
     #region  Reward
