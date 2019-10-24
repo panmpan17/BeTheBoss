@@ -13,7 +13,7 @@ public class BossBomb : Damageable
     private int damage;
     [SerializeField]
     private float readyExplodeFlySpeedMultiplier;
-    private float flyTime, torque;
+    private float flyTime;
     private bool readyExplode;
     private new Rigidbody2D rigidbody2D;
     private List<Damageable> damagedSend;
@@ -22,13 +22,13 @@ public class BossBomb : Damageable
         rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
-    public void Setup(Vector3 pos, Vector2 vec, float _flyTime, float _torque)
+    public void Setup(Vector3 pos, Quaternion rotation, Vector2 vec, float _flyTime)
     {
         damagedSend = new List<Damageable>();
         transform.position = pos;
+        transform.rotation = rotation;
         rigidbody2D.velocity = vec;
         flyTime = _flyTime;
-        torque = _torque;
         readyExplode = false;
 
         Animator anim = GetComponent<Animator>();
@@ -43,18 +43,15 @@ public class BossBomb : Damageable
         if (flyTime > 0) {
             flyTime -= Time.fixedDeltaTime;
 
-            Vector3 vectorToTarget = Boss.ins.MachineGunAim - transform.position;
-            float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
-            rigidbody2D.AddForceAtPosition(vectorToTarget * torque, Boss.ins.MachineGunAim);
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                Quaternion.AngleAxis(
-                    Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90,
-                    Vector3.forward),
-                torque);
-            // rigidbody2D.velocity = rigidbody2D.velocity * vectorToTarget.normalized;
-
-            // transform.rotation = Quaternion.LookRotation((PlayerContoller.ins.transform.position - transform.position).normalized);
+            // Vector3 vectorToTarget = attractPos - transform.position;
+            // float angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90;
+            // rigidbody2D.AddForceAtPosition(vectorToTarget * torque, attractPos);
+            // transform.rotation = Quaternion.RotateTowards(
+            //     transform.rotation,
+            //     Quaternion.AngleAxis(
+            //         Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg - 90,
+            //         Vector3.forward),
+            //     torque);
         } else {
             rigidbody2D.velocity *= readyExplodeFlySpeedMultiplier;
             readyExplode = true;

@@ -1,0 +1,39 @@
+{
+    "Languages": [
+        {
+            "ID": 0,
+            "en_us": "Error",
+            "zh_tw": "錯誤"
+        },
+        {
+            "ID": 1,
+            "en_us": "Play",
+            "zh_tw": "遊玩"
+        },
+        {
+            "ID": 2,
+            "en_us": "Setting",
+            "zh_tw": "設定"
+        },
+        {
+            "ID": 3,
+            "en_us": "Exit",
+            "zh_tw": "關閉遊戲"
+        },
+        {
+            "ID": 4,
+            "en_us": "Back",
+            "zh_tw": "返回"
+        },
+        {
+            "ID": 5,
+            "en_us": "Back To Menu",
+            "zh_tw": "返回到選單"
+        },
+        {
+            "ID": 6,
+            "en_us": "Volume",
+            "zh_tw": "音量"
+        }
+    ]
+}

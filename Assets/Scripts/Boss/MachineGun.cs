@@ -3,19 +3,22 @@
 using UnityEngine;
 using ReleaseVersion;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class MachineGun : MonoBehaviour {
 
     [SerializeField]
     private Transform burstTransform;
     [SerializeField]
-    private float rotateRangeMax, rotateRangeMin, rotateSpeed, fireRate, bulletSpeed, shootTime, WeaponTime;
+    private float rotateRangeMax, rotateRangeMin, rotateSpeed, fireRate, bulletSpeed, shootTime;
     [SerializeField]
     private bool isAimMode;
-    private Timer fireRateTimer;
-    private float timer;
-    private bool activated, shooting;
+    public bool IsAimMode { get { return isAimMode; } }
+    private Timer fireRateTimer, activeTimer;
+    private bool activated;
     private int direction = 1;
-    private bool WeaponFinishedCalled;
 
     public static Vector2 RadianToVector2(float radian)
     {
@@ -29,52 +32,71 @@ public class MachineGun : MonoBehaviour {
 
     void Awake() {
         fireRateTimer = new Timer(fireRate);
+        activeTimer = new Timer(shootTime);
+    }
+
+    public void Rotate(int _drection) {
+        float angle;
+        Vector3 axis;
+        transform.rotation.ToAngleAxis(out angle, out axis);
+        if (_drection > 0 && angle > rotateRangeMax) return;
+        else if (_drection < 0 && angle < rotateRangeMin) return;
+
+        transform.Rotate(0, 0, _drection * rotateSpeed * Time.deltaTime);
     }
 
     void Update() {
         if (!activated) return;
-        if (shooting) {
+
+        if (!isAimMode) {
+            transform.Rotate(0, 0, direction * rotateSpeed * Time.deltaTime);
+
+            Vector3 axis;
             float angle;
-            if (isAimMode) {
-                Vector3 vectorToTarget = Boss.ins.MachineGunAim - transform.position;
-                angle = Mathf.Atan2(vectorToTarget.y, vectorToTarget.x) * Mathf.Rad2Deg;
-                Quaternion q = Quaternion.AngleAxis(angle - 90, Vector3.forward);
-                transform.rotation = Quaternion.Slerp(transform.rotation, q, Time.deltaTime * rotateSpeed);
-            } else {
-                transform.Rotate(0, 0, direction * rotateSpeed * Time.deltaTime);
+            transform.rotation.ToAngleAxis(out angle, out axis);
 
-                Vector3 axis;
-                transform.rotation.ToAngleAxis(out angle, out axis);
-
-                if (direction > 0 && angle > rotateRangeMax) direction *= -1;
-                else if (direction < 0 && angle < rotateRangeMin) direction *= -1;
-                angle += 90;
-            }
-
-            if (fireRateTimer.UpdateEnd) {
-                fireRateTimer.Reset();
-                WeaponPrefabPool.GetPool(WeaponType.BossBullet).GetFromPool().Setup(burstTransform.position, DegreeToVector2(angle) * bulletSpeed, transform.rotation);
-            }
+            if (direction > 0 && angle > rotateRangeMax) direction *= -1;
+            else if (direction < 0 && angle < rotateRangeMin) direction *= -1;
         }
 
-        timer += Time.deltaTime;
-        if (timer >= shootTime ) {
-            shooting = false;
+        if (fireRateTimer.UpdateEnd) {
+            fireRateTimer.Reset();
 
-            if (WeaponFinishedCalled) activated = false;
+            float angle;
+            Vector3 axis;
+            transform.rotation.ToAngleAxis(out angle, out axis);
+
+            WeaponPrefabPool.GetPool(WeaponType.BossBullet).GetFromPool().Setup(burstTransform.position, DegreeToVector2(angle + 90) * bulletSpeed, transform.rotation);
         }
-        if (timer >= WeaponTime && !WeaponFinishedCalled) {
-            WeaponFinishedCalled = true;
-            Boss.ins.WeaponFinished();
 
-            if (!shooting) activated = false;
+        if (activeTimer.UpdateEnd) {
+            activeTimer.Reset();
+
+            activated = false;
         }
     }
 
     public void Activate() {
         activated = true;
-        shooting = true;
-        WeaponFinishedCalled = false;
-        timer = 0;
     }
+    
+#if UNITY_EDITOR
+    [CustomEditor(typeof(MachineGun))]
+    public class MachineGunEditor : Editor {
+        private void OnSceneGUI() {
+            serializedObject.Update();
+            Transform _transform = (target as MachineGun).transform;
+
+            SerializedProperty burstTProperty = serializedObject.FindProperty("burstTransform");
+            Transform burstTransform = (Transform) burstTProperty.objectReferenceValue;
+
+            Vector3 pos = Handles.PositionHandle(burstTransform.position, _transform.rotation);
+            if (burstTransform.position != pos) {
+                Undo.RecordObject(burstTransform, "Change burst position");
+                burstTransform.position = pos;
+            }
+            serializedObject.ApplyModifiedProperties();
+        }
+    }
+#endif
 }

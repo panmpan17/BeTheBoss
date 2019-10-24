@@ -6,42 +6,40 @@ using ReleaseVersion;
 // TODO: shoot bomb
 public class MinionCabinCtrl : MonoBehaviour {
     [SerializeField]
-    private float spawnInterval, spawnTime, WeaponUseTime;
+    private float spawnInterval, spawnTime;
     [SerializeField]
     private CabinDoor[] cabinDoors;
-    private float intervalCount, timer;
+    private Timer spawnTimer, activeTimer;
 
-    private bool activated, spawing;
+    private bool activated;
+
+    private void Awake() {
+        spawnTimer = new Timer(spawnInterval);
+        activeTimer = new Timer(spawnTime);
+    }
 
     void Update() {
-        if (activated) {
-            timer += Time.deltaTime;
+        if (!activated) return;
 
-            if (spawing) {
-                intervalCount += Time.deltaTime;
-                if (intervalCount >= spawnInterval) {
-                    intervalCount = 0;
+        if (spawnTimer.UpdateEnd) {
+            spawnTimer.Reset();
 
-                    for (int i = 0; i < cabinDoors.Length; i++)
-                    {
-                        // CabinDoor cabinDoor = cabinDoors[i];
-                        WeaponPrefabPool.GetPool(WeaponType.Minion).GetFromPool().Setup(cabinDoors[i].door.position, cabinDoors[i].defaultVelocity);
-                    }
-                }
+            for (int i = 0; i < cabinDoors.Length; i++)
+            {
+                // CabinDoor cabinDoor = cabinDoors[i];
+                WeaponPrefabPool.GetPool(WeaponType.Minion).GetFromPool().Setup(cabinDoors[i].door.position, cabinDoors[i].defaultVelocity);
             }
+        }
 
-            if (timer >= spawnTime) spawing = false;
-            if (timer >= WeaponUseTime) {
-                activated = false;
-                Boss.ins.WeaponFinished();
-            }
+        if (activeTimer.UpdateEnd)
+        {
+            activeTimer.Reset();
+            activated = false;
         }
     }
 
     public void Activate() {
         activated = true;
-        spawing = true;
-        timer = 0;
     }
 
     [System.Serializable]

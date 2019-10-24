@@ -20,9 +20,12 @@ public class Boss : Damageable
     private RectTransform healthBar;
     private float healthBarFullSize;
 
+    [SerializeField]
+    private float machineGunTime, bombTime, minionTime;
+    private Timer weaponTimer;
     private LaserCanon laser;
     private MachineGun[] machineGuns;
-    private BombCabinCtrl bombCabinCtrl;
+    private BombCabinDoor[] bombCabinDoors;
     private MinionCabinCtrl minionCabinCtrl;
     private BossAI ai;
 
@@ -30,12 +33,8 @@ public class Boss : Damageable
     private List<AttackType> usedAttackType;
     public enum AttackType { None, Laser, MachineGun, Minion, Bomb }
 
-    private float laserTimeCount;
-    private int laserDirection;
     [System.NonSerialized]
-    public Vector3 MachineGunAim = Vector3.zero;
-    [SerializeField]
-    private GameObject aimIndicator;
+    public int keyDirection;
 
     public delegate void AttackEvent(AttackType type);
     private AttackEvent WeaponFinishedEvent = null, WeaponAvalibleEvent = null;
@@ -49,7 +48,7 @@ public class Boss : Damageable
         laser = GetComponentInChildren<LaserCanon>();
         minionCabinCtrl = GetComponentInChildren<MinionCabinCtrl>();
         machineGuns = GetComponentsInChildren<MachineGun>();
-        bombCabinCtrl = GetComponentInChildren<BombCabinCtrl>();
+        bombCabinDoors = GetComponentsInChildren<BombCabinDoor>();
 
         healthBarFullSize = healthBar.sizeDelta.x;
     }
@@ -60,21 +59,22 @@ public class Boss : Damageable
     }
 
     void Update() {
-        if (UsingMachinGun || UsingBomb) {
-            aimIndicator.transform.position = MachineGunAim;
+        if (!Idling) {
+            if (weaponTimer.UpdateEnd) WeaponFinished();
+        }
+
+        if (UsingMachinGun) {
+            for (int i = 0; i < machineGuns.Length; i++) {
+                if (machineGuns[i].IsAimMode) machineGuns[i].Rotate(keyDirection);
+            }
+        } else if (UsingBomb) {
+            for (int i = 0; i < bombCabinDoors.Length; i++) bombCabinDoors[i].Rotate(keyDirection);
         }
     }
 
     public void WeaponFinished() {
-        switch(attackType) {
-            case AttackType.Bomb:
-            case AttackType.MachineGun:
-                aimIndicator.SetActive(false);
-                break;
-        }
-        WeaponFinishedEvent(attackType);
-
-        if (attackType != AttackType.None) attackType = AttackType.None;
+        if (WeaponFinishedEvent != null) WeaponFinishedEvent(attackType);
+        attackType = AttackType.None;
         if (usedAttackType.Count >= 3) {
             WeaponAvalibleEvent(usedAttackType[0]);
             usedAttackType.RemoveAt(0);
@@ -93,14 +93,15 @@ public class Boss : Damageable
                 break;
             case AttackType.Minion:
                 minionCabinCtrl.Activate();
+                weaponTimer = new Timer(minionTime);
                 break;
             case AttackType.Bomb:
-                aimIndicator.SetActive(true);
-                bombCabinCtrl.Activate();
+                for (int i = 0; i < bombCabinDoors.Length; i++) bombCabinDoors[i].Activate();
+                weaponTimer = new Timer(bombTime);
                 break;
             case AttackType.MachineGun:
-                aimIndicator.SetActive(true);
                 for (int i = 0; i < machineGuns.Length; i++) machineGuns[i].Activate();
+                weaponTimer = new Timer(machineGunTime);
                 break;
         }
     }
