@@ -80,7 +80,6 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
     }
 
     public void PutAliveObject(T component) {
-        Debug.Log(component, component);
         component.gameObject.SetActive(false);
         aliveObjects.Remove(component);
         poolObjects.Add(component);

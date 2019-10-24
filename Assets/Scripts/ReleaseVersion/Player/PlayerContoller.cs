@@ -101,7 +101,6 @@ public class PlayerContoller : Damageable
             fireRateTimer.Reset();
             for (int i = 0; i < burstPosition.Length; i++) {
                 Weapon weapon = WeaponPrefabPool.GetFromPool(WeaponType.PlayerBullet);
-                Debug.Log(weapon, weapon);
                 weapon.Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
             }
         }

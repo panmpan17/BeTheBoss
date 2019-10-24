@@ -89,7 +89,6 @@ namespace ReleaseVersion
                 if (destroyAnimation.BeenSet) {
                     GetComponent<Animator>().SetTrigger(destroyAnimation.trigger);
                 } else {
-                    Debug.Log("destroy put");
                     PrepareToPut();
                 }
                 return true;
@@ -158,7 +157,6 @@ namespace ReleaseVersion
         }
 
         void OnTriggerAnimationEnd() {
-            Debug.Log("animation done put");
             WeaponPrefabPool.GetPool(type).PutWeapon(this);
         }
 
