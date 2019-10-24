@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#pragma warning disable 649
+
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -27,12 +29,10 @@ namespace ReleaseVersion
         {
             ins = this;
 
-            MedPack.Pools.SetupPrefab("Prefab/MedPack");
             BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
 
             scorePanel.SetActive(false);
             WeaponPrefabPool.ClearAllPool();
-            MedPack.Pools.Clear();
             BossBomb.Pools.Clear();
             BossBomb.Pools.AddInstantiateEvent(delegate (BossBomb bomb) {
                 Physics2D.IgnoreCollision(bomb.GetComponent<Collider2D>(), topCeilingCollider, true);

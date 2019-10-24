@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 364815870639267553}
   - component: {fileID: 541437485882015743}
   m_Layer: 13
-  m_Name: MedPack
+  m_Name: MedPack 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6eafd424f672344dca51a9f39441035e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9e552494dcb434db99c9728fd06a277c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,7 +100,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.8, y: 0.8}
+    oldSize: {x: 0.79, y: 0.51}
     newSize: {x: 0.8, y: 0.8}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -142,5 +142,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e4fd369981a4ffda32d725be65136b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  arg: 20
+  type: 1
+  arg: 1

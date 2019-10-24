@@ -1,3 +1,5 @@
+#pragma warning disable 649
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +11,7 @@ namespace ReleaseVersion
         private PlayerContoller controller;
         [SerializeField]
         private float reactionDelay;
-        private Timer delayTimer;
+        private Timer delayTimer, missleTimer;
 
         static private Vector3 RandomVectorDirection() {
             switch(Random.Range(0, 8)) {
@@ -40,6 +42,7 @@ namespace ReleaseVersion
             delayTimer = new Timer(reactionDelay);
             runAwayFrom = new List<Vector3>();
             getCloseTo = new List<Vector3>();
+            missleTimer = new Timer(10);
         }
 
         private void DecideMovement() {
@@ -97,14 +100,14 @@ namespace ReleaseVersion
                 }
             }
 
-            for (int i = 0; i < MedPack.Pools.AliveObjects.Count; i++) {
-                Vector3 medPackPos = MedPack.Pools.AliveObjects[i].transform.position;
+            // for (int i = 0; i < MedPack.Pools.AliveObjects.Count; i++) {
+            //     Vector3 medPackPos = MedPack.Pools.AliveObjects[i].transform.position;
 
-                float distance = (medPackPos - transform.position).sqrMagnitude;
-                if (distance < 11) {
-                    getCloseTo.Add(medPackPos);
-                }
-            }
+            //     float distance = (medPackPos - transform.position).sqrMagnitude;
+            //     if (distance < 11) {
+            //         getCloseTo.Add(medPackPos);
+            //     }
+            // }
 
             result = Vector3.zero;
 
@@ -133,6 +136,11 @@ namespace ReleaseVersion
                 delayTimer.Reset();
 
                 DecideMovement();
+            }
+
+            if (missleTimer.UpdateEnd) {
+                missleTimer.Reset();
+                controller.ShootMissle();
             }
         }
 
