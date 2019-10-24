@@ -144,13 +144,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 0
   type: 1
-  damage: 8
+  damage: 9
   putWhenTouchWall: 1
   putWhenDestory: 1
   putWhenTouchOpponent: 1
+  useDamageRate: 0
+  damageRate: 0
   initAnimation:
     trigger: 
   triggerAnimation:
     trigger: 
   destroyAnimation:
     trigger: 
+  onlyOneDestroyEvent: 0
+  destroyRewards: []

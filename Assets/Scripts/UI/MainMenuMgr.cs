@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#pragma warning disable 649
+
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using ReleaseVersion.UI;
@@ -6,8 +8,7 @@ using ReleaseVersion.UI;
 namespace ReleaseVersion {
     public class MainMenuMgr : MonoBehaviour
     {
-        [SerializeField]
-        private string gameScene;
+        private const string gameScene = "GameRelease";
         private bool loadingScene;
         [SerializeField]
         private SelectableItem selectedItem;

@@ -58,6 +58,7 @@ public class PrefabPoolCtrl<T> where T : MonoBehaviour {
     }
 
     public void Clear() {
+        instantiateEvents = null;
         aliveObjects.Clear();
         poolObjects.Clear();
     }

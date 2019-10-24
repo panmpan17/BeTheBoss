@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿#pragma warning disable 649
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 namespace ReleaseVersion
 {
-    public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, BossBomb }
+    public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, BossBomb, Explosion }
 
     [RequireComponent(typeof(Rigidbody2D))]
     public class Weapon : Damageable
@@ -22,9 +24,9 @@ namespace ReleaseVersion
         [SerializeField]
         private AnimationEvent initAnimation, triggerAnimation, destroyAnimation;
         [SerializeField]
-        private bool onlyOneDestroyReward;
+        private bool onlyOneDestroyEvent;
         [SerializeField]
-        private DestroyReward[] destroyRewards;
+        private DestroyEvent[] destroyRewards;
         private Timer damageRateTimer;
         private List<Damageable> contactDamaegable;
 
@@ -49,6 +51,7 @@ namespace ReleaseVersion
         }
 
         public void Setup(Vector3 pos, Vector2 velocity) {
+            putting = false;
             contactDamaegable.Clear();
             health = startingHealth;
             transform.position = pos;
@@ -62,6 +65,7 @@ namespace ReleaseVersion
 
         public void Setup(Vector3 pos, Vector2 velocity, Quaternion rotation)
         {
+            putting = false;
             health = startingHealth;
             transform.position = pos;
             transform.rotation = rotation;
@@ -103,24 +107,42 @@ namespace ReleaseVersion
             }
         }
 
-        private void SpawnDestroyReward() {
+        private IEnumerator DelayExecute(float sec, System.Action action) {
+            yield return new WaitForSeconds(sec);
+            action();
+        }
+
+        private void SpawnDestroyEvent() {
             for (int i = 0; i < destroyRewards.Length; i++) {
                 float chance = Random.Range(0f, 1f);
                 if (chance <= destroyRewards[i].chance) {
+                    Vector3 vec = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f));
                     switch (destroyRewards[i].type) {
-                        case DestroyRewardType.MedPack:
-                            Vector3 vec = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f));
-                            MedPack.Pools.GetFromPool().Setup(transform.position, vec.normalized * 2);
+                        case DestroyEventType.MedPack:
+                            RewardPrefabPool.GetPool(RewardType.MedPack).GetFromPool().Setup(transform.position, vec.normalized * 2);
+                            break;
+                        case DestroyEventType.MissileSupply:
+                            RewardPrefabPool.GetPool(RewardType.MissileSupply).GetFromPool().Setup(transform.position, vec.normalized * 2);
+                            break;
+                        case DestroyEventType.Explode:
+                            Weapon explosion = WeaponPrefabPool.GetPool(WeaponType.Explosion).GetFromPool();
+                            explosion.Setup(transform.position, Vector3.zero);
+                            explosion.StartCoroutine(DelayExecute(1, delegate {
+                                explosion.GetComponent<Animator>().SetTrigger("End");
+                            }));
                             break;
                     }
 
-                    if (onlyOneDestroyReward) break;
+                    if (onlyOneDestroyEvent) break;
                 }
             }
         }
 
+        private bool putting;
         private void PrepareToPut() {
-            if (destroyRewards.Length > 0) SpawnDestroyReward();
+            if (putting) return;
+            putting = true;
+            if (destroyRewards.Length > 0) SpawnDestroyEvent();
 
             if (triggerAnimation.BeenSet)GetComponent<Animator>().SetTrigger(triggerAnimation.trigger);
             else WeaponPrefabPool.GetPool(type).PutWeapon(this);
@@ -141,14 +163,16 @@ namespace ReleaseVersion
         }
 
         [System.Serializable]
-        private class DestroyReward {
-            public DestroyRewardType type;
+        private class DestroyEvent {
+            public DestroyEventType type;
             public float chance;
         }
+
+        public enum DestroyEventType { MedPack, Explode, MissileSupply }
     }
 
     public class WeaponPrefabPool {
-        private static List<WeaponPrefabPool> prefabPools = new List<WeaponPrefabPool>();
+        static List<WeaponPrefabPool> prefabPools = new List<WeaponPrefabPool>();
 
         public static WeaponPrefabPool GetPool(WeaponType _type) {
             for (int i = 0; i < prefabPools.Count; i++) {

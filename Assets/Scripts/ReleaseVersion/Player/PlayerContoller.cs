@@ -1,4 +1,5 @@
-﻿#define SHOOTING
+﻿#pragma warning disable 649
+#define SHOOTING
 
 using System.Collections;
 using UnityEngine;
@@ -193,11 +194,18 @@ public class PlayerContoller : Damageable
         else UpdateHealthBar();
     }
 
+    #region  Reward
     public void AddHealth(int healthReward) {
         health += healthReward;
         if (health >= startingHealth) health = startingHealth;
         UpdateHealthBar();
     }
+
+    public void AddMissile(int amount) {
+        missleCount += amount;
+        if (missleCount > missleMaxCount) missleCount = missleMaxCount;
+    }
+    #endregion
 
     public class Movement
     {

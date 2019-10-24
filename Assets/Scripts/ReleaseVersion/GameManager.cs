@@ -16,7 +16,6 @@ namespace ReleaseVersion
         private TextMeshProUGUI scoreText;
         [SerializeField]
         private Collider2D topCeilingCollider;
-        // private string
         private PlayerContoller player;
 
         public const int BossLayer = 8,
@@ -33,6 +32,8 @@ namespace ReleaseVersion
 
             scorePanel.SetActive(false);
             WeaponPrefabPool.ClearAllPool();
+            RewardPrefabPool.ClearAllPool();
+
             BossBomb.Pools.Clear();
             BossBomb.Pools.AddInstantiateEvent(delegate (BossBomb bomb) {
                 Physics2D.IgnoreCollision(bomb.GetComponent<Collider2D>(), topCeilingCollider, true);

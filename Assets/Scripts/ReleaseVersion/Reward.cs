@@ -51,6 +51,12 @@ namespace ReleaseVersion
             return prefabPools[prefabPools.Count - 1];
         }
 
+        static public void ClearAllPool() {
+            for (int i = 0; i < prefabPools.Count; i++) {
+                prefabPools[i].Clear();
+            }
+        }
+
         private RewardType type;
         public RewardType Type { get { return type; } }
         private GameObject prefab;

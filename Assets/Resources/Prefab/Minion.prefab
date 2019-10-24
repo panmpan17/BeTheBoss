@@ -143,9 +143,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9071954474f29480f87dc1fb4a539273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 30
+  startingHealth: 15
   type: 4
-  damage: 20
+  damage: 12
   putWhenTouchWall: 0
   putWhenDestory: 1
   putWhenTouchOpponent: 1
@@ -157,7 +157,9 @@ MonoBehaviour:
     trigger: 
   destroyAnimation:
     trigger: 
-  onlyOneDestroyReward: 0
+  onlyOneDestroyEvent: 1
   destroyRewards:
   - type: 0
-    chance: 0.05
+    chance: 0.1
+  - type: 2
+    chance: 0.1

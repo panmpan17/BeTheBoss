@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#pragma warning disable 649
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -76,25 +78,18 @@ namespace ReleaseVersion.UI {
             if (style == null) return;
             if (image == null) image = GetComponent<Image>();
 
-            if (disabled)
-            {
-                color = style.DisabledColor;
-            }
-            else if (actived)
-            {
-                color = style.ActiveColor;
-            }
-            else if (selected)
-            {
-                color = style.SelectedColor;
-            }
-            else {
+            if (!disabled && !actived && !selected) {
                 color = style.NormalColor;
-            }
+            } else if (disabled) {
+                if (selected) color = Color.Lerp(style.SelectedColor, style.DisabledColor, 0.5f);
+                else color = style.DisabledColor;
+            } else if (actived) {
+                if (selected) color = Color.Lerp(style.SelectedColor, style.ActiveColor, 0.5f);
+                else color = style.ActiveColor;
+            } else if (selected) color = style.SelectedColor;
         }
 
         private void Update() {
-            // TODO: only apply when change happend
             ApplyStyle();
         }
     }

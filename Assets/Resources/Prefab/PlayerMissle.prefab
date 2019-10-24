@@ -155,16 +155,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 20
   type: 2
-  damage: 100
+  damage: 0
   putWhenTouchWall: 1
   putWhenDestory: 1
   putWhenTouchOpponent: 1
+  useDamageRate: 0
+  damageRate: 0
   initAnimation:
     trigger: Init
   triggerAnimation:
-    trigger: Explode
+    trigger: 
   destroyAnimation:
-    trigger: Explode
+    trigger: 
+  onlyOneDestroyEvent: 1
+  destroyRewards:
+  - type: 1
+    chance: 1
 --- !u!1 &170447924071274263
 GameObject:
   m_ObjectHideFlags: 0

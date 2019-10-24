@@ -1,5 +1,6 @@
+#pragma warning disable 649
+
 using UnityEngine;
-// using UnityEngine.SocialPlatforms;
 using ReleaseVersion;
 
 public class MachineGun : MonoBehaviour {
