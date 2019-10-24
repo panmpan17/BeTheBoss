@@ -4,19 +4,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 using TMPro;
 
+// IPointerClickHandler
+// public void OnPointerClick(PointerEventData eventData) // 3
+// {
+//     print("I was clicked");
+//     target = Color.blue;
+// }
 namespace ReleaseVersion.UI {
 #if UNITY_EDITOR
     [ExecuteInEditMode]
 #endif
     public class SelectableItem : MonoBehaviour
     {
-        [SerializeField]
-        private string arg;
-        public string Arg { get { return arg; } }
-        private bool selected, actived, disabled;
-
         [SerializeField]
         private SelectableStyle style;
         private Image image;
@@ -37,6 +39,8 @@ namespace ReleaseVersion.UI {
             }
         }
 
+        private bool selected, actived, disabled;
+
         [SerializeField]
         private SelectableItem leftNavigate, rightNavigate, topNavigate, bottomNavigate;
         public SelectableItem NavLeft { get { return leftNavigate; } }
@@ -44,20 +48,23 @@ namespace ReleaseVersion.UI {
         public SelectableItem NavTop { get { return topNavigate; } }
         public SelectableItem NavBottom { get { return bottomNavigate; } }
 
+        [SerializeField]
+        private UnityEvent activeEvent;
+
         public bool Selected
         {
             get { return selected; }
-            set { selected = value; }
+            set { selected = value; ApplyStyle(); }
         }
         public bool Active
         {
             get { return actived; }
-            set { actived = value; }
+            set { actived = value; ApplyStyle(); }
         }
         public bool Disabled
         {
             get { return disabled; }
-            set { disabled = value; }
+            set { disabled = value; ApplyStyle(); }
         }
 
         private void Awake() {
@@ -89,8 +96,8 @@ namespace ReleaseVersion.UI {
             } else if (selected) color = style.SelectedColor;
         }
 
-        private void Update() {
-            ApplyStyle();
+        public void Activate() {
+            if (activeEvent != null) activeEvent.Invoke();
         }
     }
 }

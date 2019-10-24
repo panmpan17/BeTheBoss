@@ -1745,7 +1745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minionSelectable: {fileID: 1439632386}
-  machineGUnSelectable: {fileID: 1751391480}
+  machineGunSelectable: {fileID: 1751391480}
   laserSelectable: {fileID: 1318591665}
   bombSelectable: {fileID: 808426477}
   aimMoveSpeed: 3
@@ -2474,6 +2474,22 @@ MonoBehaviour:
   rightNavigate: {fileID: 0}
   topNavigate: {fileID: 1439632386}
   bottomNavigate: {fileID: 1751391480}
+  activeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570782731}
+        m_MethodName: ActiveBomb
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &808426478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3307,7 +3323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ed96484d64a74aed9e92eaed8372b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reactionDelay: 1
+  reactionDelay: 0.2
 --- !u!1 &1270460554
 GameObject:
   m_ObjectHideFlags: 0
@@ -3441,6 +3457,22 @@ MonoBehaviour:
   rightNavigate: {fileID: 0}
   topNavigate: {fileID: 1751391480}
   bottomNavigate: {fileID: 1439632386}
+  activeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570782731}
+        m_MethodName: ActiveLaser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1318591666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3694,6 +3726,22 @@ MonoBehaviour:
   rightNavigate: {fileID: 0}
   topNavigate: {fileID: 1318591665}
   bottomNavigate: {fileID: 808426477}
+  activeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570782731}
+        m_MethodName: ActiveMinion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1439632387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4471,6 +4519,22 @@ MonoBehaviour:
   rightNavigate: {fileID: 0}
   topNavigate: {fileID: 808426477}
   bottomNavigate: {fileID: 1318591665}
+  activeEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 570782731}
+        m_MethodName: ActiveMachineGun
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1751391481
 MonoBehaviour:
   m_ObjectHideFlags: 0

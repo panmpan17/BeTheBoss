@@ -17,32 +17,37 @@ namespace ReleaseVersion {
             selectedItem.Selected = true;
         }
 
+        public void Play() {
+            loadingScene = true;
+            SceneManager.LoadSceneAsync(gameScene);
+        }
+
+        public void OpenSetting() {
+
+        }
+
+        public void Quit() {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
+
         public void Update() {
             if (loadingScene) return;
 
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
                 selectedItem.Selected = false;
                 selectedItem = selectedItem.NavTop;
                 selectedItem.Selected = true;
             }
-            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) {
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
                 selectedItem.Selected = false;
                 selectedItem = selectedItem.NavBottom;
                 selectedItem.Selected = true;
             }
-            else if (Input.GetButton("Submit")) {
-                switch (selectedItem.Arg) {
-                    case "play":
-                        loadingScene = true;
-                        SceneManager.LoadSceneAsync(gameScene);
-                        break;
-                    case "option":
-                        break;
-                    case "quit":
-                        Application.Quit();
-                        break;
-                }
-            }
+            else if (Input.GetButton("Submit")) selectedItem.Activate();
         }
     }
 }

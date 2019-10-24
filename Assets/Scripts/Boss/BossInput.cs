@@ -8,7 +8,7 @@ namespace ReleaseVersion {
     public class BossInput : MonoBehaviour {
         private Boss boss;
         [SerializeField]
-        private SelectableItem minionSelectable, machineGUnSelectable, laserSelectable, bombSelectable;
+        private SelectableItem minionSelectable, machineGunSelectable, laserSelectable, bombSelectable;
         [SerializeField]
         private float aimMoveSpeed;
         private SelectableItem selectedWeapon;
@@ -22,37 +22,18 @@ namespace ReleaseVersion {
         }
 
         private void Update() {
-            if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
                 selectedWeapon.Selected = false;
                 selectedWeapon = selectedWeapon.NavTop;
                 selectedWeapon.Selected = true;
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 selectedWeapon.Selected = false;
                 selectedWeapon = selectedWeapon.NavBottom;
                 selectedWeapon.Selected = true;
             }
-            else if (Input.GetKeyDown(KeyCode.Space)) {
-                switch (selectedWeapon.Arg) {
-                    case "minion":
-                        ActiveWeapon(selectedWeapon, Boss.AttackType.Minion);
-                        break;
-                    case "machineGun":
-                        ActiveWeapon(selectedWeapon, Boss.AttackType.MachineGun);
-                        break;
-                    case "bomb":
-                        ActiveWeapon(selectedWeapon, Boss.AttackType.Bomb);
-                        break;
-                    case "laser":
-                        ActiveWeapon(selectedWeapon, Boss.AttackType.Laser);
-                        break;
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha1)) ActiveWeapon(minionSelectable, Boss.AttackType.Minion);
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) ActiveWeapon(bombSelectable, Boss.AttackType.Bomb);
-            else if (Input.GetKeyDown(KeyCode.Alpha3)) ActiveWeapon(machineGUnSelectable, Boss.AttackType.MachineGun);
-            else if (Input.GetKeyDown(KeyCode.Alpha4)) ActiveWeapon(laserSelectable, Boss.AttackType.Laser);
+            else if (Input.GetKeyDown(KeyCode.Space)) selectedWeapon.Activate();
 
             if (boss.UsingBomb || boss.UsingMachinGun || boss.UsingLaser)
             {
@@ -61,6 +42,11 @@ namespace ReleaseVersion {
                 else boss.keyDirection = 0;
             }
         }
+
+        public void ActiveMinion() { ActiveWeapon(minionSelectable, Boss.AttackType.Minion); }
+        public void ActiveBomb() { ActiveWeapon(bombSelectable, Boss.AttackType.Bomb); }
+        public void ActiveMachineGun() { ActiveWeapon(machineGunSelectable, Boss.AttackType.MachineGun); }
+        public void ActiveLaser() { ActiveWeapon(laserSelectable, Boss.AttackType.Laser); }
 
         private void ActiveWeapon(SelectableItem selectable, Boss.AttackType type) {
             if (!selectable.Disabled && !selectable.Active && boss.Idling) {
@@ -86,8 +72,8 @@ namespace ReleaseVersion {
                     minionSelectable.Disabled = true;
                     break;
                 case Boss.AttackType.MachineGun:
-                    machineGUnSelectable.Active = false;
-                    machineGUnSelectable.Disabled = true;
+                    machineGunSelectable.Active = false;
+                    machineGunSelectable.Disabled = true;
                     break;
             }
         }
@@ -106,7 +92,7 @@ namespace ReleaseVersion {
                     minionSelectable.Disabled = false;
                     break;
                 case Boss.AttackType.MachineGun:
-                    machineGUnSelectable.Disabled = false;
+                    machineGunSelectable.Disabled = false;
                     break;
             }
         }
