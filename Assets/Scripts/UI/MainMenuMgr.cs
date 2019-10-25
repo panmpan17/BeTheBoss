@@ -7,6 +7,8 @@ using MultiLanguage;
 
 public class MainMenuMgr : MonoBehaviour
 {
+    static public MainMenuMgr ins;
+
     private const string gameScene = "GameRelease";
     private bool loadingScene;
     [SerializeField]
@@ -17,12 +19,16 @@ public class MainMenuMgr : MonoBehaviour
     private bool usingSetting;
 
     private void Awake() {
+        ins = this;
+
         if (!MultiLanguageMgr.jsonLoaded) MultiLanguageMgr.LoadJson();
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
 
         settingMenu = Instantiate(Resources.Load<GameObject>("Prefab/SettingMenu"), canvas).GetComponent<SettingMenu>();
         settingMenu.gameObject.SetActive(false);
+
+        SelectableItem.audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     private void Start() {
@@ -32,6 +38,7 @@ public class MainMenuMgr : MonoBehaviour
 
     public void Play() {
         loadingScene = true;
+        ins = null;
         SceneManager.LoadSceneAsync(gameScene);
     }
 
@@ -46,6 +53,7 @@ public class MainMenuMgr : MonoBehaviour
 #else
         Application.Quit();
 #endif
+        SelectableItem.audioSource = null;
     }
 
     public void Update() {
@@ -54,12 +62,12 @@ public class MainMenuMgr : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
             selected.Selected = false;
             selected = selected.NavTop;
-            selected.Selected = true;
+            selected.Select();
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
             selected.Selected = false;
             selected = selected.NavBottom;
-            selected.Selected = true;
+            selected.Select();
         }
         else if (Input.GetButtonDown("Submit")) selected.Activate();
     }

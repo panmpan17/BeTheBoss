@@ -44,6 +44,7 @@ public class PlayerContoller : Damageable
     private int missleCount, missleMaxCount;
     private bool haveRebirthProtection;
     private Timer rebirthProtectionTimer;
+    private AudioSource audioSource;
 
     public void ApplySetting(PlayerSetting setting) {
         startingHealth = setting.StartingHealth;
@@ -72,10 +73,16 @@ public class PlayerContoller : Damageable
         rigid2d = GetComponent<Rigidbody2D>();
         movement = nextMovement = new Movement();
 
-        SetupHealth();
-        rebirthProtectionTimer = new Timer(rebirthProtectionTime);
-        fireRateTimer = new Timer(fireRate);
-        UpdateHealthBar();
+        audioSource = GetComponent<AudioSource>();
+        ApplySetting(SettingReader.ReadPlayerSetting("JsonData/PlayerSetting"));
+    }
+    
+    public void Pause() {
+        audioSource.Pause();
+    }
+
+    public void UnPause() {
+        audioSource.UnPause();
     }
 
     public void SetNextMovement(Movement movement) {

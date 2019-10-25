@@ -25,7 +25,7 @@ public class Boss : Damageable
     private LaserCanon laser;
     private MachineGun[] machineGuns;
     private BombCabinDoor[] bombCabinDoors;
-    private MinionCabinCtrl minionCabinCtrl;
+    private MinionCabinDoor[] minionCabinDoors;
 
     private AttackType attackType = AttackType.None;
     private List<AttackType> usedAttackType;
@@ -44,7 +44,7 @@ public class Boss : Damageable
         usedAttackType = new List<AttackType>();
 
         laser = GetComponentInChildren<LaserCanon>();
-        minionCabinCtrl = GetComponentInChildren<MinionCabinCtrl>();
+        minionCabinDoors = GetComponentsInChildren<MinionCabinDoor>();
         machineGuns = GetComponentsInChildren<MachineGun>();
         bombCabinDoors = GetComponentsInChildren<BombCabinDoor>();
 
@@ -92,7 +92,7 @@ public class Boss : Damageable
                 laser.Activate();
                 break;
             case AttackType.Minion:
-                minionCabinCtrl.Activate();
+                for (int i = 0; i < minionCabinDoors.Length; i++) minionCabinDoors[i].Activate();
                 weaponTimer = new Timer(minionTime);
                 break;
             case AttackType.Bomb:

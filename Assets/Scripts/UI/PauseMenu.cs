@@ -11,19 +11,22 @@ public class PauseMenu : MonoBehaviour
     private bool usingSetting;
 
     private void Awake() {
-        selected.Select();
         settingMenu = Instantiate(Resources.Load<GameObject>("Prefab/SettingMenu"), transform.parent).GetComponent<SettingMenu>();
         settingMenu.SetupCloseEvent(delegate { usingSetting = false; });
         settingMenu.gameObject.SetActive(false);
     }
 
+    private void Start() {
+        selected.Select();
+    }
+
     public void Back() {
+        PlayerContoller.ins.UnPause();
         gameObject.SetActive(false);
         Time.timeScale = 1;
     }
 
     public void OpenSetting() {
-        Debug.Log("open setting");
         settingMenu.gameObject.SetActive(true);
         usingSetting = true;
     }
@@ -41,13 +44,13 @@ public class PauseMenu : MonoBehaviour
         {
             selected.Selected = false;
             selected = selected.NavTop;
-            selected.Selected = true;
+            selected.Select();
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             selected.Selected = false;
             selected = selected.NavBottom;
-            selected.Selected = true;
+            selected.Select();
         }
         else if (Input.GetButtonDown("Submit")) selected.Activate();
     }

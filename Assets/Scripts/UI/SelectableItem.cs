@@ -18,6 +18,8 @@ using TMPro;
 #endif
 public class SelectableItem : MonoBehaviour
 {
+    static public AudioSource audioSource;
+
     [SerializeField]
     private SelectableStyle style;
     private Image image;
@@ -35,7 +37,7 @@ public class SelectableItem : MonoBehaviour
             if (image != null) image.color = value;
             else if (text != null) text.color = value;
             else if (spriteRenderer != null) spriteRenderer.color = value;
-            else Debug.Log(gameObject, gameObject);
+            else Debug.LogError(gameObject, gameObject);
         }
     }
 
@@ -98,10 +100,12 @@ public class SelectableItem : MonoBehaviour
 
     public void Activate() {
         if (activeEvent != null) activeEvent.Invoke();
+        if (audioSource != null) AudioManager.ins.PlayerSound(audioSource, AudioType.Click);
     }
 
     public void Select() {
         Selected = true;
         if (selectedEvent != null) selectedEvent.Invoke();
+        if (audioSource != null) AudioManager.ins.PlayerSound(audioSource, AudioType.Select);
     }
 }

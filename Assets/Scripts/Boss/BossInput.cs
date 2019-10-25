@@ -9,31 +9,33 @@ public class BossInput : MonoBehaviour {
     private SelectableItem minionSelectable, machineGunSelectable, laserSelectable, bombSelectable;
     [SerializeField]
     private float aimMoveSpeed;
-    private SelectableItem selectedWeapon;
+    private SelectableItem selected;
 
     private void Awake() {
         boss = GetComponent<Boss>();
         boss.RegisterEvent(WeaponFinished, WeaponAvalible);
 
-        selectedWeapon = minionSelectable;
-        selectedWeapon.Selected = true;
+        selected = minionSelectable;
+        selected.Selected = true;
     }
 
     private void Update() {
         if (GameManager.ins.GamePaused) return;
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-            selectedWeapon.Selected = false;
-            selectedWeapon = selectedWeapon.NavTop;
-            selectedWeapon.Selected = true;
+            selected.Selected = false;
+            selected = selected.NavTop;
+            selected.Select();
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            selectedWeapon.Selected = false;
-            selectedWeapon = selectedWeapon.NavBottom;
-            selectedWeapon.Selected = true;
+            selected.Selected = false;
+            selected = selected.NavBottom;
+            selected.Select();
         }
-        else if (Input.GetKeyDown(KeyCode.Space)) selectedWeapon.Activate();
+        else if (Input.GetKeyDown(KeyCode.Space)) {
+            if (!selected.Disabled && !selected.Active && boss.Idling) selected.Activate();
+        }
 
         if (boss.UsingBomb || boss.UsingMachinGun || boss.UsingLaser)
         {

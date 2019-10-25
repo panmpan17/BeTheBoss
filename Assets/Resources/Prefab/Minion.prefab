@@ -160,6 +160,6 @@ MonoBehaviour:
   onlyOneDestroyEvent: 1
   destroyRewards:
   - type: 0
-    chance: 0.1
+    chance: 0.02
   - type: 2
-    chance: 0.1
+    chance: 0.02

@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     private Collider2D topCeilingCollider;
     [SerializeField]
     private PauseMenu pauseMenu;
-    private PlayerContoller player;
 
 
     public bool GamePaused { get { return Time.timeScale == 0; } }
@@ -32,31 +31,25 @@ public class GameManager : MonoBehaviour
     {
         ins = this;
 
-        BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
-
         scorePanel.SetActive(false);
         WeaponPrefabPool.ClearAllPool();
         RewardPrefabPool.ClearAllPool();
-
+        BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
         BossBomb.Pools.Clear();
-        // BossBomb.Pools.AddInstantiateEvent(delegate (BossBomb bomb) {
-        //     Physics2D.IgnoreCollision(bomb.GetComponent<Collider2D>(), topCeilingCollider, true);
-        // });
-
-        player = FindObjectOfType<PlayerContoller>();
-        player.ApplySetting(SettingReader.ReadPlayerSetting("JsonData/PlayerSetting"));
 
         if (!MultiLanguageMgr.jsonLoaded) MultiLanguageMgr.LoadJson();
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
 
         pauseMenu.gameObject.SetActive(false);
+        SelectableItem.audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     private void Update() {
         if (Input.GetButtonDown("Cancel")) {
             Time.timeScale = 0;
             pauseMenu.gameObject.SetActive(true);
+            PlayerContoller.ins.Pause();
         }
     }
 
