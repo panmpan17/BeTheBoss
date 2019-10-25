@@ -34,6 +34,21 @@
             "ID": 6,
             "en_us": "Volume",
             "zh_tw": "音量"
+        },
+        {
+            "ID": 7,
+            "en_us": "Resolution",
+            "zh_tw": "解析度"
+        },
+        {
+            "ID": 8,
+            "en_us": "Fullscreen",
+            "zh_tw": "全螢幕"
+        },
+        {
+            "ID": 9,
+            "en_us": "Windowed",
+            "zh_tw": "視窗"
         }
     ]
 }

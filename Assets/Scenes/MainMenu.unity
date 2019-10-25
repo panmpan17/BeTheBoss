@@ -132,8 +132,9 @@ GameObject:
   - component: {fileID: 612659197}
   - component: {fileID: 612659196}
   - component: {fileID: 612659198}
+  - component: {fileID: 612659199}
   m_Layer: 5
-  m_Name: Option
+  m_Name: Setting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -291,7 +292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arg: setting
   style: {fileID: 11400000, guid: 24ccbe433640d49418f6e4575bfc7fe3, type: 2}
   leftNavigate: {fileID: 0}
   rightNavigate: {fileID: 0}
@@ -313,6 +313,24 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  selectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &612659199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612659194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ee69ba2cc5247c19568dcc13ef6262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 2
 --- !u!1 &1053464458
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,7 +653,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e46b21bfa469e44ffb91da1638c99927, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedItem: {fileID: 1786889574}
+  selected: {fileID: 1786889574}
+  canvas: {fileID: 1673589236}
 --- !u!1 &1338877177
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,8 +667,9 @@ GameObject:
   - component: {fileID: 1338877180}
   - component: {fileID: 1338877179}
   - component: {fileID: 1338877181}
+  - component: {fileID: 1338877182}
   m_Layer: 5
-  m_Name: Quit
+  m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -672,7 +692,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 24.000004, y: 15}
-  m_SizeDelta: {x: 150, y: 50}
+  m_SizeDelta: {x: 215.5, y: 50}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1338877179
 MonoBehaviour:
@@ -694,7 +714,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Quit
+  m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bcb3c86f17b064bf6981469431ff34ad, type: 2}
   m_sharedMaterial: {fileID: 96341815662784714, guid: bcb3c86f17b064bf6981469431ff34ad,
@@ -807,7 +827,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arg: quit
   style: {fileID: 11400000, guid: 24ccbe433640d49418f6e4575bfc7fe3, type: 2}
   leftNavigate: {fileID: 0}
   rightNavigate: {fileID: 0}
@@ -829,6 +848,24 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  selectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1338877182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338877177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ee69ba2cc5247c19568dcc13ef6262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 3
 --- !u!1 &1673589232
 GameObject:
   m_ObjectHideFlags: 0
@@ -943,6 +980,7 @@ GameObject:
   - component: {fileID: 1786889573}
   - component: {fileID: 1786889572}
   - component: {fileID: 1786889574}
+  - component: {fileID: 1786889575}
   m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
@@ -1102,7 +1140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arg: play
   style: {fileID: 11400000, guid: 24ccbe433640d49418f6e4575bfc7fe3, type: 2}
   leftNavigate: {fileID: 0}
   rightNavigate: {fileID: 0}
@@ -1124,3 +1161,21 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  selectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1786889575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786889570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ee69ba2cc5247c19568dcc13ef6262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1

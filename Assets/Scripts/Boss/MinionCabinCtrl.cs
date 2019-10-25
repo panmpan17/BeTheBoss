@@ -1,7 +1,7 @@
 #pragma warning disable 649
 
 using UnityEngine;
-using ReleaseVersion;
+
 
 // TODO: shoot bomb
 public class MinionCabinCtrl : MonoBehaviour {

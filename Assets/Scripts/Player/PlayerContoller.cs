@@ -4,8 +4,6 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using ReleaseVersion;
-using ReleaseVersion.Setting;
 
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerContoller : Damageable

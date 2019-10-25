@@ -3,51 +3,64 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using ReleaseVersion.UI;
+using MultiLanguage;
 
-namespace ReleaseVersion {
-    public class MainMenuMgr : MonoBehaviour
-    {
-        private const string gameScene = "GameRelease";
-        private bool loadingScene;
-        [SerializeField]
-        private SelectableItem selectedItem;
+public class MainMenuMgr : MonoBehaviour
+{
+    private const string gameScene = "GameRelease";
+    private bool loadingScene;
+    [SerializeField]
+    private SelectableItem selected;
+    [SerializeField]
+    private Transform canvas;
+    private SettingMenu settingMenu;
+    private bool usingSetting;
 
-        private void Start() {
-            selectedItem.Selected = true;
-        }
+    private void Awake() {
+        if (!MultiLanguageMgr.jsonLoaded) MultiLanguageMgr.LoadJson();
+        if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
+        MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
 
-        public void Play() {
-            loadingScene = true;
-            SceneManager.LoadSceneAsync(gameScene);
-        }
+        settingMenu = Instantiate(Resources.Load<GameObject>("Prefab/SettingMenu"), canvas).GetComponent<SettingMenu>();
+        settingMenu.gameObject.SetActive(false);
+    }
 
-        public void OpenSetting() {
+    private void Start() {
+        selected.Selected = true;
+        settingMenu.SetupCloseEvent(delegate { usingSetting = false; });
+    }
 
-        }
+    public void Play() {
+        loadingScene = true;
+        SceneManager.LoadSceneAsync(gameScene);
+    }
 
-        public void Quit() {
+    public void OpenSetting() {
+        usingSetting = true;
+        settingMenu.gameObject.SetActive(true);
+    }
+
+    public void Quit() {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+        UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+        Application.Quit();
 #endif
-        }
+    }
 
-        public void Update() {
-            if (loadingScene) return;
+    public void Update() {
+        if (loadingScene || usingSetting) return;
 
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-                selectedItem.Selected = false;
-                selectedItem = selectedItem.NavTop;
-                selectedItem.Selected = true;
-            }
-            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-                selectedItem.Selected = false;
-                selectedItem = selectedItem.NavBottom;
-                selectedItem.Selected = true;
-            }
-            else if (Input.GetButton("Submit")) selectedItem.Activate();
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+            selected.Selected = false;
+            selected = selected.NavTop;
+            selected.Selected = true;
         }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
+            selected.Selected = false;
+            selected = selected.NavBottom;
+            selected.Selected = true;
+        }
+        else if (Input.GetButtonDown("Submit")) selected.Activate();
     }
 }
