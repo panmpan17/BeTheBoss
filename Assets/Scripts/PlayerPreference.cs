@@ -9,6 +9,8 @@ public class PlayerPreference
     static public bool loaded;
 
     static public Vector2Int[] resolutions = new[] {
+        new Vector2Int(720, 450),
+        new Vector2Int(1080, 675),
         new Vector2Int(1280, 800),
         new Vector2Int(1600, 1000),
         new Vector2Int(1920, 1200),
