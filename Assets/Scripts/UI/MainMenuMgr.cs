@@ -9,12 +9,16 @@ public class MainMenuMgr : MonoBehaviour
 {
     static public MainMenuMgr ins;
 
-    private const string gameScene = "GameRelease";
+    private const string GAMERELEASE_SCENE = "GameRelease",
+        LEVELSELECT_SCENE = "LevelSelect",
+        SMASHMENU_SCENE = "SmashMenu";
     private bool loadingScene;
     [SerializeField]
     private SelectableItem selected;
     [SerializeField]
     private Transform canvas;
+    [SerializeField]
+    private GameObject intro;
     private SettingMenu settingMenu;
     private bool usingSetting;
 
@@ -23,6 +27,9 @@ public class MainMenuMgr : MonoBehaviour
 
         if (!MultiLanguageMgr.jsonLoaded) MultiLanguageMgr.LoadJson();
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
+
+        intro.SetActive(!PlayerPreference.SkipIntro);
+
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
 
         settingMenu = Instantiate(Resources.Load<GameObject>("Prefab/SettingMenu"), canvas).GetComponent<SettingMenu>();
@@ -36,10 +43,16 @@ public class MainMenuMgr : MonoBehaviour
         settingMenu.SetupCloseEvent(delegate { usingSetting = false; });
     }
 
-    public void Play() {
+    public void LoadStoryMode() {
         loadingScene = true;
         ins = null;
-        SceneManager.LoadSceneAsync(gameScene);
+        SceneManager.LoadSceneAsync(LEVELSELECT_SCENE);
+    }
+
+    public void LoadSmashMenu() {
+        loadingScene = true;
+        ins = null;
+        SceneManager.LoadSceneAsync(SMASHMENU_SCENE);
     }
 
     public void OpenSetting() {
@@ -57,7 +70,7 @@ public class MainMenuMgr : MonoBehaviour
     }
 
     public void Update() {
-        if (loadingScene || usingSetting) return;
+        if (loadingScene || usingSetting || intro.activeSelf) return;
 
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
             selected.Selected = false;

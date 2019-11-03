@@ -7,8 +7,8 @@
         },
         {
             "ID": 1,
-            "en_us": "Play",
-            "zh_tw": "遊玩"
+            "en_us": "Story Mode",
+            "zh_tw": "故事模式"
         },
         {
             "ID": 2,
@@ -49,6 +49,51 @@
             "ID": 9,
             "en_us": "Windowed",
             "zh_tw": "視窗"
+        },
+        {
+            "ID": 10,
+            "en_us": "There's An Ancient Power...",
+            "zh_tw": "有一種遠古的力量..."
+        },
+        {
+            "ID": 11,
+            "en_us": "Travel Between Life And Death",
+            "zh_tw": "穿梭於生命與死亡間"
+        },
+        {
+            "ID": 12,
+            "en_us": "<color=#FFDDBB><size=150%>The PLAYER</size></color>",
+            "zh_tw": "<color=#FFDDBB><size=150%>玩家</size></color>"
+        },
+        {
+            "ID": 13,
+            "en_us": "Unstoppable Killing Machine",
+            "zh_tw": "無法阻擋的殺人機器"
+        },
+        {
+            "ID": 14,
+            "en_us": "Are You Up For The Challenge?",
+            "zh_tw": "你準備好接受挑戰了嗎?"
+        },
+        {
+            "ID": 15,
+            "en_us": "Will You Do Whatever It Takes?",
+            "zh_tw": "你會不惜一切代價嗎?"
+        },
+        {
+            "ID": 16,
+            "en_us": "It's Time For The End...",
+            "zh_tw": "是時候..."
+        },
+        {
+            "ID": 17,
+            "en_us": "THE END OF AN ERA",
+            "zh_tw": "結束玩家時代"
+        },
+        {
+            "ID": 18,
+            "en_us": "Smash Mode",
+            "zh_tw": "對戰模式"
         }
     ]
 }

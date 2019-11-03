@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c940a7a9f34148c59f49151e987c93d, type: 3}
+  m_Name: LevelSelectPoint
+  m_EditorClassIdentifier: 
+  NormalColor: {r: 0.19339621, g: 0.7382151, b: 1, a: 0.84705883}
+  SelectedColor: {r: 0, g: 0.49172878, b: 1, a: 0.84705883}
+  ActiveColor: {r: 0, g: 0.32636428, b: 1, a: 0.84705883}
+  DisabledColor: {r: 0, g: 0.23877005, b: 0.3301887, a: 0.84705883}
