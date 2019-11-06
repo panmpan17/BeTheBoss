@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using MultiLanguage;
+using Saving;
 
 public class MainMenuMgr : MonoBehaviour
 {
@@ -22,20 +23,21 @@ public class MainMenuMgr : MonoBehaviour
     private SettingMenu settingMenu;
     private bool usingSetting;
 
-    private void Awake() {
-        ins = this;
-
+    public void InitialLoading() {
         if (!MultiLanguageMgr.jsonLoaded) MultiLanguageMgr.LoadJson();
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
-
-        intro.SetActive(!PlayerPreference.SkipIntro);
-
+        if (!SavingMgr.Loaded) SavingMgr.LoadSaving();
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
+        
+    }
+
+    private void Awake() {
+        ins = this;
+        InitialLoading();
+        intro.SetActive(!PlayerPreference.SkipIntro);
 
         settingMenu = Instantiate(Resources.Load<GameObject>("Prefab/SettingMenu"), canvas).GetComponent<SettingMenu>();
         settingMenu.gameObject.SetActive(false);
-
-        SelectableItem.audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     private void Start() {
@@ -66,7 +68,6 @@ public class MainMenuMgr : MonoBehaviour
 #else
         Application.Quit();
 #endif
-        SelectableItem.audioSource = null;
     }
 
     public void Update() {

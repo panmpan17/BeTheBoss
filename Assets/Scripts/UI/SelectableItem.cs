@@ -1,11 +1,10 @@
 ﻿#pragma warning disable 649
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using Audio;
 
 // IPointerClickHandler
 // public void OnPointerClick(PointerEventData eventData) // 3
@@ -18,8 +17,6 @@ using TMPro;
 #endif
 public class SelectableItem : MonoBehaviour
 {
-    static public AudioSource audioSource;
-
     [SerializeField]
     private SelectableStyle style;
     private Image image;
@@ -98,14 +95,14 @@ public class SelectableItem : MonoBehaviour
         } else if (selected) color = style.SelectedColor;
     }
 
-    public void Activate() {
+    public virtual void Activate() {
         if (activeEvent != null) activeEvent.Invoke();
-        if (audioSource != null) AudioManager.ins.PlayerSound(audioSource, AudioType.Click);
+        AudioManager.ins.PlayerSound(AudioEnum.UIClick);
     }
 
     public void Select() {
         Selected = true;
         if (selectedEvent != null) selectedEvent.Invoke();
-        if (audioSource != null) AudioManager.ins.PlayerSound(audioSource, AudioType.Select);
+        AudioManager.ins.PlayerSound(AudioEnum.UISelect);
     }
 }

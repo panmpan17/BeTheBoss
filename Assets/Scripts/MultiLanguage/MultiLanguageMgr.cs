@@ -12,7 +12,7 @@ namespace MultiLanguage {
     public class MultiLanguageMgr
     {
 		static public bool jsonLoaded;
-		static private Dictionary<int, Dictionary<string, string>> languagesDict;
+		static private Dictionary<int, Dictionary<string, string>> languagesDict = new Dictionary<int, Dictionary<string, string>>();
 
         static private List<MultiLanguageText> texts = new List<MultiLanguageText>();
         static public void AddText(MultiLanguageText text) { texts.Add(text); }
@@ -51,18 +51,14 @@ namespace MultiLanguage {
 
         static public string GetTextById(Language languageType, int id) { return GetTextById(System.Enum.GetName(typeof(Language), languageType), id); }
 		static public string GetTextById(string languageType, int id) {
-			Dictionary<string, string> _dict;
-
 			if (!languagesDict.ContainsKey(id)) {
                 Debug.LogWarningFormat("Text has no '{0}'", id);
 				id = 0;
 			}
-			if (languagesDict.TryGetValue(id, out _dict)) {
-				string text;
-				if (_dict.TryGetValue(languageType, out text)) return text;
+            string text;
+            if (languagesDict[id].TryGetValue(languageType, out text)) return text;
 
-				Debug.LogErrorFormat("Text '{0}' has no language '{1}'", id, languageType);
-			}
+            Debug.LogErrorFormat("Text '{0}' has no language '{1}'", id, languageType);
 
 			return null;
 		}

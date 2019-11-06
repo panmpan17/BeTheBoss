@@ -147,7 +147,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 159319379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: c2a12afcc3b9843489dde6feab9def3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 83717e5e39cf24fcbb21a6fd91f49f00, type: 2}
@@ -165,6 +165,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  levelId: 2
+  requireUnlockLevel: -1
 --- !u!212 &159319381
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -204,7 +206,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb4b40ad69d5c400caddccc00b1ab24b, type: 3}
-  m_Color: {r: 0.19339621, g: 0.7382151, b: 1, a: 0.84705883}
+  m_Color: {r: 0, g: 0.23877005, b: 0.3301887, a: 0.84705883}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -255,7 +257,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 896626636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: c2a12afcc3b9843489dde6feab9def3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 83717e5e39cf24fcbb21a6fd91f49f00, type: 2}
@@ -273,6 +275,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  levelId: 3
+  requireUnlockLevel: 3
 --- !u!212 &896626638
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -312,7 +316,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb4b40ad69d5c400caddccc00b1ab24b, type: 3}
-  m_Color: {r: 0.19339621, g: 0.7382151, b: 1, a: 0.84705883}
+  m_Color: {r: 0, g: 0.23877005, b: 0.3301887, a: 0.84705883}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -433,8 +437,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selected: {fileID: 1864796679}
-  rightBoundX: 0
   leftBoundX: 0
+  rightBoundX: 0
   smoothTime: 0.3
 --- !u!1 &1077626918
 GameObject:
@@ -463,7 +467,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1077626918}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: c2a12afcc3b9843489dde6feab9def3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 83717e5e39cf24fcbb21a6fd91f49f00, type: 2}
@@ -481,6 +485,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  levelId: 3
+  requireUnlockLevel: 3
 --- !u!212 &1077626920
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -520,7 +526,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb4b40ad69d5c400caddccc00b1ab24b, type: 3}
-  m_Color: {r: 0.19339621, g: 0.7382151, b: 1, a: 0.84705883}
+  m_Color: {r: 0, g: 0.23877005, b: 0.3301887, a: 0.84705883}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -571,7 +577,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1159643819}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: c2a12afcc3b9843489dde6feab9def3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 83717e5e39cf24fcbb21a6fd91f49f00, type: 2}
@@ -589,6 +595,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  levelId: 3
+  requireUnlockLevel: 3
 --- !u!212 &1159643821
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -628,7 +636,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb4b40ad69d5c400caddccc00b1ab24b, type: 3}
-  m_Color: {r: 0.19339621, g: 0.7382151, b: 1, a: 0.84705883}
+  m_Color: {r: 0, g: 0.23877005, b: 0.3301887, a: 0.84705883}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -679,7 +687,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1864796678}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: c2a12afcc3b9843489dde6feab9def3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 83717e5e39cf24fcbb21a6fd91f49f00, type: 2}
@@ -697,6 +705,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  levelId: 1
+  requireUnlockLevel: -1
 --- !u!212 &1864796680
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -736,7 +746,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb4b40ad69d5c400caddccc00b1ab24b, type: 3}
-  m_Color: {r: 0.19339621, g: 0.7382151, b: 1, a: 0.84705883}
+  m_Color: {r: 0, g: 0.23877005, b: 0.3301887, a: 0.84705883}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -867,7 +877,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2077787270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: c2a12afcc3b9843489dde6feab9def3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 83717e5e39cf24fcbb21a6fd91f49f00, type: 2}
@@ -885,6 +895,8 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  levelId: 3
+  requireUnlockLevel: 3
 --- !u!212 &2077787272
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -924,7 +936,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bb4b40ad69d5c400caddccc00b1ab24b, type: 3}
-  m_Color: {r: 0.19339621, g: 0.7382151, b: 1, a: 0.84705883}
+  m_Color: {r: 0, g: 0.23877005, b: 0.3301887, a: 0.84705883}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

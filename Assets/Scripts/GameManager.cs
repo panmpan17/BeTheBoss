@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using MultiLanguage;
+using Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -42,14 +43,13 @@ public class GameManager : MonoBehaviour
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
 
         pauseMenu.gameObject.SetActive(false);
-        SelectableItem.audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     private void Update() {
         if (Input.GetButtonDown("Cancel")) {
             Time.timeScale = 0;
             pauseMenu.gameObject.SetActive(true);
-            PlayerContoller.ins.Pause();
+            AudioManager.ins.Pause();
         }
     }
 

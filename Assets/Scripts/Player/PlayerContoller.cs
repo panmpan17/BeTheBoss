@@ -4,6 +4,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Audio;
 
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerContoller : Damageable
@@ -44,7 +45,6 @@ public class PlayerContoller : Damageable
     private int missleCount, missleMaxCount;
     private bool haveRebirthProtection;
     private Timer rebirthProtectionTimer;
-    private AudioSource audioSource;
 
     public void ApplySetting(PlayerSetting setting) {
         startingHealth = setting.StartingHealth;
@@ -73,16 +73,7 @@ public class PlayerContoller : Damageable
         rigid2d = GetComponent<Rigidbody2D>();
         movement = nextMovement = new Movement();
 
-        audioSource = GetComponent<AudioSource>();
         ApplySetting(SettingReader.ReadPlayerSetting("JsonData/PlayerSetting"));
-    }
-    
-    public void Pause() {
-        audioSource.Pause();
-    }
-
-    public void UnPause() {
-        audioSource.UnPause();
     }
 
     public void SetNextMovement(Movement movement) {
@@ -107,6 +98,7 @@ public class PlayerContoller : Damageable
             for (int i = 0; i < burstPosition.Length; i++) {
                 Weapon weapon = WeaponPrefabPool.GetFromPool(WeaponType.PlayerBullet);
                 weapon.Setup(burstPosition[i].position, Vector2.up * bulletSpeed);
+                AudioManager.ins.PlayerSound(AudioEnum.BulletShoot);
             }
         }
     }

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Audio;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void Back() {
-        PlayerContoller.ins.UnPause();
+        AudioManager.ins.UnPause();
         gameObject.SetActive(false);
         Time.timeScale = 1;
     }
