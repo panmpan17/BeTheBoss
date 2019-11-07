@@ -40,8 +40,15 @@ namespace Audio {
 
         public void PlayerSound(AudioEnum _type) {
             Audio audio;
+            if (Audio.TryGet(_type, out audio)) soundSrc.PlayOneShot(audio.Clip, audio.DefaultVolume);
+        }
+
+        public void PlayBGM(AudioEnum _type) {
+            Audio audio;
             if (Audio.TryGet(_type, out audio)) {
-                soundSrc.PlayOneShot(audio.Clip, audio.DefaultVolume);
+                bgmSrc.clip = audio.Clip;
+                bgmSrc.volume = audio.DefaultVolume;
+                bgmSrc.Play();
             }
         }
 
@@ -95,7 +102,7 @@ namespace Audio {
                     EditorGUI.PropertyField(new Rect(rect.x, rect.y + 19, rect.width, 18), ele.FindPropertyRelative("type"));
 
                     SerializedProperty defaultVolume = ele.FindPropertyRelative("defaultVolume");
-                    EditorGUI.Slider(new Rect(rect.x, rect.y + 38, rect.width, 18), "Default Volume", defaultVolume.floatValue, 0, 1);
+                    defaultVolume.floatValue = EditorGUI.Slider(new Rect(rect.x, rect.y + 38, rect.width, 18), "Default Volume", defaultVolume.floatValue, 0, 1);
                 };
             }
 

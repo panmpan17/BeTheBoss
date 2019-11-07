@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using MultiLanguage;
 using Saving;
+using Audio;
 
 public class MainMenuMgr : MonoBehaviour
 {
@@ -43,6 +44,8 @@ public class MainMenuMgr : MonoBehaviour
     private void Start() {
         selected.Selected = true;
         settingMenu.SetupCloseEvent(delegate { usingSetting = false; });
+
+        AudioManager.ins.PlayBGM(AudioEnum.MenuBGM);
     }
 
     public void LoadStoryMode() {
