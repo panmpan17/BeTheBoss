@@ -15,8 +15,6 @@ public class Boss : Damageable
     public int PlayerSide { get { return (PlayerContoller.ins.transform.position.x > transform.position.x? 1: -1); } }
     public List<AttackType> UsedAttack { get { return usedAttackType; } }
 
-    [SerializeField]
-    private RectTransform healthBar;
     private float healthBarFullSize;
 
     [SerializeField]
@@ -36,6 +34,7 @@ public class Boss : Damageable
 
     public delegate void AttackEvent(AttackType type);
     private AttackEvent WeaponFinishedEvent = null, WeaponAvalibleEvent = null;
+    private RectTransform healthBar;
 
     void Awake() {
         SetupHealth();
@@ -48,6 +47,7 @@ public class Boss : Damageable
         machineGuns = GetComponentsInChildren<MachineGun>();
         bombCabinDoors = GetComponentsInChildren<BombCabinDoor>();
 
+        healthBar = Instantiate(Resources.Load<GameObject>("Prefab/BossHealthBar"), FindObjectOfType<Canvas>().transform).transform.GetChild(0).GetComponent<RectTransform>();
         healthBarFullSize = healthBar.sizeDelta.x;
     }
 

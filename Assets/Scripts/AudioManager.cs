@@ -23,6 +23,8 @@ namespace Audio {
         private AudioSource bgmSrc, soundSrc;
 
         [SerializeField]
+        private float soundVolume, musicVolume;
+        [SerializeField]
         private Audio[] audios;
 
         private void Awake() {
@@ -36,6 +38,13 @@ namespace Audio {
             soundSrc = gameObject.AddComponent<AudioSource>();
 
             for (int i = 0; i < audios.Length; i++) Audio.Register(audios[i]);
+
+            ApplyVolume();
+        }
+
+        public void ApplyVolume() {
+            soundSrc.volume = soundVolume;
+            bgmSrc.volume = musicVolume;
         }
 
         public void PlayerSound(AudioEnum _type) {
@@ -88,8 +97,16 @@ namespace Audio {
     #if UNITY_EDITOR
         [CustomEditor(typeof(AudioManager))]
         public class _Editor : Editor {
+            AudioManager manager;
             ReorderableList audiosList;
+            SerializedProperty soundVolume, musicVolume;
+
             private void OnEnable() {
+                manager = target as AudioManager;
+
+                soundVolume = serializedObject.FindProperty("soundVolume");
+                musicVolume = serializedObject.FindProperty("musicVolume");
+
                 audiosList = new ReorderableList(serializedObject, serializedObject.FindProperty("audios"),
                     false, true, true, true);
                 audiosList.drawHeaderCallback = (Rect rect) => {
@@ -109,6 +126,11 @@ namespace Audio {
             public override void OnInspectorGUI() {
                 GUILayout.Space(8);
                 serializedObject.Update();
+                EditorGUILayout.Slider(soundVolume, 0, 1);
+                EditorGUILayout.Slider(musicVolume, 0, 1);
+                if (GUILayout.Button("Apply volume")) {
+                    manager.ApplyVolume();
+                }
                 audiosList.DoLayoutList();
                 serializedObject.ApplyModifiedProperties();
             }

@@ -7,8 +7,6 @@ public class BossInput : MonoBehaviour {
     private Boss boss;
     [SerializeField]
     private SelectableItem minionSelectable, machineGunSelectable, laserSelectable, bombSelectable;
-    [SerializeField]
-    private float aimMoveSpeed;
     private SelectableItem selected;
 
     private void Awake() {

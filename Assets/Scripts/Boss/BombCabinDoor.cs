@@ -7,7 +7,7 @@ using UnityEditor;
 #endif
 
 
-public class BombCabinDoor : MonoBehaviour
+public class BombCabinDoor : BossShipWeapon
 {
     [SerializeField]
     private Transform burstTransform;
@@ -19,6 +19,7 @@ public class BombCabinDoor : MonoBehaviour
     private void Awake() {
         shootTimer = new Timer(shootInterval);
         activeTimer = new Timer(activeTime);
+        enabled = false;
     }
 
     public void Rotate(int _drection)
@@ -40,7 +41,7 @@ public class BombCabinDoor : MonoBehaviour
             Spawn();
         }
 
-        if (activeTimer.UpdateEnd) actived = false;
+        if (activeTimer.UpdateEnd) actived = enabled = false;
     }
 
     private void Spawn()
@@ -54,10 +55,12 @@ public class BombCabinDoor : MonoBehaviour
             MachineGun.DegreeToVector2(angle + 90) * speed, Random.Range(minDistance, maxDistance));
     }
 
-    public void Activate() {
+    public override void Activate() {
+        base.Activate();
         actived = true;
         shootTimer.Reset();
         activeTimer.Reset();
+        Debug.Log(1);
     }
 
 #if UNITY_EDITOR
