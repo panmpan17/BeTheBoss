@@ -52,8 +52,9 @@ public class PlayerAI : MonoBehaviour {
             runAwayFrom.Add(new Vector3(Boss.ins.transform.position.x, y));
         }
 
-        for (int _i = 0; _i < BossBomb.Pools.AliveObjects.Count; _i++) {
-            Vector3 bombPos = BossBomb.Pools.AliveObjects[_i].transform.position;
+        List<Weapon> bombs = WeaponPrefabPool.GetPool(WeaponType.BossBomb).AliveObjects;
+        for (int _i = 0; _i < bombs.Count; _i++) {
+            Vector3 bombPos = bombs[_i].transform.position;
 
             float distance = (bombPos - transform.position).sqrMagnitude;
             if (distance < 16)

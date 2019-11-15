@@ -19,11 +19,13 @@ public class Boss : Damageable
 
     [SerializeField]
     private float machineGunTime, bombTime, minionTime;
+    [System.NonSerialized]
+    public AttackType[] AttackTypes;
+    private BossShipWeapon[] shipWeapons;
+    private List<IRotatableWeapon> rotatables;
+
     private Timer weaponTimer;
     private LaserCanon laser;
-    private MachineGun[] machineGuns;
-    private BombCabinDoor[] bombCabinDoors;
-    private MinionCabinDoor[] minionCabinDoors;
 
     private AttackType attackType = AttackType.None;
     private List<AttackType> usedAttackType;
@@ -43,11 +45,28 @@ public class Boss : Damageable
         usedAttackType = new List<AttackType>();
 
         laser = GetComponentInChildren<LaserCanon>();
-        minionCabinDoors = GetComponentsInChildren<MinionCabinDoor>();
-        machineGuns = GetComponentsInChildren<MachineGun>();
-        bombCabinDoors = GetComponentsInChildren<BombCabinDoor>();
 
-        healthBar = Instantiate(Resources.Load<GameObject>("Prefab/BossHealthBar"), FindObjectOfType<Canvas>().transform).transform.GetChild(0).GetComponent<RectTransform>();
+        shipWeapons = GetComponentsInChildren<BossShipWeapon>();
+        List<AttackType> attackTypesList = new List<AttackType>();
+        rotatables = new List<IRotatableWeapon>();
+        foreach (BossShipWeapon shipWeapon in shipWeapons) {
+            if (!attackTypesList.Contains(shipWeapon.Type)) attackTypesList.Add(shipWeapon.Type);
+            rotatables.Add(shipWeapon.GetComponent<IRotatableWeapon>());
+
+            // typeof(shipWeapon)
+            // rotatables
+            // typeof(shipWeapon.GetType()).
+            // IRotatableWeapon IRotatable = shipWeapon.GetType().GetInterface("IRotatableWeapon");
+            // System.Type[] types = shipWeapon.GetType().GetInterfaces();
+            // types.Any
+        }
+
+        AttackTypes = attackTypesList.ToArray();
+        weaponTimer = new Timer(10);
+    }
+
+    private void Start() {
+        healthBar = Instantiate(Resources.Load<GameObject>("Prefab/BossHealthBar"), GameManager.ins.MainCanvas.transform).transform.GetChild(0).GetComponent<RectTransform>();
         healthBarFullSize = healthBar.sizeDelta.x;
     }
 
@@ -59,13 +78,8 @@ public class Boss : Damageable
     void Update() {
         if (Idling) return;
 
-        if (UsingMachinGun) {
-            for (int i = 0; i < machineGuns.Length; i++) {
-                if (machineGuns[i].IsAimMode) machineGuns[i].Rotate(keyDirection);
-            }
-        } else if (UsingBomb) {
-            for (int i = 0; i < bombCabinDoors.Length; i++) bombCabinDoors[i].Rotate(keyDirection);
-        } else if (UsingLaser) {
+        for (int i = 0; i < rotatables.Count; i++) rotatables[i].Rotate(keyDirection);
+        if (UsingLaser) {
             laser.UpdateDirection(keyDirection);
         }
 
@@ -74,6 +88,15 @@ public class Boss : Damageable
 
     public void WeaponFinished() {
         if (WeaponFinishedEvent != null) WeaponFinishedEvent(attackType);
+
+        for (int i = 0; i < shipWeapons.Length; i++)
+        {
+            if (shipWeapons[i].Type == attackType)
+            {
+                shipWeapons[i].Deactivate();
+            }
+        }
+
         attackType = AttackType.None;
         if (usedAttackType.Count >= 3) {
             WeaponAvalibleEvent(usedAttackType[0]);
@@ -87,23 +110,12 @@ public class Boss : Damageable
         attackType = type;
         usedAttackType.Add(type);
 
-        switch (type) {
-            case AttackType.Laser:
-                laser.Activate();
-                break;
-            case AttackType.Minion:
-                for (int i = 0; i < minionCabinDoors.Length; i++) minionCabinDoors[i].Activate();
-                weaponTimer = new Timer(minionTime);
-                break;
-            case AttackType.Bomb:
-                for (int i = 0; i < bombCabinDoors.Length; i++) bombCabinDoors[i].Activate();
-                weaponTimer = new Timer(bombTime);
-                break;
-            case AttackType.MachineGun:
-                for (int i = 0; i < machineGuns.Length; i++) machineGuns[i].Activate();
-                weaponTimer = new Timer(machineGunTime);
-                break;
+        for (int i = 0; i < shipWeapons.Length; i++) {
+            if (shipWeapons[i].Type == type) {
+                shipWeapons[i].Activate();
+            }
         }
+        weaponTimer.Reset();
     }
 
     void HandleDeath() {

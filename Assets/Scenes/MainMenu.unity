@@ -408,8 +408,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Setting
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bcb3c86f17b064bf6981469431ff34ad, type: 2}
-  m_sharedMaterial: {fileID: 96341815662784714, guid: bcb3c86f17b064bf6981469431ff34ad,
+  m_fontAsset: {fileID: 11400000, guid: 89f982fdd939a4a76a8dc0d1761da01e, type: 2}
+  m_sharedMaterial: {fileID: -3513680370733867005, guid: 89f982fdd939a4a76a8dc0d1761da01e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -611,8 +611,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Revenge of The Boss
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f731cf24d50564e9dabd3a7e282220c8, type: 2}
-  m_sharedMaterial: {fileID: 96341815662784714, guid: f731cf24d50564e9dabd3a7e282220c8,
+  m_fontAsset: {fileID: 11400000, guid: 89f982fdd939a4a76a8dc0d1761da01e, type: 2}
+  m_sharedMaterial: {fileID: -3513680370733867005, guid: 89f982fdd939a4a76a8dc0d1761da01e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1054,8 +1054,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Exit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bcb3c86f17b064bf6981469431ff34ad, type: 2}
-  m_sharedMaterial: {fileID: 96341815662784714, guid: bcb3c86f17b064bf6981469431ff34ad,
+  m_fontAsset: {fileID: 11400000, guid: 89f982fdd939a4a76a8dc0d1761da01e, type: 2}
+  m_sharedMaterial: {fileID: -3513680370733867005, guid: 89f982fdd939a4a76a8dc0d1761da01e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1362,8 +1362,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Story Mode
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bcb3c86f17b064bf6981469431ff34ad, type: 2}
-  m_sharedMaterial: {fileID: 96341815662784714, guid: bcb3c86f17b064bf6981469431ff34ad,
+  m_fontAsset: {fileID: 11400000, guid: 89f982fdd939a4a76a8dc0d1761da01e, type: 2}
+  m_sharedMaterial: {fileID: -3513680370733867005, guid: 89f982fdd939a4a76a8dc0d1761da01e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1614,8 +1614,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Smash Mode
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: bcb3c86f17b064bf6981469431ff34ad, type: 2}
-  m_sharedMaterial: {fileID: 96341815662784714, guid: bcb3c86f17b064bf6981469431ff34ad,
+  m_fontAsset: {fileID: 11400000, guid: 89f982fdd939a4a76a8dc0d1761da01e, type: 2}
+  m_sharedMaterial: {fileID: -3513680370733867005, guid: 89f982fdd939a4a76a8dc0d1761da01e,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}

@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9071954474f29480f87dc1fb4a539273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 15
+  startingHealth: 30
   type: 4
   damage: 12
   putWhenTouchWall: 0

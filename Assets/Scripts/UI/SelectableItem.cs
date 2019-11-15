@@ -18,12 +18,12 @@ using Audio;
 public class SelectableItem : MonoBehaviour
 {
     [SerializeField]
-    private SelectableStyle style;
-    private Image image;
-    private TextMeshProUGUI text;
-    private SpriteRenderer spriteRenderer;
+    protected SelectableStyle style;
+    protected Image image;
+    protected TextMeshProUGUI text;
+    protected SpriteRenderer spriteRenderer;
 
-    private Color color {
+    protected Color color {
         get {
             if (image != null) return image.color;
             else if (text != null) return text.color;
@@ -38,17 +38,17 @@ public class SelectableItem : MonoBehaviour
         }
     }
 
-    private bool selected, actived, disabled;
+    protected bool selected, actived, disabled;
 
     [SerializeField]
-    private SelectableItem leftNavigate, rightNavigate, topNavigate, bottomNavigate;
-    public SelectableItem NavLeft { get { return leftNavigate; } }
-    public SelectableItem NavRight { get { return rightNavigate; } }
-    public SelectableItem NavTop { get { return topNavigate; } }
-    public SelectableItem NavBottom { get { return bottomNavigate; } }
+    protected SelectableItem leftNavigate, rightNavigate, topNavigate, bottomNavigate;
+    public virtual SelectableItem NavLeft { get { return leftNavigate; } set { leftNavigate = value; } }
+    public virtual SelectableItem NavRight { get { return rightNavigate; } set { rightNavigate = value; } }
+    public virtual SelectableItem NavTop { get { return topNavigate; } set { topNavigate = value; } }
+    public virtual SelectableItem NavBottom { get { return bottomNavigate; } set { bottomNavigate = value; } }
 
     [SerializeField]
-    private UnityEvent activeEvent, selectedEvent;
+    protected UnityEvent activeEvent, selectedEvent;
 
     public bool Selected
     {
@@ -66,7 +66,7 @@ public class SelectableItem : MonoBehaviour
         set { disabled = value; ApplyStyle(); }
     }
 
-    private void Awake() {
+    protected void Awake() {
         image = GetComponent<Image>();
         text = GetComponent<TextMeshProUGUI>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -80,7 +80,7 @@ public class SelectableItem : MonoBehaviour
         ApplyStyle();
     }
 
-    private void ApplyStyle() {
+    protected void ApplyStyle() {
         if (style == null) return;
         if (image == null) image = GetComponent<Image>();
 
@@ -98,6 +98,10 @@ public class SelectableItem : MonoBehaviour
     public virtual void Activate() {
         if (activeEvent != null) activeEvent.Invoke();
         AudioManager.ins.PlayerSound(AudioEnum.UIClick);
+    }
+
+    public void AddActivateEvent(UnityAction newEvent) {
+        activeEvent.AddListener(newEvent);
     }
 
     public void Select() {

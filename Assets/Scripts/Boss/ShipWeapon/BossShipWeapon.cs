@@ -4,6 +4,10 @@ using UnityEngine;
 
 public abstract class BossShipWeapon : MonoBehaviour
 {
+    [SerializeField]
+    protected Boss.AttackType type;
+    public Boss.AttackType Type { get { return type; }}
+
     public virtual void Activate() {
         enabled = true;
     }

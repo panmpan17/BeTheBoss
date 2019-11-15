@@ -10,6 +10,8 @@ public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Weapon : Damageable
 {
+    static public Transform weaponeCollection;
+
     [SerializeField]
     private WeaponType type;
     [SerializeField]
@@ -31,6 +33,8 @@ public class Weapon : Damageable
     private void Awake() {
         contactDamaegable = new List<Damageable>();
         if (useDamageRate) damageRateTimer = new Timer(damageRate);
+
+        if (weaponeCollection == null) weaponeCollection = new GameObject("Weapon Collection").transform;
     }
 
     private void Update()
@@ -231,7 +235,7 @@ public class WeaponPrefabPool {
         if (poolObjs.Count > 0) {
             Weapon = poolObjs[0];
             poolObjs.RemoveAt(0);
-        } else { Weapon = GameObject.Instantiate(prefab).GetComponent<Weapon>(); }
+        } else { Weapon = GameObject.Instantiate(prefab, Weapon.weaponeCollection).GetComponent<Weapon>(); }
 
         Weapon.gameObject.SetActive(true);
         AliveObjects.Add(Weapon);

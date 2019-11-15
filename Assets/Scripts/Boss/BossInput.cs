@@ -1,32 +1,73 @@
 #pragma warning disable 649
 
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Boss))]
 public class BossInput : MonoBehaviour {
     private Boss boss;
     [SerializeField]
-    private SelectableItem minionSelectable, machineGunSelectable, laserSelectable, bombSelectable;
+    private GameObject iconPrefab;
+    private ShipWeaponSelectableIcon[] shipWeaponSelectables;
     private SelectableItem selected;
 
     private void Awake() {
         boss = GetComponent<Boss>();
         boss.RegisterEvent(WeaponFinished, WeaponAvalible);
 
-        selected = minionSelectable;
+        // selected = minionSelectable;
+        // selected.Selected = true;
+    }
+
+    private void Start() {
+        SpawnShipWeaponIcon();
+    }
+
+    void SpawnShipWeaponIcon() {
+        Canvas canvas = GameManager.ins.GetCopyOfCanvas("ShipWeaponIcons");
+
+        float y = 0;
+        shipWeaponSelectables = new ShipWeaponSelectableIcon[boss.AttackTypes.Length];
+        for (int i = 0; i < boss.AttackTypes.Length; i++) {
+            Boss.AttackType _type = boss.AttackTypes[i];
+
+            RectTransform newIconT = Instantiate(iconPrefab, canvas.transform).GetComponent<RectTransform>();
+            Vector3 pos = newIconT.anchoredPosition;
+            pos.y = y;
+            newIconT.anchoredPosition = pos;
+            y += 80;
+
+            newIconT.GetComponentInChildren<TextMeshProUGUI>().text = (boss.AttackTypes.Length - i).ToString();
+            newIconT.GetChild(0).GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/Icon/" + _type.ToString());
+
+            ShipWeaponSelectableIcon current = shipWeaponSelectables[i] = newIconT.GetComponent<ShipWeaponSelectableIcon>();
+            current.Setup(this, _type);
+
+            if (i > 0) {
+                shipWeaponSelectables[i - 1].NavTop = shipWeaponSelectables[i];
+                shipWeaponSelectables[i].NavBottom = shipWeaponSelectables[i - 1];
+            }
+        }
+
+        selected = shipWeaponSelectables[shipWeaponSelectables.Length - 1];
         selected.Selected = true;
     }
 
     private void Update() {
         if (GameManager.ins.GamePaused) return;
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (selected.NavTop == null) return;
             selected.Selected = false;
             selected = selected.NavTop;
             selected.Select();
         }
         else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
+            if (selected.NavBottom == null) return;
             selected.Selected = false;
             selected = selected.NavBottom;
             selected.Select();
@@ -34,6 +75,12 @@ public class BossInput : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Space)) {
             if (!selected.Disabled && !selected.Active && boss.Idling) selected.Activate();
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1)) PressSortKey(1);
+        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2)) PressSortKey(2);
+        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3)) PressSortKey(3);
+        else if (Input.GetKeyDown(KeyCode.Alpha4) || Input.GetKeyDown(KeyCode.Keypad4)) PressSortKey(4);
+        else if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5)) PressSortKey(5);
+        else if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6)) PressSortKey(6);
 
         if (boss.UsingBomb || boss.UsingMachinGun || boss.UsingLaser)
         {
@@ -43,12 +90,13 @@ public class BossInput : MonoBehaviour {
         }
     }
 
-    public void ActiveMinion() { ActiveWeapon(minionSelectable, Boss.AttackType.Minion); }
-    public void ActiveBomb() { ActiveWeapon(bombSelectable, Boss.AttackType.Bomb); }
-    public void ActiveMachineGun() { ActiveWeapon(machineGunSelectable, Boss.AttackType.MachineGun); }
-    public void ActiveLaser() { ActiveWeapon(laserSelectable, Boss.AttackType.Laser); }
+    private void PressSortKey(int pressedNums) {
+        if (pressedNums <= shipWeaponSelectables.Length) {
+            shipWeaponSelectables[shipWeaponSelectables.Length - pressedNums].Activate();
+        }
+    }
 
-    private void ActiveWeapon(SelectableItem selectable, Boss.AttackType type) {
+    public void ActiveWeapon(SelectableItem selectable, Boss.AttackType type) {
         if (!selectable.Disabled && !selectable.Active && boss.Idling) {
             selectable.Active = true;
             boss.NewAttack(type);
@@ -57,43 +105,21 @@ public class BossInput : MonoBehaviour {
 
     private void WeaponFinished(Boss.AttackType _type)
     {
-        switch (_type)
+        for (int i = 0; i < shipWeaponSelectables.Length; i++)
         {
-            case Boss.AttackType.Laser:
-                laserSelectable.Active = false;
-                laserSelectable.Disabled = true;
-                break;
-            case Boss.AttackType.Bomb:
-                bombSelectable.Active = false;
-                bombSelectable.Disabled = true;
-                break;
-            case Boss.AttackType.Minion:
-                minionSelectable.Active = false;
-                minionSelectable.Disabled = true;
-                break;
-            case Boss.AttackType.MachineGun:
-                machineGunSelectable.Active = false;
-                machineGunSelectable.Disabled = true;
-                break;
+            if (shipWeaponSelectables[i].Type == _type)
+            {
+                shipWeaponSelectables[i].Active = false;
+                shipWeaponSelectables[i].Disabled = true;
+            }
         }
     }
 
     private void WeaponAvalible(Boss.AttackType _type)
     {
-        switch (_type)
+        for (int i = 0; i < shipWeaponSelectables.Length; i++)
         {
-            case Boss.AttackType.Laser:
-                laserSelectable.Disabled = false;
-                break;
-            case Boss.AttackType.Bomb:
-                bombSelectable.Disabled = false;
-                break;
-            case Boss.AttackType.Minion:
-                minionSelectable.Disabled = false;
-                break;
-            case Boss.AttackType.MachineGun:
-                machineGunSelectable.Disabled = false;
-                break;
+            if (shipWeaponSelectables[i].Type == _type) shipWeaponSelectables[i].Disabled = false;
         }
     }
 }
