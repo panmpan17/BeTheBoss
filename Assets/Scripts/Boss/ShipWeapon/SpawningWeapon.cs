@@ -6,11 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public interface IRotatableWeapon {
-    void Rotate(int _drection);
-}
-
-public class SpawningWeapon : BossShipWeapon, IRotatableWeapon
+public class SpawningWeapon : BossShipWeapon
 {
     [SerializeField]
     private WeaponType spawnWeaponeType;
@@ -72,6 +68,9 @@ public class SpawningWeapon : BossShipWeapon, IRotatableWeapon
         }
     }
 
+    public override void Left() { Rotate(-1); }
+    public override void Right() { Rotate(1); }
+
     public void Rotate(int _drection)
     {
         if (!enabled || rotateType != RotateType.Manual) return;
@@ -112,16 +111,24 @@ public class SpawningWeapon : BossShipWeapon, IRotatableWeapon
             rotateType = serializedObject.FindProperty("rotateType");
         }
 
-        private void IntMinMaxSlider(string name, SerializedProperty property1, SerializedProperty property2, int rangeMin, int rangeMax) {
+        public static void IntMinMaxSlider(string name, SerializedProperty property1, SerializedProperty property2, int rangeMin, int rangeMax) {
             float min = property1.intValue, max = property2.intValue;
             EditorGUILayout.LabelField(name);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(property1, GUIContent.none, GUILayout.Width(40));
+            // EditorGUILayout.MinMaxSlider(ref min, ref max, rangeMin, rangeMax);
+
+            EditorGUI.BeginChangeCheck();
             EditorGUILayout.MinMaxSlider(ref min, ref max, rangeMin, rangeMax);
+            if (EditorGUI.EndChangeCheck())
+            {
+                property1.intValue = Mathf.RoundToInt(min);
+                property2.intValue = Mathf.RoundToInt(max);
+                return;
+            }
+
             EditorGUILayout.PropertyField(property2, GUIContent.none, GUILayout.Width(40));
             EditorGUILayout.EndHorizontal();
-            property1.intValue = Mathf.RoundToInt(min);
-            property2.intValue = Mathf.RoundToInt(max);
         }
 
         public override void OnInspectorGUI() {

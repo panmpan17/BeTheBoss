@@ -22,10 +22,9 @@ public class Boss : Damageable
     [System.NonSerialized]
     public AttackType[] AttackTypes;
     private BossShipWeapon[] shipWeapons;
-    private List<IRotatableWeapon> rotatables;
 
     private Timer weaponTimer;
-    private LaserCanon laser;
+    // private LaserCanon laser;
 
     private AttackType attackType = AttackType.None;
     private List<AttackType> usedAttackType;
@@ -44,21 +43,12 @@ public class Boss : Damageable
         ins = this;
         usedAttackType = new List<AttackType>();
 
-        laser = GetComponentInChildren<LaserCanon>();
+        // laser = GetComponentInChildren<LaserCanon>();
 
         shipWeapons = GetComponentsInChildren<BossShipWeapon>();
         List<AttackType> attackTypesList = new List<AttackType>();
-        rotatables = new List<IRotatableWeapon>();
-        foreach (BossShipWeapon shipWeapon in shipWeapons) {
-            if (!attackTypesList.Contains(shipWeapon.Type)) attackTypesList.Add(shipWeapon.Type);
-            rotatables.Add(shipWeapon.GetComponent<IRotatableWeapon>());
-
-            // typeof(shipWeapon)
-            // rotatables
-            // typeof(shipWeapon.GetType()).
-            // IRotatableWeapon IRotatable = shipWeapon.GetType().GetInterface("IRotatableWeapon");
-            // System.Type[] types = shipWeapon.GetType().GetInterfaces();
-            // types.Any
+        foreach (BossShipWeapon weapon in FindObjectsOfType<BossShipWeapon>()) {
+            if (!attackTypesList.Contains(weapon.Type)) attackTypesList.Add(weapon.Type);
         }
 
         AttackTypes = attackTypesList.ToArray();
@@ -77,30 +67,34 @@ public class Boss : Damageable
 
     void Update() {
         if (Idling) return;
+        if (weaponTimer.UpdateEnd) WeaponFinished();
+    }
 
-        for (int i = 0; i < rotatables.Count; i++) rotatables[i].Rotate(keyDirection);
-        if (UsingLaser) {
-            laser.UpdateDirection(keyDirection);
-        }
-
-        if (!UsingLaser && weaponTimer.UpdateEnd) WeaponFinished();
+    public void Left() {
+        for (int i = 0; i < shipWeapons.Length; i++) shipWeapons[i].Left();
+    }
+    public void Right() {
+        for (int i = 0; i < shipWeapons.Length; i++) shipWeapons[i].Right();
     }
 
     public void WeaponFinished() {
-        if (WeaponFinishedEvent != null) WeaponFinishedEvent(attackType);
 
+        bool allWeaponDeactivate = true;
         for (int i = 0; i < shipWeapons.Length; i++)
         {
             if (shipWeapons[i].Type == attackType)
             {
-                shipWeapons[i].Deactivate();
+                allWeaponDeactivate = shipWeapons[i].Deactivate() && allWeaponDeactivate;
             }
         }
 
-        attackType = AttackType.None;
-        if (usedAttackType.Count >= 3) {
-            WeaponAvalibleEvent(usedAttackType[0]);
-            usedAttackType.RemoveAt(0);
+        if (allWeaponDeactivate) {
+            if (WeaponFinishedEvent != null) WeaponFinishedEvent(attackType);
+            attackType = AttackType.None;
+            if (usedAttackType.Count >= 3) {
+                WeaponAvalibleEvent(usedAttackType[0]);
+                usedAttackType.RemoveAt(0);
+            }
         }
     }
 

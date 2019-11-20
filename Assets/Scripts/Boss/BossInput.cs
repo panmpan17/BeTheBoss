@@ -85,8 +85,9 @@ public class BossInput : MonoBehaviour {
         if (boss.UsingBomb || boss.UsingMachinGun || boss.UsingLaser)
         {
             float horizontal = Input.GetAxisRaw("Horizontal");
-            if (Mathf.Abs(horizontal) > 0.5f) boss.keyDirection = horizontal > 0? -1: 1;
-            else boss.keyDirection = 0;
+            if (horizontal > 0.5f) boss.Left();
+            else if (horizontal < -0.5f) boss.Right();
+            // if (Mathf.Abs(horizontal) > 0.5f) {} // boss.keyDirection = horizontal > 0? -1: 1;
         }
     }
 

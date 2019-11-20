@@ -12,7 +12,11 @@ public abstract class BossShipWeapon : MonoBehaviour
         enabled = true;
     }
 
-    public virtual void Deactivate() {
+    public virtual bool Deactivate() {
         enabled = false;
+        return true;
     }
+
+    public abstract void Right();
+    public abstract void Left();
 }

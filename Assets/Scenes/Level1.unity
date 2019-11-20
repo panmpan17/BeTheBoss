@@ -697,8 +697,8 @@ MonoBehaviour:
   initialVec: {x: 0, y: 0}
   rotateType: 2
   revertRotate: 0
-  angleMin: 142
-  angleMax: 221
+  angleMin: 140
+  angleMax: 220
   rotateDirection: -1
   rotateSpeed: 30
 --- !u!212 &75373000
@@ -762,13 +762,14 @@ GameObject:
   - component: {fileID: 82160539}
   - component: {fileID: 82160541}
   - component: {fileID: 82160542}
+  - component: {fileID: 82160543}
   m_Layer: 8
   m_Name: LaserCanon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &82160539
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -860,7 +861,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82160538}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a553141e0d2aa4ecebe3f7937ab7097d, type: 3}
   m_Name: 
@@ -870,6 +871,30 @@ MonoBehaviour:
   speed: 3
   xMin: -6.5
   xMax: 6.5
+--- !u!114 &82160543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82160538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb4f7cac2593b47689ebaa5bb76a109a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  activatingWeapon: {fileID: 0}
+  moveType: 2
+  moveBackSpeed: 2
+  targetWeapon: {fileID: 1741449645}
+  delayTime: 2
+  moveMinX: -6
+  moveMinY: 0
+  moveMaxX: 6
+  moveMaxY: 0
+  leftVec: {x: -3, y: 0}
+  rightVec: {x: 3, y: 0}
 --- !u!1 &94117362
 GameObject:
   m_ObjectHideFlags: 0
@@ -2347,9 +2372,9 @@ MonoBehaviour:
   useCustomVec: 0
   initialVec: {x: 0, y: 0}
   rotateType: 2
-  revertRotate: 0
-  angleMin: 156
-  angleMax: 207
+  revertRotate: 1
+  angleMin: 165
+  angleMax: 195
   rotateDirection: 1
   rotateSpeed: 30
 --- !u!212 &1149857053
@@ -2900,8 +2925,8 @@ MonoBehaviour:
   initialVec: {x: 0, y: 0}
   rotateType: 2
   revertRotate: 1
-  angleMin: 142
-  angleMax: 221
+  angleMin: 140
+  angleMax: 220
   rotateDirection: 1
   rotateSpeed: 30
 --- !u!212 &1447774969
@@ -3007,8 +3032,8 @@ MonoBehaviour:
   initialVec: {x: 0, y: 0}
   rotateType: 2
   revertRotate: 0
-  angleMin: 154
-  angleMax: 207
+  angleMin: 165
+  angleMax: 195
   rotateDirection: 1
   rotateSpeed: 30
 --- !u!212 &1512158970
