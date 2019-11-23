@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SmashMenu.unity
     guid: 87842d9cccd76481bbc4f46e8d882920
+  - enabled: 1
+    path: Assets/Scenes/Level2.unity
+    guid: 3a5f83a5c01314b539d4d514539a5569
   m_configObjects: {}

@@ -1,0 +1,32 @@
+{
+    "Levels": [
+        {
+            "Scene": "Level1",
+            "Player": {
+                "StartingHealth": 100,
+                "FlySpeed": 4.0,
+                "RebirthPortection": 1.0,
+                "Life": 1,
+                "BulletFireRate": 0.18,
+                "BulletSpeed": 7.0,
+                "MissleStartCount": 1,
+                "MissleMaxCount": 2,
+                "MissleSpeed": 5.0
+            }
+        },
+        {
+            "Scene": "Level2",
+            "Player": {
+                "StartingHealth": 100,
+                "FlySpeed": 5.0,
+                "RebirthPortection": 3.0,
+                "Life": 5,
+                "BulletFireRate": 0.14,
+                "BulletSpeed": 7.0,
+                "MissleStartCount": 3,
+                "MissleMaxCount": 5,
+                "MissleSpeed": 5.0
+            }
+        }
+    ]
+}

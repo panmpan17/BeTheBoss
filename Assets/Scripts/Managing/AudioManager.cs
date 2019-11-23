@@ -19,7 +19,11 @@ namespace Audio {
 
     public class AudioManager : MonoBehaviour
     {
-        static public AudioManager ins;
+        static private AudioManager _ins;
+        static public AudioManager ins { get {
+            if (_ins == null) _ins = Instantiate(Resources.Load<AudioManager>("Prefab/AudioManager"));
+            return _ins;
+        } }
         private AudioSource bgmSrc, soundSrc;
 
         [SerializeField]
@@ -28,11 +32,6 @@ namespace Audio {
         private Audio[] audios;
 
         private void Awake() {
-            if (ins != null) {
-                Destroy(this);
-                return;
-            }
-            ins = this;
             DontDestroyOnLoad(gameObject);
             bgmSrc = gameObject.AddComponent<AudioSource>();
             soundSrc = gameObject.AddComponent<AudioSource>();

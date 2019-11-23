@@ -5,6 +5,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using Audio;
+using Setting.Data;
 
 [RequireComponent(typeof(SpriteRenderer)), RequireComponent(typeof(Rigidbody2D))]
 public class PlayerContoller : Damageable
@@ -72,8 +73,7 @@ public class PlayerContoller : Damageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigid2d = GetComponent<Rigidbody2D>();
         movement = nextMovement = new Movement();
-
-        ApplySetting(SettingReader.ReadPlayerSetting("JsonData/PlayerSetting"));
+        enabled = false;
     }
 
     public void SetNextMovement(Movement movement) {

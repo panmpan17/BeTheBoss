@@ -8,18 +8,23 @@ using UnityEditor;
 
 public class SpawningWeapon : BossShipWeapon
 {
+    static private Vector2 MiltiplyVector2(Vector2 first, Vector2 second)
+    {
+        return new Vector2(first.x * second.x, first.y * second.y);
+    }
+
     [SerializeField]
     private WeaponType spawnWeaponeType;
 
+    [SerializeField]
+    private int spawnLimit = -1;
     [SerializeField]
     private Transform spawningPos;
     [SerializeField]
     private float spawningTime, spawningIntervalTime;
     private Timer spawningTimer, spawningIntervalTimer;
     [SerializeField]
-    private bool useCustomVec;
-    [SerializeField]
-    private Vector2 initialVec;
+    private Vector2 vecMultiplier;
 
     [SerializeField]
     private RotateType rotateType = RotateType.None;
@@ -87,13 +92,16 @@ public class SpawningWeapon : BossShipWeapon
     }
 
     void Spawn() {
+        WeaponPrefabPool pool = WeaponPrefabPool.GetPool(spawnWeaponeType);
+        if (spawnLimit > -1 && pool.AliveObjects.Count >= spawnLimit) return;
+
         float angle;
         Vector3 axis;
-        transform.rotation.ToAngleAxis(out angle, out axis);
+        spawningPos.rotation.ToAngleAxis(out angle, out axis);
 
-        Weapon bullet = WeaponPrefabPool.GetPool(spawnWeaponeType).GetFromPool();
+        Weapon bullet = pool.GetFromPool();
 
-        bullet.Setup(spawningPos.position, useCustomVec? initialVec : DegreeToVector2(angle + 90) * 3, transform.rotation);
+        bullet.Setup(spawningPos.position, MiltiplyVector2(DegreeToVector2(angle + 90), vecMultiplier), rotateType == RotateType.None? Quaternion.identity : transform.rotation);
     }
 
     public override void Activate() {
@@ -116,7 +124,6 @@ public class SpawningWeapon : BossShipWeapon
             EditorGUILayout.LabelField(name);
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(property1, GUIContent.none, GUILayout.Width(40));
-            // EditorGUILayout.MinMaxSlider(ref min, ref max, rangeMin, rangeMax);
 
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.MinMaxSlider(ref min, ref max, rangeMin, rangeMax);
@@ -140,12 +147,12 @@ public class SpawningWeapon : BossShipWeapon
             EditorGUILayout.PropertyField(serializedObject.FindProperty("type"));
 
             EditorGUILayout.LabelField("Spawning Control", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnLimit"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningPos"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnWeaponeType"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningTime"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningIntervalTime"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("useCustomVec"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("initialVec"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("vecMultiplier"));
 
             EditorGUILayout.LabelField("Rotation", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(rotateType);

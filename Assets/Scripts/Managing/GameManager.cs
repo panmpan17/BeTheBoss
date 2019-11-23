@@ -7,10 +7,12 @@ using TMPro;
 using MultiLanguage;
 using Audio;
 using UnityEngine.UI;
+using Setting;
+using Setting.Data;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager ins;
+    static public GameManager ins;
     [SerializeField]
     private GameObject scorePanel;
     [SerializeField]
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour
     private Collider2D topCeilingCollider;
     [SerializeField]
     private PauseMenu pauseMenu;
+
+    private string activeSceneName;
 
     private Canvas mainCanvas;
     public Canvas MainCanvas { get {
@@ -37,18 +41,36 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         ins = this;
+        activeSceneName = SceneManager.GetActiveScene().name;
 
         scorePanel.SetActive(false);
         WeaponPrefabPool.ClearAllPool();
         RewardPrefabPool.ClearAllPool();
-        // BossBomb.Pools.SetupPrefab("Prefab/BossBomb");
-        // BossBomb.Pools.Clear();
 
         if (!MultiLanguageMgr.jsonLoaded) MultiLanguageMgr.LoadJson();
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
 
         pauseMenu.gameObject.SetActive(false);
+
+        StartCoroutine(LoadSetting());
+    }
+
+    private IEnumerator LoadSetting() {
+        yield return new WaitForEndOfFrame();
+        if (SettingReader.TryLoadLevelSetting())
+        {
+            LevelSetting setting;
+            if (SettingReader.TryGetLevelSetting(activeSceneName, out setting))
+            {
+                PlayerContoller.ins.ApplySetting(setting.Player);
+                PlayerContoller.ins.enabled = true;
+            }
+            else
+            {
+                Debug.LogErrorFormat("Can't find '{0}' level setting", activeSceneName);
+            }
+        }
     }
 
     public Canvas GetCopyOfCanvas(string name="New Canvas") {
@@ -97,6 +119,6 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("LevelSelect");
     }
 }

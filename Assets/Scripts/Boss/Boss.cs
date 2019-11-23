@@ -91,7 +91,7 @@ public class Boss : Damageable
         if (allWeaponDeactivate) {
             if (WeaponFinishedEvent != null) WeaponFinishedEvent(attackType);
             attackType = AttackType.None;
-            if (usedAttackType.Count >= 3) {
+            if (usedAttackType.Count > AttackTypes.Length / 2) {
                 WeaponAvalibleEvent(usedAttackType[0]);
                 usedAttackType.RemoveAt(0);
             }

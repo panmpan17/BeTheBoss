@@ -10,7 +10,11 @@ public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Weapon : Damageable
 {
-    static public Transform weaponeCollection;
+    static private GameObject _weaponeCollection;
+    static public Transform weaponeCollection { get {
+        if (_weaponeCollection == null) _weaponeCollection = new GameObject("Weapon Collection");
+        return _weaponeCollection.transform;
+    } }
 
     [SerializeField]
     private WeaponType type;
@@ -33,8 +37,6 @@ public class Weapon : Damageable
     private void Awake() {
         contactDamaegable = new List<Damageable>();
         if (useDamageRate) damageRateTimer = new Timer(damageRate);
-
-        if (weaponeCollection == null) weaponeCollection = new GameObject("Weapon Collection").transform;
     }
 
     private void Update()
