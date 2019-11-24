@@ -8,7 +8,7 @@ using MultiLanguage;
 public class IntroAnimation : MonoBehaviour
 {
     static private int[] lines = new int[] {
-        10, 11, 12, 13, 14, 15, 16, 17
+        101, 102, 103, 104, 105, 106, 107, 108
     };
     private int linesIndex;
 

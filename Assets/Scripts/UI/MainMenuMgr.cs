@@ -1,11 +1,12 @@
 ﻿#pragma warning disable 649
 
 using UnityEngine;
-using UnityEngine.UI;
+// using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using MultiLanguage;
 using Saving;
 using Audio;
+using Menu;
 
 public class MainMenuMgr : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class MainMenuMgr : MonoBehaviour
         SMASHMENU_SCENE = "SmashMenu";
     private bool loadingScene;
     [SerializeField]
-    private SelectableItem selected;
+    private Selectable selected;
     [SerializeField]
     private Transform canvas;
     [SerializeField]
@@ -29,7 +30,7 @@ public class MainMenuMgr : MonoBehaviour
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
         if (!SavingMgr.Loaded) SavingMgr.LoadSaving();
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
-        
+        PlayerPreference.ApplyAllPreference();
     }
 
     private void Awake() {
@@ -42,7 +43,8 @@ public class MainMenuMgr : MonoBehaviour
     }
 
     private void Start() {
-        selected.Selected = true;
+
+        selected.Select = true;
         settingMenu.SetupCloseEvent(delegate { usingSetting = false; });
 
         AudioManager.ins.PlayBGM(AudioEnum.MenuBGM);
@@ -76,16 +78,8 @@ public class MainMenuMgr : MonoBehaviour
     public void Update() {
         if (loadingScene || usingSetting || intro.activeSelf) return;
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) {
-            selected.Selected = false;
-            selected = selected.NavTop;
-            selected.Select();
-        }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) {
-            selected.Selected = false;
-            selected = selected.NavBottom;
-            selected.Select();
-        }
-        else if (Input.GetButtonDown("Submit")) selected.Activate();
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) selected.Up(ref selected);
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) selected.Down(ref selected);
+        else if (Input.GetButtonDown("Submit")) selected.Submit();
     }
 }

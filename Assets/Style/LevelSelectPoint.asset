@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c940a7a9f34148c59f49151e987c93d, type: 3}
   m_Name: LevelSelectPoint
   m_EditorClassIdentifier: 
-  NormalColor: {r: 0.3537736, g: 0.78981936, b: 1, a: 1}
-  SelectedColor: {r: 0, g: 0.49172878, b: 1, a: 1}
+  NormalColor: {r: 1, g: 1, b: 1, a: 1}
+  SelectedColor: {r: 0.29383236, g: 0.57987463, b: 0.8773585, a: 1}
   ActiveColor: {r: 0, g: 0.32636428, b: 1, a: 1}
-  DisabledColor: {r: 0, g: 0.12331537, b: 0.16981131, a: 1}
+  DisabledColor: {r: 0.36078432, g: 0.36078432, b: 0.36078432, a: 1}

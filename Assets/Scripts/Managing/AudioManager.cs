@@ -25,9 +25,9 @@ namespace Audio {
             return _ins;
         } }
         private AudioSource bgmSrc, soundSrc;
+        private float musicVolume, soundVolume;
+        private Audio currentBGM;
 
-        [SerializeField]
-        private float soundVolume, musicVolume;
         [SerializeField]
         private Audio[] audios;
 
@@ -37,13 +37,15 @@ namespace Audio {
             soundSrc = gameObject.AddComponent<AudioSource>();
 
             for (int i = 0; i < audios.Length; i++) Audio.Register(audios[i]);
-
-            ApplyVolume();
         }
 
-        public void ApplyVolume() {
+        public void ApplyVolume(float soundVolume, float musicVolume) {
+            this.musicVolume = soundVolume;
+            this.soundVolume = musicVolume;
             soundSrc.volume = soundVolume;
-            bgmSrc.volume = musicVolume;
+
+            if (currentBGM == null) bgmSrc.volume = musicVolume;
+            else bgmSrc.volume = currentBGM.DefaultVolume * musicVolume;
         }
 
         public void PlayerSound(AudioEnum _type) {
@@ -55,8 +57,9 @@ namespace Audio {
             Audio audio;
             if (Audio.TryGet(_type, out audio)) {
                 bgmSrc.clip = audio.Clip;
-                bgmSrc.volume = audio.DefaultVolume;
+                bgmSrc.volume = audio.DefaultVolume * musicVolume;
                 bgmSrc.Play();
+                currentBGM = audio;
             }
         }
 
@@ -98,13 +101,9 @@ namespace Audio {
         public class _Editor : Editor {
             AudioManager manager;
             ReorderableList audiosList;
-            SerializedProperty soundVolume, musicVolume;
 
             private void OnEnable() {
                 manager = target as AudioManager;
-
-                soundVolume = serializedObject.FindProperty("soundVolume");
-                musicVolume = serializedObject.FindProperty("musicVolume");
 
                 audiosList = new ReorderableList(serializedObject, serializedObject.FindProperty("audios"),
                     false, true, true, true);
@@ -125,11 +124,6 @@ namespace Audio {
             public override void OnInspectorGUI() {
                 GUILayout.Space(8);
                 serializedObject.Update();
-                EditorGUILayout.Slider(soundVolume, 0, 1);
-                EditorGUILayout.Slider(musicVolume, 0, 1);
-                if (GUILayout.Button("Apply volume")) {
-                    manager.ApplyVolume();
-                }
                 audiosList.DoLayoutList();
                 serializedObject.ApplyModifiedProperties();
             }

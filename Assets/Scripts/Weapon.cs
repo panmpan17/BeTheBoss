@@ -10,6 +10,12 @@ public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Weapon : Damageable
 {
+    static private Vector2[] cornerVector = new[] { new Vector2(1, 1), new Vector2(-1, 1), new Vector2(1, -1), new Vector2(-1, -1) };
+    static private Vector2 RandomVec()
+    {
+        return cornerVector[Random.Range(0, 4)];
+    }
+
     static private GameObject _weaponeCollection;
     static public Transform weaponeCollection { get {
         if (_weaponeCollection == null) _weaponeCollection = new GameObject("Weapon Collection");
@@ -131,10 +137,10 @@ public class Weapon : Damageable
                 Vector3 vec = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f));
                 switch (destroyRewards[i].type) {
                     case DestroyEventType.MedPack:
-                        RewardPrefabPool.GetPool(RewardType.MedPack).GetFromPool().Setup(transform.position, vec.normalized * 2);
+                        RewardPrefabPool.GetPool(RewardType.MedPack).GetFromPool().Setup(transform.position, RandomVec() * 2);
                         break;
                     case DestroyEventType.MissileSupply:
-                        RewardPrefabPool.GetPool(RewardType.MissileSupply).GetFromPool().Setup(transform.position, vec.normalized * 2);
+                        RewardPrefabPool.GetPool(RewardType.MissileSupply).GetFromPool().Setup(transform.position, RandomVec() * 2);
                         break;
                     case DestroyEventType.Explode:
                         Weapon explosion = WeaponPrefabPool.GetPool(WeaponType.Explosion).GetFromPool();

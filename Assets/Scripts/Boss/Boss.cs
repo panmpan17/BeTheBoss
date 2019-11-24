@@ -52,7 +52,7 @@ public class Boss : Damageable
         }
 
         AttackTypes = attackTypesList.ToArray();
-        weaponTimer = new Timer(10);
+        weaponTimer = new Timer(8);
     }
 
     private void Start() {

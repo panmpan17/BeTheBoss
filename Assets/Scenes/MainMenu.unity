@@ -516,15 +516,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 612659194}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7498b29a93dc34ef7a494714c2618051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 24ccbe433640d49418f6e4575bfc7fe3, type: 2}
-  leftNavigate: {fileID: 0}
-  rightNavigate: {fileID: 0}
-  topNavigate: {fileID: 2006066313}
-  bottomNavigate: {fileID: 1338877181}
-  activeEvent:
+  left: {fileID: 0}
+  right: {fileID: 0}
+  up: {fileID: 2006066313}
+  down: {fileID: 1338877181}
+  submitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1224865401}
@@ -538,9 +538,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  selectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &612659199
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1162,15 +1159,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1338877177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7498b29a93dc34ef7a494714c2618051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 24ccbe433640d49418f6e4575bfc7fe3, type: 2}
-  leftNavigate: {fileID: 0}
-  rightNavigate: {fileID: 0}
-  topNavigate: {fileID: 612659198}
-  bottomNavigate: {fileID: 1786889574}
-  activeEvent:
+  left: {fileID: 0}
+  right: {fileID: 0}
+  up: {fileID: 612659198}
+  down: {fileID: 0}
+  submitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1224865401}
@@ -1184,9 +1181,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  selectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1338877182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1470,15 +1464,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1786889570}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7498b29a93dc34ef7a494714c2618051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 24ccbe433640d49418f6e4575bfc7fe3, type: 2}
-  leftNavigate: {fileID: 0}
-  rightNavigate: {fileID: 0}
-  topNavigate: {fileID: 1338877181}
-  bottomNavigate: {fileID: 2006066313}
-  activeEvent:
+  left: {fileID: 0}
+  right: {fileID: 0}
+  up: {fileID: 0}
+  down: {fileID: 2006066313}
+  submitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1224865401}
@@ -1492,9 +1486,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  selectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1786889575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1559,7 +1550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ee69ba2cc5247c19568dcc13ef6262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 18
+  id: 12
 --- !u!114 &2006066313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1569,15 +1560,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2006066310}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ad84f1bbd6474a09a65f2148b2181d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 7498b29a93dc34ef7a494714c2618051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   style: {fileID: 11400000, guid: 24ccbe433640d49418f6e4575bfc7fe3, type: 2}
-  leftNavigate: {fileID: 0}
-  rightNavigate: {fileID: 0}
-  topNavigate: {fileID: 1786889574}
-  bottomNavigate: {fileID: 612659198}
-  activeEvent:
+  left: {fileID: 0}
+  right: {fileID: 0}
+  up: {fileID: 1786889574}
+  down: {fileID: 612659198}
+  submitEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1224865401}
@@ -1591,9 +1582,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  selectedEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2006066314
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -51,7 +51,6 @@ public class ActivateWeapon : BossShipWeapon
         enabled = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (movingBack) {
@@ -75,12 +74,15 @@ public class ActivateWeapon : BossShipWeapon
         delayTimer.Reset();
         movingBack = movable = false;
         originalPosition = target.position;
+
+        GetComponent<Animator>().SetTrigger("Prepare");
     }
     public override bool Deactivate() {
         if (!movingBack) {
             movable = false;
             movingBack = true;
             targetWeapon.SetActive(false);
+            GetComponent<Animator>().SetTrigger("End");
         }
         return !enabled;
     }
@@ -119,7 +121,7 @@ public class ActivateWeapon : BossShipWeapon
             GUILayout.Space(8);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("type"));
             EditorGUILayout.PropertyField(moveType);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("moveBack"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("delayTime"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("targetWeapon"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("moveBackSpeed"));
             FloatMinMaxSlider("X Moveble Range", serializedObject.FindProperty("moveMinX"), serializedObject.FindProperty("moveMaxX"), -10, 10);

@@ -1,53 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Menu;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class LevelSelectable : SelectableItem
+public class LevelSelectable : SelectableButton
 {
+    [SerializeField]
+    private SpriteRenderer targetRenderer;
     [SerializeField]
     private int levelId, requireUnlockLevel;
 
     private void Start() {
-        Disabled = !LevelSelectMgr.LevelHasUnlock(requireUnlockLevel);
+        disabled = !LevelSelectMgr.LevelHasUnlock(requireUnlockLevel);
+        ApplyStyle();
     }
 
-    public override void Activate() {
+    public override void Submit() {
         if (requireUnlockLevel < 0 || LevelSelectMgr.LevelHasUnlock(requireUnlockLevel))
             LevelSelectMgr.LoadLevel(levelId);
     }
 
-    // #if UNITY_EDITOR
-    // [CustomEditor(typeof(LevelSelectable))]
-    // public class _Editor: Editor {
-    //     private void OnEnable() {
-    //         LevelSelectable selectable = (LevelSelectable) target;
+    public override void ApplyStyle()
+    {
+        if (style == null) return;
 
-    //         serializedObject.Update();
-
-    //         SelectableItem[] selectables = selectable.GetComponents<SelectableItem>();
-    //         if (selectables.Length > 1) {
-    //             for (int i = 0; i < selectables.Length; i++) {
-    //                 if (!selectable.Equals(selectables[i])) {
-    //                     if (EditorUtility.DisplayDialog("Find Selectable", "Find selectable repeat,\nReplace it?", "Yes", "No")) {
-    //                         SerializedObject replaceSerObj = new SerializedObject(selectables[i]);
-    //                         serializedObject.FindProperty("style").objectReferenceValue = replaceSerObj.FindProperty("style").objectReferenceValue;
-    //                         serializedObject.FindProperty("leftNavigate").objectReferenceValue = replaceSerObj.FindProperty("leftNavigate").objectReferenceValue;
-    //                         serializedObject.FindProperty("rightNavigate").objectReferenceValue = replaceSerObj.FindProperty("rightNavigate").objectReferenceValue;
-    //                         serializedObject.FindProperty("topNavigate").objectReferenceValue = replaceSerObj.FindProperty("topNavigate").objectReferenceValue;
-    //                         serializedObject.FindProperty("bottomNavigate").objectReferenceValue = replaceSerObj.FindProperty("bottomNavigate").objectReferenceValue;
-    //                         DestroyImmediate(selectables[i]);
-    //                         break;
-    //                     }
-    //                 }
-    //             }
-    //         }
-
-    //         serializedObject.ApplyModifiedProperties();
-    //     }
-    // }
-    // #endif
+        if (!disabled && !actived && !selected)
+        {
+            Color = style.NormalColor;
+        }
+        else if (disabled)
+        {
+            if (selected) Color = Color.Lerp(style.SelectedColor, style.DisabledColor, 0.5f);
+            else Color = style.DisabledColor;
+        }
+        else if (actived)
+        {
+            if (selected) Color = Color.Lerp(style.SelectedColor, style.ActiveColor, 0.5f);
+            else Color = style.ActiveColor;
+        }
+        else if (selected) Color = style.SelectedColor;
+    }
 }

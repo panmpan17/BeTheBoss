@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -9,8 +8,10 @@ using UnityEditor;
 namespace MultiLanguage {
 	public enum Language { en_us, zh_tw }
 
-    public class MultiLanguageMgr
+    public static class MultiLanguageMgr
     {
+        private const string jsonPath = "JsonData/MultiLanguage";
+
 		static public bool jsonLoaded;
 		static private Dictionary<int, Dictionary<string, string>> languagesDict = new Dictionary<int, Dictionary<string, string>>();
 
@@ -30,8 +31,6 @@ namespace MultiLanguage {
                     return "Unknown";
             }
         }
-
-		private const string jsonPath = "JsonData/MultiLanguage";
 
 		static public void LoadJson() {
             TextAsset _text = Resources.Load<TextAsset>(jsonPath);
@@ -69,6 +68,34 @@ namespace MultiLanguage {
 				texts[i].Text = GetTextById(languageType, texts[i].Id);
 			}
 		}
+
+    #if UNITY_EDITOR
+        [MenuItem("Michael/掃描所有使用文字")]
+        static public void ScaneMultiText() {
+            TextAsset _text = Resources.Load<TextAsset>(jsonPath);
+            LanguageSetting setting = JsonUtility.FromJson<LanguageSetting>(_text.text);
+            Resources.UnloadAsset(_text);
+
+            List<char> allChars = new List<char>();
+            string basics = " 0123456789abcdefghijklmnopqrstuvewxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+,./<>?;':\"[]\\{}|";
+            for (int i = 0; i < basics.Length; i++) {
+                allChars.Add(basics[i]);
+            }
+
+            for (int i = 0; i < setting.Languages.Length; i++) {
+                for (int e = 0; e < setting.Languages[i].zh_tw.Length; e++)
+                {
+                    if (!allChars.Contains(setting.Languages[i].zh_tw[e])) allChars.Add(setting.Languages[i].zh_tw[e]);
+                }
+                for (int e = 0; e < setting.Languages[i].en_us.Length; e++)
+                {
+                    if (!allChars.Contains(setting.Languages[i].en_us[e])) allChars.Add(setting.Languages[i].en_us[e]);
+                }
+            }
+
+            Debug.Log(new string(allChars.ToArray()));
+        }
+    #endif
     }
 
 	[System.Serializable]

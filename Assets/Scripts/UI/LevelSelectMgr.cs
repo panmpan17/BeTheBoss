@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using Menu;
 
 public class LevelSelectMgr : MonoBehaviour
 {
@@ -9,70 +8,45 @@ public class LevelSelectMgr : MonoBehaviour
     private const string LEVELSCENE = "Level";
 
     [SerializeField]
-    private SelectableItem selected;
+    private Selectable selected;
     [SerializeField]
-    private float leftBoundX, rightBoundX;
-    private float TargetX { get { return selected.transform.position.x > rightBoundX? rightBoundX: (selected.transform.position.x < leftBoundX? leftBoundX: selected.transform.position.x); } }
+    private Vector3 boundMin, boundMax;
+    private Vector3 targetPos { get {
+        return new Vector3(Mathf.Clamp(selected.transform.position.x, boundMin.x, boundMax.x), Mathf.Clamp(selected.transform.position.y, boundMin.y, boundMax.y), boundMin.z);
+    } }
+    // private float TargetX { get { return selected.transform.position.x > boundMin.x? boundMax.x: (selected.transform.position.x < leftBoundX? leftBoundX: selected.transform.position.x); } }
     [SerializeField]
     private float smoothTime;
-    private float moveSpeed;
+    private Vector3 moveSpeed;
 
     private void Awake() {
         ins = this;
+        transform.position = targetPos;
     }
 
     private void Start() {
-        selected.Select();
+        selected.Select = true;
     }
 
     public void Update()
     {
-        if (Mathf.Abs(transform.position.x - TargetX) >= 0.03f)
+        if ((transform.position - targetPos).sqrMagnitude >= 0.01f)
         {
-            Vector3 pos = transform.position;
-            pos.x = Mathf.SmoothDamp(pos.x, TargetX, ref moveSpeed, smoothTime);
-            transform.position = pos;
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref moveSpeed, smoothTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if (selected.NavTop == null) return;
-            if (selected.NavTop.Disabled) return;
-            selected.Selected = false;
-            selected = selected.NavTop;
-            selected.Select();
-        }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (selected.NavBottom == null) return;
-            if (selected.NavBottom.Disabled) return;
-            selected.Selected = false;
-            selected = selected.NavBottom;
-            selected.Select();
-        }
-        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            if (selected.NavLeft == null) return;
-            if (selected.NavLeft.Disabled) return;
-            selected.Selected = false;
-            selected = selected.NavLeft;
-            selected.Select();
-        }
-        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            if (selected.NavRight == null) return;
-            if (selected.NavRight.Disabled) return;
-            selected.Selected = false;
-            selected = selected.NavRight;
-            selected.Select();
-        }
-        else if (Input.GetButtonDown("Submit")) selected.Activate();
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) selected.Up(ref selected);
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) selected.Down(ref selected);
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) selected.Left(ref selected);
+        else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) selected.Right(ref selected);
+        else if (Input.GetButtonDown("Submit")) selected.Submit();
     }
 
     private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(leftBoundX, -10, 1), new Vector3(leftBoundX, 10, 1));
-        Gizmos.DrawLine(new Vector3(rightBoundX, -10, 1), new Vector3(rightBoundX, 10, 1));
+        Gizmos.DrawWireCube((boundMin + boundMax) / 2, boundMax - boundMin);
+        // Gizmos.DrawLine(boun);
+        // Gizmos.DrawLine(new Vector3(boundMin.y, -10, 1), new Vector3(boundMin.y, 10, 1));
     }
 
     static public void LoadLevel(int levelId) {

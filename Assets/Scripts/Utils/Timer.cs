@@ -14,4 +14,5 @@ public struct Timer {
     public float Progress { get { return counting / targetTime; } }
     public bool UpdateEnd { get { counting += Time.deltaTime; return counting >= targetTime; }}
     public bool FixedUpdateEnd { get { counting += Time.fixedDeltaTime; return counting >= targetTime; }}
+    public bool UnscaleUpdateTimeEnd { get { counting += Time.unscaledDeltaTime; return counting >= targetTime; } }
 }

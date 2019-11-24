@@ -144,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startingHealth: 0
   type: 1
-  damage: 9
+  damage: 8
   putWhenTouchWall: 1
   putWhenDestory: 1
   putWhenTouchOpponent: 1
