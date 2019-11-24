@@ -66,6 +66,16 @@
             "zh_tw": "對戰模式"
         },
         {
+            "ID": 13,
+            "en_us": "Language",
+            "zh_tw": "語言"
+        },
+        {
+            "ID": 14,
+            "en_us": "Reset Setting",
+            "zh_tw": "重製設定"
+        },
+        {
             "ID": 101,
             "en_us": "There's An Ancient Power...",
             "zh_tw": "有一種遠古的力量..."

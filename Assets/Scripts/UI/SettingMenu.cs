@@ -13,13 +13,23 @@ public class SettingMenu : MonoBehaviour
     private TextMeshProUGUI resolutionText, languageText;
     [SerializeField]
     private MultiLanguageText fullscreenMultiLan;
+    private Canvas canvas;
 
     private System.Action closeSettingEvent;
+
+    private void Awake() {
+        canvas = GetComponent<Canvas>();
+    }
 
     private void Start() {
         selected.Select = true;
 
         ApplyPreference();
+        enabled = canvas.enabled = false;
+    }
+
+    public void Activate() {
+        enabled = canvas.enabled = true;
     }
 
     public void SetupCloseEvent(System.Action action) {
@@ -65,8 +75,13 @@ public class SettingMenu : MonoBehaviour
         PlayerPreference.ApplyLanguage();
     }
 
+    public void Reset() {
+        PlayerPreference.ResetDefault();
+        ApplyPreference();
+    }
+
     public void Back() {
-        gameObject.SetActive(false);
+        enabled = canvas.enabled = false;
         if (closeSettingEvent != null) closeSettingEvent();
         PlayerPreference.Save();
     }

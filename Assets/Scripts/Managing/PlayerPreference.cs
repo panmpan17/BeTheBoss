@@ -121,6 +121,7 @@ static public class PlayerPreference
         fullscreen = 1;
         skipIntro = 0;
 
+        ApplyAllPreference();
         Save();
     }
 }

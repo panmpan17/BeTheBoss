@@ -38,8 +38,7 @@ public class MainMenuMgr : MonoBehaviour
         InitialLoading();
         intro.SetActive(!PlayerPreference.SkipIntro);
 
-        settingMenu = Instantiate(Resources.Load<GameObject>("Prefab/SettingMenu"), canvas).GetComponent<SettingMenu>();
-        settingMenu.gameObject.SetActive(false);
+        settingMenu = Instantiate(Resources.Load<SettingMenu>("Prefab/SettingMenu"));
     }
 
     private void Start() {
@@ -64,7 +63,7 @@ public class MainMenuMgr : MonoBehaviour
 
     public void OpenSetting() {
         usingSetting = true;
-        settingMenu.gameObject.SetActive(true);
+        settingMenu.Activate();
     }
 
     public void Quit() {
