@@ -154,7 +154,12 @@ MonoBehaviour:
     trigger: 
   triggerAnimation:
     trigger: 
-  destroyAnimation:
-    trigger: 
   onlyOneDestroyEvent: 0
   destroyRewards: []
+  shakeCameraOnDestroy: 0
+  shakeInfo:
+    Time: 0
+    Interval: 0
+    XDelta: 0
+    YDelta: 0
+    ForceShake: 0

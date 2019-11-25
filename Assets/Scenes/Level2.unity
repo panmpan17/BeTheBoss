@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 10413418}
   - component: {fileID: 10413421}
   - component: {fileID: 10413422}
+  - component: {fileID: 10413423}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -436,6 +437,18 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a97d898569a546f999028c2dda335de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &10413423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10413417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a178d9f300344dcdb274646bf07de63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &26932188
@@ -691,7 +704,9 @@ MonoBehaviour:
   type: 2
   spawnWeaponeType: 3
   spawnLimit: -1
-  spawningPos: {fileID: 200834491}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 200834491}
   spawningTime: 8
   spawningIntervalTime: 0.35
   vecMultiplier: {x: 3.3, y: 3.3}
@@ -1381,7 +1396,9 @@ MonoBehaviour:
   type: 3
   spawnWeaponeType: 4
   spawnLimit: 35
-  spawningPos: {fileID: 250257149}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 250257149}
   spawningTime: 9
   spawningIntervalTime: 0.5
   vecMultiplier: {x: 7, y: 7}
@@ -2021,8 +2038,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aab2cff61cb5473e8afafdb6ff7e014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconPrefab: {fileID: 7347829446854989221, guid: d088830147c5d4540baf0db32f4e8cb6,
-    type: 3}
+  shipWeaponSelectables: []
 --- !u!1 &656175944
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,7 +2087,9 @@ MonoBehaviour:
   type: 2
   spawnWeaponeType: 3
   spawnLimit: -1
-  spawningPos: {fileID: 1311115111}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 1311115111}
   spawningTime: 8
   spawningIntervalTime: 0.35
   vecMultiplier: {x: 3.3, y: 3.3}
@@ -2510,7 +2528,9 @@ MonoBehaviour:
   type: 4
   spawnWeaponeType: 5
   spawnLimit: -1
-  spawningPos: {fileID: 396026965}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 396026965}
   spawningTime: 9
   spawningIntervalTime: 1.2
   vecMultiplier: {x: 2.5, y: 2.5}
@@ -3035,7 +3055,9 @@ MonoBehaviour:
   type: 2
   spawnWeaponeType: 3
   spawnLimit: -1
-  spawningPos: {fileID: 1985790298}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 1985790298}
   spawningTime: 8
   spawningIntervalTime: 0.35
   vecMultiplier: {x: 3.3, y: 3.3}
@@ -3142,7 +3164,9 @@ MonoBehaviour:
   type: 2
   spawnWeaponeType: 3
   spawnLimit: -1
-  spawningPos: {fileID: 1400623823}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 1400623823}
   spawningTime: 8
   spawningIntervalTime: 0.35
   vecMultiplier: {x: 3.3, y: 3.3}
@@ -3249,7 +3273,9 @@ MonoBehaviour:
   type: 4
   spawnWeaponeType: 5
   spawnLimit: -1
-  spawningPos: {fileID: 918518303}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 918518303}
   spawningTime: 9
   spawningIntervalTime: 1.2
   vecMultiplier: {x: 2.5, y: 2.5}
@@ -3512,7 +3538,9 @@ MonoBehaviour:
   type: 3
   spawnWeaponeType: 4
   spawnLimit: 35
-  spawningPos: {fileID: 819865209}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 819865209}
   spawningTime: 9
   spawningIntervalTime: 0.5
   vecMultiplier: {x: 7, y: 7}
@@ -3729,6 +3757,13 @@ MonoBehaviour:
     trigger: 
   onlyOneDestroyEvent: 0
   destroyRewards: []
+  shakeCameraOnDestroy: 0
+  shakeInfo:
+    Time: 0
+    Interval: 0
+    XDelta: 0
+    YDelta: 0
+    ForceShake: 0
 --- !u!50 &1741449651
 Rigidbody2D:
   serializedVersion: 4

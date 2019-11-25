@@ -155,11 +155,18 @@ MonoBehaviour:
     trigger: 
   triggerAnimation:
     trigger: 
-  destroyAnimation:
-    trigger: 
   onlyOneDestroyEvent: 1
   destroyRewards:
-  - type: 0
-    chance: 0.02
-  - type: 2
-    chance: 0.02
+  - Type: 0
+    Chance: 0.01
+    Scale: 1
+  - Type: 2
+    Chance: 0.01
+    Scale: 1
+  shakeCameraOnDestroy: 0
+  shakeInfo:
+    Time: 0
+    Interval: 0
+    XDelta: 0
+    YDelta: 0
+    ForceShake: 0

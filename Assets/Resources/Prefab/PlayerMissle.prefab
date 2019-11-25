@@ -163,14 +163,20 @@ MonoBehaviour:
   damageRate: 0
   initAnimation:
     trigger: Init
-  triggerAnimation:
-    trigger: 
-  destroyAnimation:
-    trigger: 
   onlyOneDestroyEvent: 1
   destroyRewards:
-  - type: 1
-    chance: 1
+  - Type: 1
+    Chance: 1
+    Scale: 1
+    Damage: 100
+    useDamageRate: 1
+  shakeCameraOnDestroy: 1
+  shakeInfo:
+    Time: 20
+    Interval: 0.06
+    XDelta: 0.1
+    YDelta: 0.1
+    ForceShake: 1
 --- !u!1 &170447924071274263
 GameObject:
   m_ObjectHideFlags: 0

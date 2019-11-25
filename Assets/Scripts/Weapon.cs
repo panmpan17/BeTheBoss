@@ -1,11 +1,11 @@
-﻿#pragma warning disable 649
+#pragma warning disable 649
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, BossBomb, Explosion }
+public enum WeaponType { Laser, PlayerBullet, PlayerMissle, BossBullet, Minion, BossBomb, Explosion, EMP,  }
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Weapon : Damageable
@@ -37,6 +37,10 @@ public class Weapon : Damageable
     private bool onlyOneDestroyEvent;
     [SerializeField]
     private DestroyEvent[] destroyRewards;
+    [SerializeField]
+    private bool shakeCameraOnDestroy;
+    [SerializeField]
+    private CameraControl.ShakeInfo shakeInfo;
     private Timer damageRateTimer;
     private List<Damageable> contactDamaegable;
 
@@ -131,11 +135,11 @@ public class Weapon : Damageable
     }
 
     private void SpawnDestroyEvent() {
+        float chance = Random.Range(0f, 1f);
         for (int i = 0; i < destroyRewards.Length; i++) {
-            float chance = Random.Range(0f, 1f);
-            if (chance <= destroyRewards[i].chance) {
+            if (chance <= destroyRewards[i].Chance) {
                 Vector3 vec = new Vector3(Random.Range(0f, 1f), Random.Range(0f, 1f));
-                switch (destroyRewards[i].type) {
+                switch (destroyRewards[i].Type) {
                     case DestroyEventType.MedPack:
                         RewardPrefabPool.GetPool(RewardType.MedPack).GetFromPool().Setup(transform.position, RandomVec() * 2);
                         break;
@@ -159,6 +163,9 @@ public class Weapon : Damageable
     private bool putting;
     private void PrepareToPut() {
         if (putting) return;
+
+        if (shakeCameraOnDestroy) CameraControl.ins.ShakeCamera(shakeInfo);
+
         putting = true;
         if (destroyRewards.Length > 0) SpawnDestroyEvent();
 
@@ -181,9 +188,9 @@ public class Weapon : Damageable
     }
 
     [System.Serializable]
-    private class DestroyEvent {
-        public DestroyEventType type;
-        public float chance;
+    public struct DestroyEvent {
+        public DestroyEventType Type;
+        public float Chance;
     }
 
     public enum DestroyEventType { MedPack, Explode, MissileSupply }

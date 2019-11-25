@@ -7,21 +7,20 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(Boss))]
 public class BossInput : MonoBehaviour {
+    static private GameObject _iconPrefab;
+    static private GameObject iconPrefab { get {
+        if (_iconPrefab == null) _iconPrefab = Resources.Load<GameObject>("Prefab/BossInputIcon");
+        return _iconPrefab;
+    } }
+
     private Boss boss;
     [SerializeField]
-    private GameObject iconPrefab;
     private ShipWeaponSelectableIcon[] shipWeaponSelectables;
     private SelectableItem selected;
 
     private void Awake() {
         boss = GetComponent<Boss>();
         boss.RegisterEvent(WeaponFinished, WeaponAvalible);
-
-        // selected = minionSelectable;
-        // selected.Selected = true;
-    }
-
-    private void Start() {
         SpawnShipWeaponIcon();
     }
 

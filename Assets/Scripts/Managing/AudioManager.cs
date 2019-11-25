@@ -34,7 +34,9 @@ namespace Audio {
         private void Awake() {
             DontDestroyOnLoad(gameObject);
             bgmSrc = gameObject.AddComponent<AudioSource>();
+            bgmSrc.loop = true;
             soundSrc = gameObject.AddComponent<AudioSource>();
+            soundSrc.playOnAwake = false;
 
             for (int i = 0; i < audios.Length; i++) Audio.Register(audios[i]);
         }

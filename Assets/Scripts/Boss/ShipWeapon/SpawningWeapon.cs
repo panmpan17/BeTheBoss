@@ -19,7 +19,12 @@ public class SpawningWeapon : BossShipWeapon
     [SerializeField]
     private int spawnLimit = -1;
     [SerializeField]
-    private Transform spawningPos;
+    private SpawnType spawnType;
+    private enum SpawnType { OneByOne, AllAtOnce }
+    [SerializeField]
+    private Transform[] spawningPos;
+    public Transform[] SpawningPos { get { return spawningPos; } }
+    private int spawningPosIndex;
     [SerializeField]
     private float spawningTime, spawningIntervalTime;
     private Timer spawningTimer, spawningIntervalTimer;
@@ -95,13 +100,28 @@ public class SpawningWeapon : BossShipWeapon
         WeaponPrefabPool pool = WeaponPrefabPool.GetPool(spawnWeaponeType);
         if (spawnLimit > -1 && pool.AliveObjects.Count >= spawnLimit) return;
 
-        float angle;
-        Vector3 axis;
-        spawningPos.rotation.ToAngleAxis(out angle, out axis);
+        if (spawnType == SpawnType.OneByOne) {
+            spawningPosIndex++;
+            if (spawningPosIndex >= spawningPos.Length) spawningPosIndex = 0;
 
-        Weapon bullet = pool.GetFromPool();
+            float angle;
+            Vector3 axis;
+            spawningPos[spawningPosIndex].rotation.ToAngleAxis(out angle, out axis);
 
-        bullet.Setup(spawningPos.position, MiltiplyVector2(DegreeToVector2(angle + 90), vecMultiplier), rotateType == RotateType.None? Quaternion.identity : transform.rotation);
+            Weapon bullet = pool.GetFromPool();
+
+            bullet.Setup(spawningPos[spawningPosIndex].position, MiltiplyVector2(DegreeToVector2(angle + 90), vecMultiplier), rotateType == RotateType.None? Quaternion.identity : transform.rotation);
+        } else {
+            for (spawningPosIndex = 0; spawningPosIndex < spawningPos.Length; spawningPosIndex++) {
+                float angle;
+                Vector3 axis;
+                spawningPos[spawningPosIndex].rotation.ToAngleAxis(out angle, out axis);
+
+                Weapon bullet = pool.GetFromPool();
+
+                bullet.Setup(spawningPos[spawningPosIndex].position, MiltiplyVector2(DegreeToVector2(angle + 90), vecMultiplier), rotateType == RotateType.None ? Quaternion.identity : transform.rotation);
+            }
+        }
     }
 
     public override void Activate() {
@@ -113,9 +133,11 @@ public class SpawningWeapon : BossShipWeapon
     #if UNITY_EDITOR
     [CustomEditor(typeof(SpawningWeapon))]
     public class _Editor : Editor {
+        SpawningWeapon weapon;
         SerializedProperty rotateType;
 
         private void OnEnable() {
+            weapon = (SpawningWeapon) target;
             rotateType = serializedObject.FindProperty("rotateType");
         }
 
@@ -148,7 +170,8 @@ public class SpawningWeapon : BossShipWeapon
 
             EditorGUILayout.LabelField("Spawning Control", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnLimit"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningPos"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnType"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningPos"), true);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnWeaponeType"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningTime"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningIntervalTime"));
@@ -177,18 +200,14 @@ public class SpawningWeapon : BossShipWeapon
 
         private void OnSceneGUI()
         {
-            serializedObject.Update();
-            Transform spawningPos = (Transform)serializedObject.FindProperty("spawningPos").objectReferenceValue;
-
-            if (spawningPos == null) return;
-
-            Transform _transform = (target as SpawningWeapon).transform;
-
-            Vector3 pos = Handles.PositionHandle(spawningPos.position, _transform.rotation);
-            if (spawningPos.position != pos)
-            {
-                Undo.RecordObject(spawningPos, "Change spawning pos");
-                spawningPos.position = pos;
+            for (int i = 0; i < weapon.SpawningPos.Length; i++) {
+                EditorGUI.BeginChangeCheck();
+                Vector3 pos = Handles.PositionHandle(weapon.SpawningPos[i].position, weapon.SpawningPos[i].rotation);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(weapon.SpawningPos[i], "Change spawning pos");
+                    weapon.SpawningPos[i].position = pos;
+                }
             }
         }
     }

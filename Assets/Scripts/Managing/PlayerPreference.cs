@@ -24,9 +24,9 @@ static public class PlayerPreference
     static private int languagesLength = Enum.GetNames(typeof(Language)).Length;
 
     // Saved data
-    static private float musicVolume = 1;
-    static private float soundVolume = 1;
-    static private int resolutionIndex = 1;
+    static private float musicVolume = 0.5f;
+    static private float soundVolume = 0.5f;
+    static private int resolutionIndex = 2;
     static private int languageIndex = 0;
     static private int fullscreen = 1;
     static private int skipIntro;
@@ -56,9 +56,7 @@ static public class PlayerPreference
 
     static public Language Language { get { return (Language) languageIndex; } }
     static public int LanguageIndex { get { return languageIndex; } set {
-        if (value < 0) languageIndex = languagesLength - 1;
-        else if (value >= languagesLength) languageIndex = 0;
-        else languageIndex = value;
+        languageIndex = Mathf.Clamp(value, 0, languagesLength - 1);
     }}
 
     static public bool Fullscreen { get { return fullscreen == 1; } set { fullscreen = value ? 1 : 0; } }
@@ -101,9 +99,9 @@ static public class PlayerPreference
     }
 
     static public void ResetDefault() {
-        musicVolume = 1;
-        soundVolume = 1;
-        resolutionIndex = 1;
+        musicVolume = 0.5f;
+        soundVolume = 0.5f;
+        resolutionIndex = 2;
 
         switch(Application.systemLanguage) {
             case SystemLanguage.Chinese:

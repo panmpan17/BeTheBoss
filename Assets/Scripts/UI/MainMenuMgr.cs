@@ -25,7 +25,7 @@ public class MainMenuMgr : MonoBehaviour
     private SettingMenu settingMenu;
     private bool usingSetting;
 
-    public void InitialLoading() {
+    static public void InitialLoading() {
         if (!MultiLanguageMgr.jsonLoaded) MultiLanguageMgr.LoadJson();
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
         if (!SavingMgr.Loaded) SavingMgr.LoadSaving();
@@ -39,13 +39,11 @@ public class MainMenuMgr : MonoBehaviour
         intro.SetActive(!PlayerPreference.SkipIntro);
 
         settingMenu = Instantiate(Resources.Load<SettingMenu>("Prefab/SettingMenu"));
+        settingMenu.SetupCloseEvent(delegate { usingSetting = false; });
     }
 
     private void Start() {
-
         selected.Select = true;
-        settingMenu.SetupCloseEvent(delegate { usingSetting = false; });
-
         AudioManager.ins.PlayBGM(AudioEnum.MenuBGM);
     }
 

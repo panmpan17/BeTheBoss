@@ -19,13 +19,13 @@ public class SettingMenu : MonoBehaviour
 
     private void Awake() {
         canvas = GetComponent<Canvas>();
+        enabled = canvas.enabled = false;
     }
 
     private void Start() {
         selected.Select = true;
 
         ApplyPreference();
-        enabled = canvas.enabled = false;
     }
 
     public void Activate() {

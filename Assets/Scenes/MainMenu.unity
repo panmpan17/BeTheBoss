@@ -851,7 +851,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 210724011
   m_SortingOrder: 1
   m_TargetDisplay: 0
@@ -1538,7 +1538,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: -625, y: 379}
-  m_SizeDelta: {x: 518.6, y: 50}
+  m_SizeDelta: {x: 1300, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2006066312
 MonoBehaviour:
@@ -1574,7 +1574,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1224865401}
-        m_MethodName: LoadSmashMenu
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

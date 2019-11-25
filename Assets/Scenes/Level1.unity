@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 10413418}
   - component: {fileID: 10413421}
   - component: {fileID: 10413422}
+  - component: {fileID: 10413423}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -436,6 +437,18 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a97d898569a546f999028c2dda335de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &10413423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10413417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a178d9f300344dcdb274646bf07de63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &26932188
@@ -1772,8 +1785,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aab2cff61cb5473e8afafdb6ff7e014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconPrefab: {fileID: 7347829446854989221, guid: d088830147c5d4540baf0db32f4e8cb6,
-    type: 3}
+  shipWeaponSelectables: []
 --- !u!1 &661234370
 GameObject:
   m_ObjectHideFlags: 0

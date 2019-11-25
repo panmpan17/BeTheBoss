@@ -5,7 +5,7 @@ using MultiLanguage;
 public class IntroAnimation : MonoBehaviour
 {
     static private int[] lines = new int[] {
-        101, 102, 103, 104, 105, 106, 107, 108
+        101, 102, 103, 104, 105, 106, 107, 108, 109
     };
     private int linesIndex;
 
