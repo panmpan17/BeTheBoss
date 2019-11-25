@@ -153,9 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9071954474f29480f87dc1fb4a539273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingHealth: 50
+  startingHealth: 40
   type: 5
-  damage: 25
+  damage: 0
   putWhenTouchWall: 1
   putWhenDestory: 1
   putWhenTouchOpponent: 1
@@ -166,6 +166,13 @@ MonoBehaviour:
   triggerAnimation:
     trigger: Explode
   destroyAnimation:
-    trigger: Explode
-  onlyOneDestroyEvent: 0
+    trigger: 
+  onlyOneDestroyEvent: 1
   destroyRewards: []
+  shakeCameraOnDestroy: 1
+  shakeInfo:
+    Time: 5
+    Interval: 0.05
+    XDelta: 0.06
+    YDelta: 0.06
+    ForceShake: 0

@@ -62,8 +62,8 @@
         },
         {
             "ID": 12,
-            "en_us": "Smash Mode",
-            "zh_tw": "對戰模式"
+            "en_us": "Smash Mode (Comming Soon)",
+            "zh_tw": "對戰模式 (準備中)"
         },
         {
             "ID": 13,
@@ -77,43 +77,48 @@
         },
         {
             "ID": 101,
-            "en_us": "There's An Ancient Power...",
+            "en_us": "There's An Ancient Being...",
             "zh_tw": "有一種遠古的力量..."
         },
         {
             "ID": 102,
-            "en_us": "Travel Between Life And Death",
-            "zh_tw": "穿梭於生命與死亡間"
+            "en_us": "Where Ever It Been...",
+            "zh_tw": "只要他經過..."
         },
         {
             "ID": 103,
+            "en_us": "Empire became Wreckage",
+            "zh_tw": "帝國變成殘骸"
+        },
+        {
+            "ID": 104,
             "en_us": "<color=#FFDDBB><size=150%>The PLAYER</size></color>",
             "zh_tw": "<color=#FFDDBB><size=150%>玩家</size></color>"
         },
         {
-            "ID": 104,
+            "ID": 105,
             "en_us": "Unstoppable Killing Machine",
             "zh_tw": "無法阻擋的殺人機器"
         },
         {
-            "ID": 105,
-            "en_us": "Are You Up For The Challenge?",
-            "zh_tw": "你準備好接受挑戰了嗎?"
-        },
-        {
             "ID": 106,
-            "en_us": "Will You Do Whatever It Takes?",
-            "zh_tw": "你會不惜一切代價嗎?"
+            "en_us": "Fight Back We Must",
+            "zh_tw": "我們必須反擊"
         },
         {
             "ID": 107,
-            "en_us": "It's Time For The End...",
-            "zh_tw": "是時候..."
+            "en_us": "Whatever It Takes We Must",
+            "zh_tw": "我們必須不惜一切代價嗎"
         },
         {
             "ID": 108,
-            "en_us": "THE END OF AN ERA",
-            "zh_tw": "結束玩家時代"
+            "en_us": "It's Time...",
+            "zh_tw": "是時候..."
+        },
+        {
+            "ID": 109,
+            "en_us": "To End Player",
+            "zh_tw": "結束玩家"
         }
     ]
 }
