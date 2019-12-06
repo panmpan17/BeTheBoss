@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using Menu;
+using Setting;
+using Setting.Data;
 
 public class LevelSelectMgr : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class LevelSelectMgr : MonoBehaviour
     private float smoothTime;
     private Vector3 moveSpeed;
 
+    private LevelSelectable[] levelSelectables;
     private SettingMenu settingMenu;
     private bool usingSetting;
 
@@ -28,10 +31,23 @@ public class LevelSelectMgr : MonoBehaviour
         MainMenuMgr.InitialLoading();
 
         settingMenu = Instantiate(Resources.Load<SettingMenu>("Prefab/SettingMenu"));
+        levelSelectables = FindObjectsOfType<LevelSelectable>();
     }
 
     private void Start() {
         selected.Select = true;
+
+        if (SettingReader.TryLoadLevelSetting())
+        {
+            for (int i = 0; i < levelSelectables.Length; i++)
+            {
+                LevelSetting setting;
+                if (SettingReader.TryGetLevelSetting(levelSelectables[i].ID, out setting))
+                {
+                    levelSelectables[i].ApplySetting(setting);
+                }
+            }
+        }
     }
 
     public void Update()
@@ -56,12 +72,12 @@ public class LevelSelectMgr : MonoBehaviour
         Gizmos.DrawWireCube((boundMin + boundMax) / 2, boundMax - boundMin);
     }
 
-    static public void LoadLevel(int levelId) {
+    static public void LoadLevel(byte levelId) {
         SceneManager.LoadScene(LEVELSCENE + levelId);
     }
 
-    static public bool LevelHasUnlock(int levelId) {
-        if (levelId < 0) return true;
+    static public bool LevelHasUnlock(byte levelId) {
+        if (levelId <= 0) return true;
         return false;
     }
 }

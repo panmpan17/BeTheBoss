@@ -7,7 +7,7 @@ namespace Setting {
         private const string LEVEL_SETTING_JSON_PATH = "JsonData/LevelSetting";
 
         private static bool levelSettingLoaded;
-        private static Dictionary<string, Data.LevelSetting> levelSettingDict = new Dictionary<string, Data.LevelSetting>();
+        private static Dictionary<byte, Data.LevelSetting> levelSettingDict = new Dictionary<byte, Data.LevelSetting>();
 
         public static bool TryLoadLevelSetting() {
             if (levelSettingLoaded) { return true; }
@@ -26,12 +26,12 @@ namespace Setting {
 
             for (int i = 0; i < setting.Levels.Length; i++) {
                 Data.LevelSetting level = setting.Levels[i];
-                if (levelSettingDict.ContainsKey(level.Scene)) {
+                if (levelSettingDict.ContainsKey(level.ID)) {
                     #if UNITY_EDITOR
                     Debug.LogErrorFormat("Level setting dict alreay has key '{0}'", level.Scene);
                     #endif
                 } else {
-                    levelSettingDict.Add(level.Scene, level);
+                    levelSettingDict.Add(level.ID, level);
                 }
             }
 
@@ -40,27 +40,43 @@ namespace Setting {
         }
 
         public static bool TryGetLevelSetting(string sceneName, out Data.LevelSetting setting) {
-            return levelSettingDict.TryGetValue(sceneName, out setting);
+            foreach (var item in levelSettingDict.Values) {
+                if (item.Scene == sceneName) {
+                    setting = item;
+                    return true;
+                }
+            }
+            setting = Data.LevelSetting.Null;
+            return false;
+        }
+
+        public static bool TryGetLevelSetting(byte id, out Data.LevelSetting setting)
+        {
+            return levelSettingDict.TryGetValue(id, out setting);
         }
     }
 }
 
 namespace Setting.Data {
     [System.Serializable]
-    public class LevelSettingJson
+    public struct LevelSettingJson
     {
         public LevelSetting[] Levels;
     }
 
     [System.Serializable]
-    public class LevelSetting
+    public struct LevelSetting
     {
+        static public LevelSetting Null = new LevelSetting();
+
+        public byte ID;
+        public byte RequireUnlockedLevel;
         public string Scene;
         public PlayerSetting Player;
     }
 
     [System.Serializable]
-    public class PlayerSetting
+    public struct PlayerSetting
     {
         public int StartingHealth;
         public float FlySpeed;
@@ -73,5 +89,7 @@ namespace Setting.Data {
         public int MissleStartCount;
         public int MissleMaxCount;
         public float MissleSpeed;
+
+        public float EMPStunSec;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Menu;
+using Setting.Data;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,17 +10,12 @@ public class LevelSelectable : SelectableButton
 {
     [SerializeField]
     private SpriteRenderer targetRenderer;
-    [SerializeField]
-    private int levelId, requireUnlockLevel;
-
-    private void Start() {
-        disabled = !LevelSelectMgr.LevelHasUnlock(requireUnlockLevel);
-        ApplyStyle();
-    }
+    public byte ID;
+    private byte requireUnlockLevel;
 
     public override void Submit() {
         if (requireUnlockLevel < 0 || LevelSelectMgr.LevelHasUnlock(requireUnlockLevel))
-            LevelSelectMgr.LoadLevel(levelId);
+            LevelSelectMgr.LoadLevel(ID);
     }
 
     public override void ApplyStyle()
@@ -41,5 +37,11 @@ public class LevelSelectable : SelectableButton
             else Color = style.ActiveColor;
         }
         else if (selected) Color = style.SelectedColor;
+    }
+
+    public void ApplySetting(LevelSetting setting) {
+        requireUnlockLevel = setting.RequireUnlockedLevel;
+        disabled = !LevelSelectMgr.LevelHasUnlock(requireUnlockLevel);
+        ApplyStyle();
     }
 }
