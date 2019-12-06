@@ -12,7 +12,7 @@ public abstract class Damageable : MonoBehaviour
         health = startingHealth;
     }
 
-    public abstract bool TakeDamage(int damage);
+    public abstract bool TakeDamage(int damage, GameObject gameObject);
 }
 
 public class PrefabPoolCtrl<T> where T : MonoBehaviour {

@@ -159,8 +159,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   targetRenderer: {fileID: 159319381}
-  levelId: 2
-  requireUnlockLevel: -1
+  ID: 2
 --- !u!212 &159319381
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -443,8 +442,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   targetRenderer: {fileID: 1864796680}
-  levelId: 1
-  requireUnlockLevel: -1
+  ID: 1
 --- !u!212 &1864796680
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -547,8 +545,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   targetRenderer: {fileID: 2077787272}
-  levelId: 3
-  requireUnlockLevel: 3
+  ID: 3
 --- !u!212 &2077787272
 SpriteRenderer:
   m_ObjectHideFlags: 0

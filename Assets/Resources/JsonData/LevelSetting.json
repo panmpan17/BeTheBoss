@@ -1,40 +1,42 @@
 {
     "Levels": [
         {
-            "ID": 0,
-            "RequireUnlockedLevel": -1,
+            "ID": 1,
+            "RequireUnlockedLevel": 0,
             "Scene": "Level1",
             "Player": {
                 "StartingHealth": 100,
                 "FlySpeed": 4.0,
                 "RebirthPortection": 1.0,
-                "Life": 1,
+                "Life": 2,
                 "BulletFireRate": 0.18,
                 "BulletSpeed": 7.0,
                 "MissleStartCount": 1,
                 "MissleMaxCount": 2,
-                "MissleSpeed": 5.0
+                "MissleSpeed": 5.0,
+                "EMPStunSec": 5.0
             }
         },
         {
-            "ID": 1,
-            "RequireUnlockedLevel": 1,
+            "ID": 2,
+            "RequireUnlockedLevel": 0,
             "Scene": "Level2",
             "Player": {
                 "StartingHealth": 100,
                 "FlySpeed": 5.0,
                 "RebirthPortection": 3.0,
-                "Life": 5,
+                "Life": 4,
                 "BulletFireRate": 0.18,
                 "BulletSpeed": 7.0,
                 "MissleStartCount": 3,
                 "MissleMaxCount": 5,
-                "MissleSpeed": 5.0
+                "MissleSpeed": 5.0,
+                "EMPStunSec": 5.0
             }
         },
         {
-            "ID": 2,
-            "RequireUnlockedLevel": 1,
+            "ID": 3,
+            "RequireUnlockedLevel": 0,
             "Scene": "Level3",
             "Player": {
                 "StartingHealth": 100,
@@ -45,7 +47,8 @@
                 "BulletSpeed": 7.0,
                 "MissleStartCount": 3,
                 "MissleMaxCount": 5,
-                "MissleSpeed": 5.0
+                "MissleSpeed": 5.0,
+                "EMPStunSec": 5.0
             }
         }
     ]

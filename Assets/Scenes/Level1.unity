@@ -704,7 +704,9 @@ MonoBehaviour:
   type: 2
   spawnWeaponeType: 3
   spawnLimit: 40
-  spawningPos: {fileID: 200834491}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 200834491}
   spawningTime: 8
   spawningIntervalTime: 0.32
   vecMultiplier: {x: 3.3, y: 3.3}
@@ -1773,6 +1775,12 @@ MonoBehaviour:
   machineGunTime: 7
   bombTime: 10
   minionTime: 10
+  canDrift: 0
+  driftWait: 0
+  driftTime: 0
+  driftSpeed: 0
+  driftMin: 0
+  driftMax: 0
 --- !u!114 &570782731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2494,7 +2502,9 @@ MonoBehaviour:
   type: 2
   spawnWeaponeType: 3
   spawnLimit: 40
-  spawningPos: {fileID: 1400623823}
+  spawnType: 0
+  spawningPos:
+  - {fileID: 1400623823}
   spawningTime: 8
   spawningIntervalTime: 0.32
   vecMultiplier: {x: 3.3, y: 3.3}
@@ -2967,8 +2977,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   spawnWeaponeType: 4
-  spawnLimit: 30
-  spawningPos: {fileID: 1797991619}
+  spawnLimit: 25
+  spawnType: 0
+  spawningPos:
+  - {fileID: 1797991619}
   spawningTime: 8
   spawningIntervalTime: 0.5
   vecMultiplier: {x: 7, y: 7}
@@ -3175,8 +3187,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   spawnWeaponeType: 4
-  spawnLimit: 30
-  spawningPos: {fileID: 414475741}
+  spawnLimit: 25
+  spawnType: 0
+  spawningPos:
+  - {fileID: 414475741}
   spawningTime: 8
   spawningIntervalTime: 0.5
   vecMultiplier: {x: 7, y: 7}

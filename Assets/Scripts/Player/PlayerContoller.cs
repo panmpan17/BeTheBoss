@@ -31,12 +31,16 @@ public class PlayerContoller : Damageable
     [SerializeField]
     private SpriteRenderer healthBar;
 
-    // [SerializeField]
+    // EMP stuning
+    private float EMPStunSec;
+    private Timer stunTimer;
+    private bool stuning;
+
+    // Life
     private int life;
     [SerializeField]
     private TextMeshProUGUI lifeText;
 
-    // [SerializeField]
     private Movement movement, nextMovement;
 
     private SpriteRenderer spriteRenderer;
@@ -60,9 +64,13 @@ public class PlayerContoller : Damageable
         missleMaxCount = setting.MissleMaxCount;
         missleSpeed = setting.MissleSpeed;
 
+        EMPStunSec = setting.EMPStunSec;
+        Debug.Log(EMPStunSec);
+
         SetupHealth();
         rebirthProtectionTimer = new Timer(rebirthProtectionTime);
         fireRateTimer = new Timer(fireRate);
+        stunTimer = new Timer(EMPStunSec);
         UpdateHealthBar();
     }
 
@@ -74,6 +82,8 @@ public class PlayerContoller : Damageable
         rigid2d = GetComponent<Rigidbody2D>();
         movement = nextMovement = new Movement();
         enabled = false;
+
+        stunTimer = new Timer(EMPStunSec);
     }
 
     public void SetNextMovement(Movement movement) {
@@ -81,6 +91,8 @@ public class PlayerContoller : Damageable
     }
 
     public void ShootMissle() {
+        if (stuning) return;
+
         if (missleCount > 0) {
             WeaponPrefabPool misslePool = WeaponPrefabPool.GetPool(WeaponType.PlayerMissle);
             if (misslePool.AliveObjects.Count == 0) {
@@ -93,6 +105,8 @@ public class PlayerContoller : Damageable
 #if SHOOTING
     void Update()
     {
+        if (stuning) return;
+
         if (fireRateTimer.UpdateEnd) {
             fireRateTimer.Reset();
             for (int i = 0; i < burstPosition.Length; i++) {
@@ -105,6 +119,12 @@ public class PlayerContoller : Damageable
 #endif
 
     void FixedUpdate() {
+        if (stuning)
+        {
+            if (stunTimer.UpdateEnd) stuning = false;
+            return;
+        }
+
         if (haveRebirthProtection && rebirthProtectionTimer.UpdateEnd) {
             haveRebirthProtection = false;
             Color color = spriteRenderer.color;
@@ -115,7 +135,8 @@ public class PlayerContoller : Damageable
         bool horiChange, VertiChange;
         if (movement.Different(nextMovement, out horiChange, out VertiChange)) {
             if (horiChange) {
-                StopAllCoroutines();
+                StopCoroutine("FlipRight");
+                StopCoroutine("FlipLeft");
                 switch (nextMovement.Horizontal) {
                     case 0:
                         rigid2d.velocity = Vector2.zero;
@@ -174,10 +195,9 @@ public class PlayerContoller : Damageable
     }
 
     void HandleRebirth() {
+        StopAllCoroutines();
         transform.position = rebirthPos;
-        Color color = spriteRenderer.color;
-        color.a = 0.5f;
-        spriteRenderer.color = color;
+        spriteRenderer.color = new Color(1, 1, 1, 0.5f);
 
         haveRebirthProtection = true;
         rebirthProtectionTimer.Reset();
@@ -186,8 +206,13 @@ public class PlayerContoller : Damageable
         UpdateHealthBar();
     }
 
-    public override bool TakeDamage(int damage) {
+    public override bool TakeDamage(int damage, GameObject other) {
         if (haveRebirthProtection) return false;
+
+        if (other.CompareTag("EMP")) {
+            stuning = true;
+            stunTimer.Reset();
+        }
 
         health -= damage;
         if (health < 0) {
@@ -195,7 +220,21 @@ public class PlayerContoller : Damageable
             return true;
         }
         UpdateHealthBar();
+
+        StopCoroutine("HurtBlink");
+        StartCoroutine(HurtBlink());
         return false;
+    }
+
+    IEnumerator HurtBlink(float interval = 0.1f, float times = 3) {
+        WaitForSeconds wait = new WaitForSeconds(interval);
+        bool goDark = true;
+
+        for (int i = 0; i < times * 2; i++) {
+            spriteRenderer.color = goDark? Color.grey: Color.white;
+            goDark = !goDark;
+            yield return wait;
+        }
     }
 
     #region  Reward

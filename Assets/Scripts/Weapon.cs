@@ -59,7 +59,7 @@ public class Weapon : Damageable
                 List<int> removedIndex = new List<int>();
                 for (int i = 0; i < contactDamaegable.Count; i++)
                 {
-                    if (contactDamaegable[i].TakeDamage(damage)) {
+                    if (contactDamaegable[i].TakeDamage(damage, gameObject)) {
                         removedIndex.Add(i);
                     }
                 }
@@ -97,7 +97,7 @@ public class Weapon : Damageable
         }
     }
 
-    public override bool TakeDamage(int amount) {
+    public override bool TakeDamage(int amount, GameObject other) {
         health -= amount;
         if (putWhenDestory && health <= 0) {
             if (destroyAnimation.BeenSet) {
@@ -114,7 +114,7 @@ public class Weapon : Damageable
         Damageable damageable = other.GetComponent<Damageable>();
         if (damageable != null) {
             contactDamaegable.Add(damageable);
-            damageable.TakeDamage(damage);
+            damageable.TakeDamage(damage, gameObject);
         }
 
         if (putWhenTouchWall && other.gameObject.layer == GameManager.WallLayer) PrepareToPut();

@@ -55,6 +55,11 @@ public class SpawningWeapon : BossShipWeapon
         spawningTimer = new Timer(spawningTime);
         spawningIntervalTimer = new Timer(spawningIntervalTime);
         enabled = false;
+
+        spawningPos = new Transform[transform.childCount];
+        for (int i = 0; i < transform.childCount; i++) {
+            spawningPos[i] = transform.GetChild(i);
+        }
     }
 
     private void Update() {
