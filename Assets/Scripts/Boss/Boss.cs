@@ -23,6 +23,14 @@ public class Boss : Damageable
     public AttackType[] AttackTypes;
     private BossShipWeapon[] shipWeapons;
 
+    [SerializeField]
+    private bool canDrift;
+    private bool drifting;
+    [SerializeField]
+    private float driftWait, driftTime, driftSpeed, driftMin, driftMax;
+    private int driftDirection;
+    private Timer driftWaitTimer, driftTimer;
+
     private Timer weaponTimer;
     // private LaserCanon laser;
 
@@ -53,6 +61,11 @@ public class Boss : Damageable
 
         AttackTypes = attackTypesList.ToArray();
         weaponTimer = new Timer(8);
+
+        if (canDrift) {
+            driftWaitTimer = new Timer(driftWait);
+            driftTimer = new Timer(driftTime);
+        }
     }
 
     private void Start() {
@@ -66,7 +79,34 @@ public class Boss : Damageable
     }
 
     void Update() {
-        if (Idling) return;
+        if (Idling) {
+            if (canDrift) {
+                if (drifting) {
+                    if (driftTimer.UpdateEnd) {
+                        drifting = false;
+                        driftTimer.Reset();
+                    } else {
+                        transform.Translate(Vector3.right * Time.deltaTime * driftDirection * driftSpeed);
+                        float x = transform.position.x;
+                        if (x < driftMin || x > driftMax) {
+                            drifting = false;
+                            driftTimer.Reset();
+                        }
+                    }
+                }
+                else {
+                    if (driftWaitTimer.UpdateEnd) {
+                        drifting = true;
+                        driftWaitTimer.Reset();
+
+                        float x = transform.position.x;
+                        if (x < driftMin) driftDirection = 1;
+                        else if (x > driftMax) driftDirection = -1;
+                        else driftDirection = Random.Range(1, 3) == 1? 1 : -1;
+                    }
+                }
+            }
+        }
         if (weaponTimer.UpdateEnd) WeaponFinished();
     }
 
@@ -118,7 +158,7 @@ public class Boss : Damageable
         GameManager.ins.BossLose();
     }
 
-    public override bool TakeDamage(int amount) {
+    public override bool TakeDamage(int amount, GameObject other) {
         health -= amount;
         if (health < 0) health = 0;
 
@@ -131,5 +171,14 @@ public class Boss : Damageable
             return true;
         }
         return false;
+    }
+
+    private void OnDrawGizmosSelected() {
+        Vector3 pos = transform.position;
+        pos.x = driftMin;
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(pos + Vector3.up * 3, pos + Vector3.down * 3);
+        pos.x = driftMax;
+        Gizmos.DrawLine(pos + Vector3.up * 3, pos + Vector3.down * 3);
     }
 }

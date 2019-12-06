@@ -80,14 +80,14 @@ public class BossBomb : Damageable
         if (damageable) {
             if (!damagedSend.Contains(damageable)) {
                 damagedSend.Add(damageable);
-                damageable.TakeDamage(damage);
+                damageable.TakeDamage(damage, gameObject);
             }
         }
 
         Explode();
     }
 
-    public override bool TakeDamage(int damage) {
+    public override bool TakeDamage(int damage, GameObject other) {
         Explode();
         return true;
     }
