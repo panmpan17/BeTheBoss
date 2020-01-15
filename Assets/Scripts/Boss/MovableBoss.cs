@@ -24,12 +24,19 @@ public class MovableBoss : MonoBehaviour
     private Vector2 driftForce;
     private Vector2 driftDirection;
 
+    private Vector3 moveToPos;
+    private bool destinationMoving;
+
+    public Vector3 Position { get { return transform.position; } }
+
     private void Awake() {
         waitTimer = new Timer(waitTime);
         driftTimer = new Timer(driftTime);
     }
 
     private void HandleDrifting() {
+        if (destinationMoving) return;
+
         if (drifting)
         {
             if (driftTimer.UpdateEnd) {
@@ -87,6 +94,27 @@ public class MovableBoss : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube((boundMin + boundMax) / 2, boundMax - boundMin);
     }
-    // [SerializeField]
-    // private DriftMode driftMode;
+    
+    
+    public bool MoveTo(Vector3 position) {
+        if (destinationMoving) {
+            float distance = (transform.position - moveToPos).magnitude;
+
+            if (distance < 0.05f) {
+                transform.position = position;
+                velocity = Vector3.zero;
+                return true;
+            }
+            else if (distance < 1) {
+                if (velocity.magnitude > 2)
+                    ApplyForce(-velocity * Time.deltaTime);
+            }
+        }
+        else {
+            destinationMoving = true;
+            moveToPos = position;
+            ApplyForce((position - transform.position).normalized * 5);
+        }
+        return false;
+    }
 }

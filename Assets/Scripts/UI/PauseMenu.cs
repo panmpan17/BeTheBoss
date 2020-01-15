@@ -4,6 +4,10 @@ using Audio;
 
 public class PauseMenu : MonoBehaviour
 {
+    static public ResourceRequest LoadAsync() {
+        return Resources.LoadAsync<PauseMenu>("Prefab/PauseMenu");
+    }
+
     [SerializeField]
     private SelectableItem selected;
     private SettingMenu settingMenu;

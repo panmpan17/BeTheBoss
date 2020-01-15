@@ -6,10 +6,6 @@ using UnityEditor;
 
 public class ActivateWeapon : BossShipWeapon
 {
-    // [SerializeField]
-    // private Weapon activatingWeapon;
-
-    // private Vector3 originalPosition;
     [SerializeField]
     private GameObject targetWeapon;
     [SerializeField]
@@ -20,6 +16,7 @@ public class ActivateWeapon : BossShipWeapon
     private Vector2 moveVec;
     [SerializeField]
     private bool moveBack;
+    private Vector3 originalPosition;
 
     private bool movable;
 
@@ -27,11 +24,11 @@ public class ActivateWeapon : BossShipWeapon
     Animator animator;
 
     public override void Left() {
-        if (!movable) return;
+        if (!enabled || !movable) return;
         movableBoss.ApplyForce(-moveVec * Time.deltaTime);
     }
     public override void Right() {
-        if (!movable) return;
+        if (!enabled || !movable) return;
         movableBoss.ApplyForce(moveVec * Time.deltaTime);
     }
 
@@ -47,15 +44,6 @@ public class ActivateWeapon : BossShipWeapon
 
     void Update()
     {
-        // if (movingBack) {
-        //     target.position = Vector3.MoveTowards(target.position, originalPosition, moveBackSpeed * Time.deltaTime);
-
-        //     if ((originalPosition - target.position).sqrMagnitude < 0.05f) {
-        //         target.position = originalPosition;
-        //         movingBack = false;
-        //         enabled = false;
-        //     }
-        // }
         if (delayTimer.UpdateEnd && !movable)
         {
             movable = true;
@@ -67,19 +55,22 @@ public class ActivateWeapon : BossShipWeapon
         base.Activate();
         delayTimer.Reset();
         movable = false;
-        // originalPosition = target.position;
+
+        if (moveBack)
+            originalPosition = movableBoss.Position;
 
         if (animator != null) animator.SetTrigger("Prepare");
     }
     public override bool Deactivate() {
-        // if (!movingBack) {
-        //     movable = false;
-        //     movingBack = true;
+
         targetWeapon.SetActive(false);
-        enabled = false;
-        //     if (animator != null) animator.SetTrigger("End");
-        // }
-        return !enabled;
+        movable = enabled = false;
+        if (animator != null) animator.SetTrigger("End");
+        if (moveBack) {
+            return movableBoss.MoveTo(originalPosition);
+        }
+
+        return true;
     }
 
 // #if UNITY_EDITOR

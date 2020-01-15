@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI scoreText;
     [SerializeField]
     private Collider2D topCeilingCollider;
-    [SerializeField]
     private PauseMenu pauseMenu;
 
     private string activeSceneName;
@@ -51,7 +50,11 @@ public class GameManager : MonoBehaviour
         if (!PlayerPreference.loaded) PlayerPreference.ReadFromSavedPref();
         MultiLanguageMgr.SwitchAllTextsLanguage(PlayerPreference.Language);
 
-        pauseMenu.gameObject.SetActive(false);
+        ResourceRequest request = PauseMenu.LoadAsync();
+        request.completed += delegate {
+            pauseMenu = Instantiate((PauseMenu) request.asset, MainCanvas.transform);
+            pauseMenu.gameObject.SetActive(false);
+        };
 
         StartCoroutine(LoadSetting());
     }
