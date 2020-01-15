@@ -3,6 +3,7 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Audio;
 using Setting.Data;
@@ -29,7 +30,7 @@ public class PlayerContoller : Damageable
     [SerializeField]
     private Color fullHealthColor, emptyHealthColor;
     [SerializeField]
-    private SpriteRenderer healthBar;
+    private Image healthBar;
 
     // EMP stuning
     private float EMPStunSec;
@@ -65,7 +66,6 @@ public class PlayerContoller : Damageable
         missleSpeed = setting.MissleSpeed;
 
         EMPStunSec = setting.EMPStunSec;
-        Debug.Log(EMPStunSec);
 
         SetupHealth();
         rebirthProtectionTimer = new Timer(rebirthProtectionTime);
@@ -175,9 +175,7 @@ public class PlayerContoller : Damageable
 
     void UpdateHealthBar() {
         healthBar.color = Color.Lerp(emptyHealthColor, fullHealthColor, (float)health / startingHealth);
-        Vector2 size = healthBar.size;
-        size.x = (float)health / startingHealth;
-        healthBar.size = size;
+        healthBar.fillAmount = (float)health / startingHealth;
         lifeText.text = life.ToString();
     }
 
