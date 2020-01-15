@@ -81,7 +81,7 @@ public class BossInput : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Alpha5) || Input.GetKeyDown(KeyCode.Keypad5)) PressSortKey(5);
         else if (Input.GetKeyDown(KeyCode.Alpha6) || Input.GetKeyDown(KeyCode.Keypad6)) PressSortKey(6);
 
-        if (boss.UsingBomb || boss.UsingMachinGun || boss.UsingLaser)
+        if (!boss.Idling)
         {
             float horizontal = Input.GetAxisRaw("Horizontal");
             if (horizontal > 0.5f) boss.Left();

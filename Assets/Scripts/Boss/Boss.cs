@@ -36,7 +36,7 @@ public class Boss : Damageable
 
     private AttackType attackType = AttackType.None;
     private List<AttackType> usedAttackType;
-    public enum AttackType { None, Laser, MachineGun, Minion, Bomb }
+    public enum AttackType { None, Laser, MachineGun, Minion, Bomb, ThrusterCanon }
 
     [System.NonSerialized]
     public int keyDirection;
@@ -111,6 +111,7 @@ public class Boss : Damageable
     }
 
     public void Left() {
+        Debug.Log("left");
         for (int i = 0; i < shipWeapons.Length; i++) shipWeapons[i].Left();
     }
     public void Right() {
