@@ -200,6 +200,9 @@ public class PlayerContoller : Damageable
         haveRebirthProtection = true;
         rebirthProtectionTimer.Reset();
 
+        stuning = false;
+        stunTimer.Reset();
+
         health = startingHealth;
         UpdateHealthBar();
     }

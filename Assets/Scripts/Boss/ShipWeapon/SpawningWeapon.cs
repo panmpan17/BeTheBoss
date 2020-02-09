@@ -4,6 +4,7 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditorInternal;
 #endif
 
 public class SpawningWeapon : BossShipWeapon
@@ -112,10 +113,11 @@ public class SpawningWeapon : BossShipWeapon
             float angle;
             Vector3 axis;
             spawningPos[spawningPosIndex].rotation.ToAngleAxis(out angle, out axis);
+            angle += 90 + Random.Range(-2f, 2f);
 
             Weapon bullet = pool.GetFromPool();
 
-            bullet.Setup(spawningPos[spawningPosIndex].position, MiltiplyVector2(DegreeToVector2(angle + 90), vecMultiplier), rotateType == RotateType.None? Quaternion.identity : transform.rotation);
+            bullet.Setup(spawningPos[spawningPosIndex].position, MiltiplyVector2(DegreeToVector2(angle), vecMultiplier), rotateType == RotateType.None? Quaternion.identity : transform.rotation);
         } else {
             for (spawningPosIndex = 0; spawningPosIndex < spawningPos.Length; spawningPosIndex++) {
                 float angle;
@@ -123,8 +125,9 @@ public class SpawningWeapon : BossShipWeapon
                 spawningPos[spawningPosIndex].rotation.ToAngleAxis(out angle, out axis);
 
                 Weapon bullet = pool.GetFromPool();
+                angle += 90 + Random.Range(-2f, 2f);
 
-                bullet.Setup(spawningPos[spawningPosIndex].position, MiltiplyVector2(DegreeToVector2(angle + 90), vecMultiplier), rotateType == RotateType.None ? Quaternion.identity : transform.rotation);
+                bullet.Setup(spawningPos[spawningPosIndex].position, MiltiplyVector2(DegreeToVector2(angle), vecMultiplier), rotateType == RotateType.None ? Quaternion.identity : transform.rotation);
             }
         }
     }
@@ -140,10 +143,18 @@ public class SpawningWeapon : BossShipWeapon
     public class _Editor : Editor {
         SpawningWeapon weapon;
         SerializedProperty rotateType;
+        ReorderableList spawnPos;
 
         private void OnEnable() {
             weapon = (SpawningWeapon) target;
             rotateType = serializedObject.FindProperty("rotateType");
+
+            spawnPos = new ReorderableList(serializedObject, serializedObject.FindProperty("spawningPos"));
+            spawnPos.drawHeaderCallback = (rect) => { EditorGUI.LabelField(rect, "Spawninng Position"); };
+            spawnPos.drawElementCallback = (rect, index, _1, _2) => {
+                // EditorGUI.ObjectField(rect, weapon.spawningPos[index], typeof(Transform), false);
+                EditorGUI.PropertyField(rect, spawnPos.serializedProperty.GetArrayElementAtIndex(index));
+            };
         }
 
         public static void IntMinMaxSlider(string name, SerializedProperty property1, SerializedProperty property2, int rangeMin, int rangeMax) {
@@ -176,7 +187,18 @@ public class SpawningWeapon : BossShipWeapon
             EditorGUILayout.LabelField("Spawning Control", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnLimit"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnType"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningPos"), true);
+            GUILayout.Space(5);
+
+            spawnPos.DoLayoutList();
+            if (GUILayout.Button("Scan")) {
+                Undo.RecordObject(weapon, "");
+
+                Transform[] children = new Transform[weapon.transform.childCount];
+                for (int i = 0; i < weapon.transform.childCount; i++) children[i] = weapon.transform.GetChild(i);
+                weapon.spawningPos = children;
+            }
+            GUILayout.Space(5);
+
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawnWeaponeType"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningTime"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("spawningIntervalTime"));
@@ -205,6 +227,8 @@ public class SpawningWeapon : BossShipWeapon
 
         private void OnSceneGUI()
         {
+            if (weapon.SpawningPos == null) return;
+
             for (int i = 0; i < weapon.SpawningPos.Length; i++) {
                 EditorGUI.BeginChangeCheck();
                 Vector3 pos = Handles.PositionHandle(weapon.SpawningPos[i].position, weapon.SpawningPos[i].rotation);

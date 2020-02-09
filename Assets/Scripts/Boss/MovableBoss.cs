@@ -103,6 +103,7 @@ public class MovableBoss : MonoBehaviour
             if (distance < 0.05f) {
                 transform.position = position;
                 velocity = Vector3.zero;
+                destinationMoving = false;
                 return true;
             }
             else if (distance < 1) {
