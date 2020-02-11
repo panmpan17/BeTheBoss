@@ -2,11 +2,11 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using MultiLanguage;
 using Audio;
-using UnityEngine.UI;
 using Setting;
 using Setting.Data;
 

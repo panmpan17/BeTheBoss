@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace MultiLanguage {
     public class MultiLanguageText : MonoBehaviour
@@ -12,19 +11,16 @@ namespace MultiLanguage {
 		public int Id { get { return id; } }
 
 		private TextMesh textMesh;
-		private Text uiText;
-		private TextMeshProUGUI tmp_text;
+		private TextMeshProUGUI textMeshUGUI;
 
 		public string Text {
 			get {
 				if (textMesh != null) return textMesh.text;
-				else if (tmp_text != null) return tmp_text.text;
-				else return uiText.text;
+				else return textMeshUGUI.text;
 			}
 			set {
                 if (textMesh != null) textMesh.text = value;
-                else if (uiText != null) uiText.text = value;
-				else if (tmp_text != null) tmp_text.text = value;
+                else if (textMeshUGUI != null) textMeshUGUI.text = value;
 			}
 		}
 
@@ -35,10 +31,9 @@ namespace MultiLanguage {
 
         private void Awake() {
 			textMesh = GetComponent<TextMesh>();
-			uiText = GetComponent<Text>();
-            tmp_text = GetComponent<TextMeshProUGUI>();
+            textMeshUGUI = GetComponent<TextMeshProUGUI>();
 
-			if (textMesh == null && uiText == null && tmp_text == null) {
+			if (textMesh == null && textMeshUGUI == null) {
 				Debug.LogError("MultiLanguageText require Text or TextMesh or TMP text");
 				enabled = false;
 				return;
